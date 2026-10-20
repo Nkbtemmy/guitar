@@ -1,0 +1,1445 @@
+{
+  "levels": [
+    {
+      "id": "L01",
+      "title": "Zero",
+      "subtitle": "Meet your guitar",
+      "icon": "spa",
+      "lessons": [
+        {
+          "id": "L01-1",
+          "title": "Your guitar, up close",
+          "summary": "The parts of the guitar and how to hold it.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Welcome!",
+              "body": "Welcome! This course will take you from never having played to playing full songs. The app listens through your phone's microphone, so keep it near the guitar in a quiet room — and don't worry, we'll go step by step, together. Let's begin with your guitar, up close."
+            },
+            {
+              "type": "info",
+              "title": "Parts of the guitar",
+              "body": "Let's explore your guitar together. The headstock holds the tuning pegs where the strings start. The neck leads to the fretboard, marked by metal frets. The body is where the sound hole (acoustic) or pickups (electric) sit, and the bridge anchors the strings. Everything connects to create music — take your time to get familiar with each part."
+            },
+            {
+              "type": "info",
+              "title": "Holding the guitar",
+              "body": "Sit up straight and rest the guitar body on your right leg. Point the neck slightly upward to the left, with your strumming forearm over the body. Keep your fretting-hand thumb behind the neck and relax your shoulders — it's all about comfort and control."
+            },
+            {
+              "type": "quiz",
+              "question": "Where are the strings anchored on the body of the guitar?",
+              "options": ["The headstock", "The bridge", "The fretboard", "The tuning pegs"],
+              "answer": 1,
+              "explain": "Strings are anchored at the bridge on the body and wound around the tuning pegs on the headstock."
+            }
+          ]
+        },
+        {
+          "id": "L01-2",
+          "title": "The six strings",
+          "summary": "String numbers and their names.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Meet the strings",
+              "body": "Meet your guitar's six strings: 6 is the thickest and closest to your face, 1 the thinnest. In standard tuning, they're E, A, D, G, B, E. Use the memory trick 'Eddie Ate Dynamite, Good Bye Eddie' to remember the order from 6 to 1. You're doing great — take your time to explore each string and let the music begin."
+            },
+            {
+              "type": "quiz",
+              "question": "Which string is string number 6?",
+              "options": ["The thinnest, highest string", "The thickest, lowest string", "The middle string", "The B string"],
+              "answer": 1,
+              "explain": "String 6 is the thick low E string, closest to your face."
+            },
+            {
+              "type": "quiz",
+              "question": "What are the open strings from 6 to 1 in standard tuning?",
+              "options": ["E A D G B E", "E B G D A E", "A D G C E A", "E A D G C E"],
+              "answer": 0,
+              "explain": "Eddie Ate Dynamite, Good Bye Eddie."
+            },
+            {
+              "type": "info",
+              "title": "How to pluck",
+              "body": "Hold the pick between your thumb and the side of your index finger, showing only the tip. Or use just your thumb for a soft sound. Move your wrist gently to pluck the string — let it ring out fully. You're already making music with every note you play."
+            }
+          ]
+        },
+        {
+          "id": "L01-3",
+          "title": "Tune up",
+          "summary": "Use the tuner to get every string in tune.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Why tuning matters",
+              "body": "Tune your guitar before every session — it's the foundation of playing well. A tuner shows if a string is flat or sharp, so you know whether to tighten or loosen it. Turn the tuning peg a little, pluck the string, and check again until it's right. Small adjustments make a big difference in how your guitar sounds and feels. Keep going — you're already making progress!"
+            },
+            {
+              "type": "tune",
+              "title": "Tune all six strings",
+              "body": "Pluck one string at a time and turn its peg until the needle sits in the middle. The tuner ticks off each string once it's in tune."
+            }
+          ]
+        },
+        {
+          "id": "L01-4",
+          "title": "Open strings",
+          "summary": "Play each string and let the app hear it.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Play the open strings",
+              "body": "You're holding your guitar like a pro — now let's hear those strings. Starting with the thickest, pluck each open string one at a time. The app listens for the right note and moves on when it hears it. You've got this — it's the first step to making music together."
+            },
+            {
+              "type": "notes",
+              "title": "Thick to thin",
+              "body": "Pluck each open string in order, from string 6 to string 1.",
+              "notes": [[6, 0], [5, 0], [4, 0], [3, 0], [2, 0], [1, 0]]
+            },
+            {
+              "type": "notes",
+              "title": "Thin to thick",
+              "body": "Now go back from string 1 to string 6.",
+              "notes": [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0]]
+            },
+            {
+              "type": "quiz",
+              "question": "What note does open string 5 play?",
+              "options": ["D", "E", "A", "G"],
+              "answer": 2,
+              "explain": "From 6 to 1: E, A, D, G, B, E. String 5 is A."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L02",
+      "title": "First notes",
+      "subtitle": "Frets, fingers and melodies",
+      "icon": "music_note",
+      "lessons": [
+        {
+          "id": "L02-1",
+          "title": "Frets and fingers",
+          "summary": "Finger numbers and clean fretted notes.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Finger numbers & frets",
+              "body": "Your fretting-hand fingers are numbered: 1 for the index, 2 for the middle, 3 for the ring and 4 for the pinky. The thumb stays behind the neck. Frets are the metal bars on the neck, and the space between the nut and the first bar is fret 1. Press your fingertip just behind the fret, not on top of it, for a clear sound."
+            },
+            {
+              "type": "info",
+              "title": "Clean notes",
+              "body": "Each fret raises the note by one half step. Press just enough for a clean sound — too much pressure only tires your hand. If a note buzzes, move your fingertip closer to the fret. You're doing great — keep exploring those melodies!"
+            },
+            {
+              "type": "notes",
+              "title": "Spider walk",
+              "notes": [[1, 1], [1, 2], [1, 3], [1, 4], [1, 1], [1, 2], [1, 3], [1, 4]],
+              "body": "Move your fingers one at a time along string 1, pressing each fret from 1 to 4 with fingers 1 to 4. Keep your fingers close to the fretboard and lift them after each note. Play the pattern twice, slowly and clearly, to build control and confidence on the neck."
+            },
+            {
+              "type": "quiz",
+              "question": "Where should your fingertip go when you fret a note?",
+              "options": ["Right on top of the metal fret", "Just behind the metal fret", "Exactly halfway between two frets", "Anywhere on the string"],
+              "answer": 1,
+              "explain": "Just behind the fret gives a clean note with the least pressure."
+            }
+          ]
+        },
+        {
+          "id": "L02-2",
+          "title": "Five notes",
+          "summary": "C, D, E, F and G on the top two strings.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Five notes",
+              "body": "On string 2 (B), fret 1 is C and fret 3 is D. On string 1 (high E), the open string is E, fret 1 is F and fret 3 is G. That's five notes: C, D, E, F and G. Use finger 1 for fret 1 and finger 3 for fret 3, and let each note ring."
+            },
+            {
+              "type": "notes",
+              "title": "C D E F G",
+              "body": "Climb up: C and D on string 2, then E, F and G on string 1.",
+              "notes": [[2, 1], [2, 3], [1, 0], [1, 1], [1, 3]]
+            },
+            {
+              "type": "notes",
+              "title": "G F E D C",
+              "body": "And back down again.",
+              "notes": [[1, 3], [1, 1], [1, 0], [2, 3], [2, 1]]
+            }
+          ]
+        },
+        {
+          "id": "L02-3",
+          "title": "Ode to Joy",
+          "summary": "Your first melody, by Beethoven.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Ode to Joy",
+              "body": "You'll play Ode to Joy, a joyful melody by Beethoven. It uses the notes C, D, E, F and G you've learned. Play slowly and evenly — the app waits for each correct note before moving on. You've got this!"
+            },
+            {
+              "type": "notes",
+              "title": "Ode to Joy",
+              "body": "Follow the highlighted note. Repeated notes need a fresh pluck each time.",
+              "notes": [[1, 0], [1, 0], [1, 1], [1, 3], [1, 3], [1, 1], [1, 0], [2, 3], [2, 1], [2, 1], [2, 3], [1, 0], [1, 0], [2, 3], [2, 3]]
+            }
+          ]
+        },
+        {
+          "id": "L02-4",
+          "title": "Twinkle, Twinkle",
+          "summary": "A new note: A on fret 5.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "A new note: A",
+              "body": "You've played up to fret 4 — now reach to fret 5 on string 1 for the note A. Use finger 3 on fret 3, then stretch finger 4 (your pinky) to fret 5, or shift your hand up slightly. It feels a little awkward at first, but your fingers will grow stronger and more flexible with practice. Keep going — you're doing great! You're learning to play real music, one note at a time."
+            },
+            {
+              "type": "notes",
+              "title": "Twinkle, Twinkle, Little Star",
+              "body": "C C G G A A G, F F E E D D C.",
+              "notes": [[2, 1], [2, 1], [1, 3], [1, 3], [1, 5], [1, 5], [1, 3], [1, 1], [1, 1], [1, 0], [1, 0], [2, 3], [2, 3], [2, 1]]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L03",
+      "title": "First chords",
+      "subtitle": "Em, E, Am, A and D",
+      "icon": "back_hand",
+      "lessons": [
+        {
+          "id": "L03-1",
+          "title": "What is a chord?",
+          "summary": "Reading chord charts and your first strum.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Reading chord charts",
+              "body": "A chord is several notes played together by strumming across the strings. Chord charts show strings as vertical lines, with string 6 on the left, and frets as horizontal lines. Dots tell you where to place your fingers, numbers show which finger to use, O means an open string, and X means a string you should not play. Take your time — it all makes sense once you see it in action!"
+            },
+            {
+              "type": "info",
+              "title": "Your first strum",
+              "body": "Your first strum is a smooth, loose motion from the wrist — start at the lowest string of the chord and brush across the others. Let your thumb or pick glide down, keeping your hand relaxed. You'll find it feels natural once you move with the motion, not against it. Take your time — every great guitarist started here. You've got this!"
+            },
+            {
+              "type": "quiz",
+              "question": "On a chord chart, what does an X above a string mean?",
+              "options": ["Play it open", "Don't play that string", "Use finger 10", "Press harder"],
+              "answer": 1,
+              "explain": "X means skip that string; O means play it open."
+            }
+          ]
+        },
+        {
+          "id": "L03-2",
+          "title": "E minor",
+          "summary": "Two fingers, six strings.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "E minor (Em)",
+              "chord": "Em",
+              "body": "E minor uses only two fingers: place finger 2 on string 5 at fret 2 and finger 3 on string 4 at fret 2. Curl your fingers so they don't touch other strings, then strum all six strings. It's a simple shape that sounds rich and full — you've got this! Keep your fingers close to the fretboard for the clearest tone."
+            },
+            {
+              "type": "chord",
+              "chord": "Em",
+              "repeat": 3
+            },
+            {
+              "type": "info",
+              "title": "Troubleshooting a chord",
+              "chord": "Em",
+              "body": "Check each string of the Em chord one by one, from the lowest to the highest. If a string sounds muted or buzzy, adjust your finger—press closer to the fret or arch it slightly to avoid touching the string next to it. Small changes make a big difference. You're doing great—keep experimenting until it feels right."
+            }
+          ]
+        },
+        {
+          "id": "L03-3",
+          "title": "E major",
+          "summary": "Em plus one finger.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "E major (E)",
+              "chord": "E",
+              "body": "E major is E minor plus one finger. Keep the Em shape (fingers 2 and 3 on fret 2 of strings 5 and 4) and add finger 1 on string 3 at fret 1. Strum all six strings — that single note turns a sad, minor sound into a bright, major one."
+            },
+            {
+              "type": "chord",
+              "chord": "E",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["Em", "E"],
+              "cycles": 3,
+              "body": "Switch between Em and E: only finger 1 moves."
+            }
+          ]
+        },
+        {
+          "id": "L03-4",
+          "title": "A minor",
+          "summary": "The E shape, one string over.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "A minor (Am)",
+              "chord": "Am",
+              "body": "A minor uses the same shape as E major, moved over by one string. Place finger 1 on string 2 at fret 1, finger 2 on string 4 at fret 2, and finger 3 on string 3 at fret 2. Skip string 6 and start your strum on string 5 — it's a small shape that sounds rich and full once you get the hang of it."
+            },
+            {
+              "type": "chord",
+              "chord": "Am",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["E", "Am"],
+              "cycles": 3,
+              "body": "Same shape: move all three fingers across by one string together."
+            }
+          ]
+        },
+        {
+          "id": "L03-5",
+          "title": "A major",
+          "summary": "Three fingers on fret 2.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "A major (A)",
+              "chord": "A",
+              "body": "Place fingers 1, 2 and 3 on fret 2, across strings 4, 3 and 2. Angle your fingers slightly to make the squeeze easier. Skip string 6 and strum from string 5 — you've got this, one chord at a time."
+            },
+            {
+              "type": "chord",
+              "chord": "A",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["Am", "A"],
+              "cycles": 3
+            }
+          ]
+        },
+        {
+          "id": "L03-6",
+          "title": "D major",
+          "summary": "A four-string chord.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "D major (D)",
+              "chord": "D",
+              "body": "The D major chord uses the top four strings. Place finger 1 on string 3 at fret 2, finger 2 on string 1 at fret 2, and finger 3 on string 2 at fret 3. Strum from string 4, skipping strings 5 and 6. Take your time — you've got this!"
+            },
+            {
+              "type": "chord",
+              "chord": "D",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["A", "D"],
+              "cycles": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L04",
+      "title": "Changing chords",
+      "subtitle": "G, C and smooth changes",
+      "icon": "sync",
+      "lessons": [
+        {
+          "id": "L04-1",
+          "title": "Smooth changes",
+          "summary": "The secret of fast chord changes.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "The secret of fast changes",
+              "body": "Changing chords quickly is what turns chords into music. Look for an anchor finger that stays on the same string between two chords, move all your fingers together as one shape instead of one at a time, and practise slowly: speed comes from accuracy."
+            },
+            {
+              "type": "change",
+              "chords": ["Em", "Am"],
+              "cycles": 4
+            },
+            {
+              "type": "change",
+              "chords": ["A", "D"],
+              "cycles": 4
+            }
+          ]
+        },
+        {
+          "id": "L04-2",
+          "title": "G major",
+          "summary": "A big, six-string chord.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "G major (G)",
+              "chord": "G",
+              "body": "Place finger 2 on string 6 at fret 3, finger 1 on string 5 at fret 2, and finger 3 on string 1 at fret 3. Keep fingers arched so strings 4, 3 and 2 ring open. Take your time — smooth changes come with practice. You've got this!"
+            },
+            {
+              "type": "chord",
+              "chord": "G",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["G", "D"],
+              "cycles": 4
+            }
+          ]
+        },
+        {
+          "id": "L04-3",
+          "title": "C major",
+          "summary": "The classic stretch.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "C major (C)",
+              "chord": "C",
+              "body": "Place finger 3 on string 5 at fret 3, finger 2 on string 4 at fret 2, and finger 1 on string 2 at fret 1. Don't play string 6: start your strum on string 5. The stretch can feel hard at first, and that's normal. Keep your thumb low behind the neck and practise slowly."
+            },
+            {
+              "type": "chord",
+              "chord": "C",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["C", "G"],
+              "cycles": 4
+            }
+          ]
+        },
+        {
+          "id": "L04-4",
+          "title": "One-minute changes",
+          "summary": "The classic practice drill.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "One-minute changes",
+              "body": "The one-minute change is a classic drill: pick two chords and switch between them as many times as you can in one minute, aiming for a clean strum every time. Count your changes and try to beat your record each day. It's a fun way to build speed and confidence."
+            },
+            {
+              "type": "change",
+              "chords": ["G", "C", "D"],
+              "cycles": 3,
+              "body": "G, C, D: one clean strum on each chord."
+            },
+            {
+              "type": "change",
+              "chords": ["Em", "C", "G", "D"],
+              "cycles": 2,
+              "body": "Four chords that fit thousands of songs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L05",
+      "title": "Rhythm",
+      "subtitle": "Strumming in time",
+      "icon": "graphic_eq",
+      "lessons": [
+        {
+          "id": "L05-1",
+          "title": "Keeping time",
+          "summary": "Strum on the beat.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Feel the beat",
+              "body": "Rhythm matters more than fancy chords. A beat is the steady pulse you tap your foot to, and most songs count 1-2-3-4 in each bar. The metronome clicks every beat, with an accent on beat 1. Your job is to strum exactly on the click. Start slow, and let the metronome guide your strumming hand — it's your steady friend. You're doing great, one beat at a time."
+            },
+            {
+              "type": "strum",
+              "chords": ["Em"],
+              "pattern": "D-D-D-D-",
+              "bpm": 70,
+              "bars": 4,
+              "body": "Strum down on every click."
+            },
+            {
+              "type": "strum",
+              "chords": ["G", "D"],
+              "pattern": "D-D-D-D-",
+              "bpm": 75,
+              "bars": 4,
+              "body": "One bar of G, one bar of D. Change on beat 1."
+            }
+          ]
+        },
+        {
+          "id": "L05-2",
+          "title": "Down and up",
+          "summary": "Add up-strums on the 'and'.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Up-strums",
+              "body": "Up-strums fall between the beats, on the 'and': count 1-and-2-and-3-and-4-and. Down on the numbers, up on the 'and' — keep your hand swinging like a pendulum, touching the strings only when the pattern says so. Up-strums usually catch just the higher strings, so let your wrist stay loose and light."
+            },
+            {
+              "type": "strum",
+              "chords": ["Am"],
+              "pattern": "DUDUDUDU",
+              "bpm": 60,
+              "bars": 4,
+              "body": "Down-up on every beat."
+            },
+            {
+              "type": "strum",
+              "chords": ["C"],
+              "pattern": "D-DUD-DU",
+              "bpm": 70,
+              "bars": 4
+            }
+          ]
+        },
+        {
+          "id": "L05-3",
+          "title": "The folk pattern",
+          "summary": "Down, down-up, up-down-up.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Down, down-up, up-down-up",
+              "body": "Let's practice the folk pattern: Down, Down-Up, Up-Down-Up. On beat 3, your hand moves down but misses the strings, then catches the up-strum. Keep your wrist loose and let the motion flow naturally — it's all about timing and touch. You're doing great, keep going!"
+            },
+            {
+              "type": "strum",
+              "chords": ["G"],
+              "pattern": "D-DU-UDU",
+              "bpm": 60,
+              "bars": 4
+            },
+            {
+              "type": "strum",
+              "chords": ["G", "C", "D", "G"],
+              "pattern": "D-DU-UDU",
+              "bpm": 70,
+              "bars": 4
+            }
+          ]
+        },
+        {
+          "id": "L05-4",
+          "title": "Waltz time",
+          "summary": "Counting in three.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Counting in three",
+              "body": "Some songs count in three: 1-2-3, 1-2-3. This is called 3/4 or waltz time. Lean into beat 1 slightly so the listener feels where each bar starts. You'll find it feels natural once you get used to it — just let the music carry you."
+            },
+            {
+              "type": "strum",
+              "chords": ["G", "D"],
+              "pattern": "D-D-D-",
+              "beatsPerBar": 3,
+              "bpm": 80,
+              "bars": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L06",
+      "title": "First songs",
+      "subtitle": "Play real songs",
+      "icon": "mic",
+      "lessons": [
+        {
+          "id": "L06-1",
+          "title": "Skip to My Lou",
+          "summary": "Two chords: A and E.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Playing songs",
+              "body": "You're ready to play your first song! In wait mode, the song pauses until you play the right chord — take your time with every change. When you feel ready, switch to play-along mode to keep the rhythm steady with the metronome."
+            },
+            {
+              "type": "song",
+              "song": "skip_to_my_lou"
+            }
+          ]
+        },
+        {
+          "id": "L06-2",
+          "title": "Down in the Valley",
+          "summary": "D and A in waltz time.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "down_in_the_valley"
+            }
+          ]
+        },
+        {
+          "id": "L06-3",
+          "title": "Amazing Grace",
+          "summary": "G, C and D.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "amazing_grace"
+            }
+          ]
+        },
+        {
+          "id": "L06-4",
+          "title": "When the Saints",
+          "summary": "G, C and D, upbeat.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "when_the_saints"
+            }
+          ]
+        },
+        {
+          "id": "L06-5",
+          "title": "Oh! Susanna",
+          "summary": "D, G and A.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "oh_susanna"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L07",
+      "title": "More chords",
+      "subtitle": "7ths, minors and colors",
+      "icon": "palette",
+      "lessons": [
+        {
+          "id": "L07-1",
+          "title": "7th chords",
+          "summary": "E7, A7 and D7.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Dominant 7th chords",
+              "chord": "E7",
+              "body": "Dominant 7th chords add a bluesy tension to your playing. E7 is E major with finger 3 lifted, and A7 is A major without the middle note. These shapes are simple and appear in many styles — try them in your favourite songs and let the music come alive. Play with confidence, and enjoy the rich, expressive sound they bring to every riff and chord progression you know."
+            },
+            {
+              "type": "chord",
+              "chord": "E7",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "A7",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "D7",
+              "repeat": 2
+            },
+            {
+              "type": "change",
+              "chords": ["A7", "D7", "E7"],
+              "cycles": 2
+            }
+          ]
+        },
+        {
+          "id": "L07-2",
+          "title": "D minor",
+          "summary": "A sad four-string chord.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "D minor (Dm)",
+              "chord": "Dm",
+              "body": "Place finger 1 on string 1 at fret 1, finger 2 on string 3 at fret 2, and finger 3 on string 2 at fret 3. Strum from string 4 and avoid strings 5 and 6. D minor has a gentle, sad sound and often sits next to Am and E."
+            },
+            {
+              "type": "chord",
+              "chord": "Dm",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["Am", "Dm", "E"],
+              "cycles": 3
+            }
+          ]
+        },
+        {
+          "id": "L07-3",
+          "title": "B7 and G7",
+          "summary": "Two chords that pull you home.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "B7",
+              "chord": "B7",
+              "body": "Place finger 2 on string 5 at fret 2, finger 1 on string 4 at fret 1, finger 3 on string 3 at fret 2, and finger 4 on string 1 at fret 2, with string 2 open. Skip string 6. B7 is the chord that leads back home to E or Em — use it to guide your playing and explore new sounds."
+            },
+            {
+              "type": "chord",
+              "chord": "B7",
+              "repeat": 2
+            },
+            {
+              "type": "info",
+              "title": "G7",
+              "chord": "G7",
+              "body": "Place finger 3 on string 6 at fret 3, finger 2 on string 5 at fret 2, and finger 1 on string 1 at fret 1. G7 adds a bluesy tension to G major, pulling your playing toward C. Let your fingers find the shape — it's a gateway to richer, more expressive guitar sound. You're doing great, keep exploring those colors."
+            },
+            {
+              "type": "chord",
+              "chord": "G7",
+              "repeat": 2
+            },
+            {
+              "type": "change",
+              "chords": ["Em", "B7"],
+              "cycles": 3
+            },
+            {
+              "type": "change",
+              "chords": ["G7", "C"],
+              "cycles": 3
+            }
+          ]
+        },
+        {
+          "id": "L07-4",
+          "title": "Color chords",
+          "summary": "Sus and add9 chords.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Color chords",
+              "body": "Suspended chords swap the third of a chord for the second (sus2) or the fourth (sus4), giving an open, unresolved sound. Dsus2, Dsus4, Asus2 and Asus4 are small changes to shapes you know, and Cadd9 adds a ninth to C for a warm, open sound. Practise them slowly and hear how they bring new life to familiar songs."
+            },
+            {
+              "type": "chord",
+              "chord": "Dsus4",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "Dsus2",
+              "repeat": 2
+            },
+            {
+              "type": "change",
+              "chords": ["D", "Dsus4", "D", "Dsus2"],
+              "cycles": 2,
+              "body": "The classic folk move: lift and add your pinky over the D shape."
+            },
+            {
+              "type": "chord",
+              "chord": "Cadd9",
+              "repeat": 2
+            }
+          ]
+        },
+        {
+          "id": "L07-5",
+          "title": "Easy F",
+          "summary": "Fmaj7, the friendly F.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Fmaj7: the friendly F",
+              "chord": "Fmaj7",
+              "body": "The full F chord is a barre chord that most beginners find very hard. Fmaj7 is a friendly substitute: finger 3 on string 4 at fret 3, finger 2 on string 3 at fret 2, finger 1 on string 2 at fret 1, and string 1 open. Strum from string 4. Play it slowly at first, then let your fingers find the rhythm. You're doing great — every chord you learn brings you closer to playing the songs you love. Keep going, you've got this!"
+            },
+            {
+              "type": "chord",
+              "chord": "Fmaj7",
+              "repeat": 3
+            },
+            {
+              "type": "change",
+              "chords": ["C", "Fmaj7"],
+              "cycles": 3
+            }
+          ]
+        },
+        {
+          "id": "L07-6",
+          "title": "Scarborough Fair",
+          "summary": "A minor-key ballad.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "scarborough_fair"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L08",
+      "title": "Power chords",
+      "subtitle": "Rock and riffs",
+      "icon": "bolt",
+      "lessons": [
+        {
+          "id": "L08-1",
+          "title": "Power chords",
+          "summary": "E5, A5 and D5.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "What is a power chord?",
+              "chord": "E5",
+              "body": "Power chords are simple and powerful — just two notes, the root and the fifth, played on the low strings. They form the backbone of rock and punk music, driving energy and rhythm. With no third, they’re neutral, and you’ll see them written as E5 or A5. Let’s play one together — it’s easy, and you’ll feel the difference right away."
+            },
+            {
+              "type": "chord",
+              "chord": "E5",
+              "repeat": 3
+            },
+            {
+              "type": "chord",
+              "chord": "A5",
+              "repeat": 3
+            },
+            {
+              "type": "chord",
+              "chord": "D5",
+              "repeat": 2
+            }
+          ]
+        },
+        {
+          "id": "L08-2",
+          "title": "Movable shapes",
+          "summary": "One shape, every chord.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "One shape, every chord",
+              "chord": "G5",
+              "body": "Place finger 1 on string 6 at any fret, then finger 3 two frets higher on string 5, and finger 4 on string 4 at the same fret as finger 3. Slide the whole shape up or down the neck to play different chords — the note under finger 1 names the chord. The same pattern works starting on string 5, so you can play power chords anywhere on the neck with confidence."
+            },
+            {
+              "type": "chord",
+              "chord": "G5",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "C5",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "F5",
+              "repeat": 2
+            },
+            {
+              "type": "change",
+              "chords": ["G5", "C5", "F5", "C5"],
+              "cycles": 2
+            }
+          ]
+        },
+        {
+          "id": "L08-3",
+          "title": "Palm muting",
+          "summary": "Chunky rock rhythm.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Palm muting",
+              "body": "Rest the edge of your strumming hand lightly on the strings, right where they meet the bridge. This gives a chunky, percussive sound. If your hand drifts too far toward the neck the notes die completely; if it sits too far back on the bridge nothing is muted. Find the spot in between."
+            },
+            {
+              "type": "strum",
+              "chords": ["E5"],
+              "pattern": "DDDDDDDD",
+              "bpm": 80,
+              "bars": 4,
+              "body": "Eighth-note downstrokes, palm muted."
+            },
+            {
+              "type": "strum",
+              "chords": ["E5", "G5", "A5", "E5"],
+              "pattern": "DDDDDDDD",
+              "bpm": 80,
+              "bars": 4,
+              "body": "A simple rock progression: one bar per chord."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L09",
+      "title": "Barre chords",
+      "subtitle": "Unlock the whole neck",
+      "icon": "fitness_center",
+      "lessons": [
+        {
+          "id": "L09-1",
+          "title": "The barre",
+          "summary": "Your first full F.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "How to barre",
+              "chord": "F",
+              "body": "A barre is when you press several strings at once with your index finger laid flat across the fretboard, like a capo. Roll your finger slightly onto its bony side, keep it just behind the fret, and pull back gently with your arm. It takes weeks to sound clean, and that's normal — keep practicing, and you'll get there."
+            },
+            {
+              "type": "chord",
+              "chord": "F",
+              "repeat": 2
+            },
+            {
+              "type": "info",
+              "title": "Fixing buzzes",
+              "chord": "F",
+              "body": "Check your F barre one string at a time. If a string buzzes, it may sit in a crease of your index finger. Slide the finger slightly toward the headstock or body, or roll it gently until the note rings clear. Small adjustments make a big difference — you've got this!"
+            },
+            {
+              "type": "change",
+              "chords": ["C", "F"],
+              "cycles": 3
+            }
+          ]
+        },
+        {
+          "id": "L09-2",
+          "title": "The E shape",
+          "summary": "Movable barre chords on string 6.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "The E shape",
+              "chord": "A_barre",
+              "body": "The F barre chord is the E major shape moved up one fret, with finger 1 acting as the nut. Slide the whole shape up and it becomes a new chord: at fret 3 it's G, at fret 5 it's A. The note on string 6 under the barre names the chord. Lift finger 2 and you get the minor version."
+            },
+            {
+              "type": "chord",
+              "chord": "A_barre",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "Fm",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "F#m",
+              "repeat": 2
+            }
+          ]
+        },
+        {
+          "id": "L09-3",
+          "title": "The A shape",
+          "summary": "Bm, Bb and friends.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "The A shape",
+              "chord": "Bm",
+              "body": "Place finger 1 across strings 5 to 1, then form an A or Am shape two frets higher. The barre at fret 2 gives you Bm, at fret 1 gives Bb major, and at fret 3 gives C major. Skip string 6 — the note on string 5 under the barre tells you the chord's name. You've got this — one barre opens the whole neck. Play it slow, and let the sound guide you."
+            },
+            {
+              "type": "chord",
+              "chord": "Bm",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "Bb",
+              "repeat": 2
+            },
+            {
+              "type": "chord",
+              "chord": "C_barre",
+              "repeat": 2
+            },
+            {
+              "type": "change",
+              "chords": ["D", "Bm", "G", "A"],
+              "cycles": 2
+            }
+          ]
+        },
+        {
+          "id": "L09-4",
+          "title": "The Rising Sun",
+          "summary": "A classic minor progression.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "rising_sun_progression"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L10",
+      "title": "Fingerpicking",
+      "subtitle": "Thumb and fingers",
+      "icon": "gesture",
+      "lessons": [
+        {
+          "id": "L10-1",
+          "title": "p-i-m-a",
+          "summary": "Arpeggios with thumb and fingers.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Thumb and fingers",
+              "body": "Your thumb (p) plays the bass strings 6, 5 and 4, pushing down through the string. Your index (i), middle (m) and ring (a) fingers play strings 3, 2 and 1, plucking with the fingertips toward your palm. Rest your hand lightly and let each note ring."
+            },
+            {
+              "type": "notes",
+              "title": "Am arpeggio",
+              "chord": "Am",
+              "body": "Hold Am and pick p-i-m-a-m-i: string 5, 3, 2, 1, 2, 3.",
+              "notes": [[5, 0], [3, 2], [2, 1], [1, 0], [2, 1], [3, 2]]
+            },
+            {
+              "type": "notes",
+              "title": "C arpeggio",
+              "chord": "C",
+              "body": "Hold C and pick the same pattern.",
+              "notes": [[5, 3], [3, 0], [2, 1], [1, 0], [2, 1], [3, 0]]
+            }
+          ]
+        },
+        {
+          "id": "L10-2",
+          "title": "Alternating bass",
+          "summary": "The Travis-picking foundation.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Alternating bass",
+              "body": "Let's try Travis-style picking: your thumb alternates between two bass strings on every beat, while your fingers add notes in between. For a C chord, use thumb on string 5 and string 4; for G, thumb on string 6 and string 4. Keep it steady and let the rhythm flow naturally — you're doing great!"
+            },
+            {
+              "type": "notes",
+              "title": "C with alternating bass",
+              "chord": "C",
+              "body": "Thumb on string 5, index on 3, thumb on 4, middle on 2. Twice.",
+              "notes": [[5, 3], [3, 0], [4, 2], [2, 1], [5, 3], [3, 0], [4, 2], [2, 1]]
+            },
+            {
+              "type": "notes",
+              "title": "G with alternating bass",
+              "chord": "G",
+              "body": "Thumb on string 6, index on 3, thumb on 4, middle on 2. Twice.",
+              "notes": [[6, 3], [3, 0], [4, 0], [2, 0], [6, 3], [3, 0], [4, 0], [2, 0]]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L11",
+      "title": "Lead guitar",
+      "subtitle": "Scales, licks and bends",
+      "icon": "local_fire_department",
+      "lessons": [
+        {
+          "id": "L11-1",
+          "title": "Minor pentatonic",
+          "summary": "The scale behind rock and blues solos.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Box 1",
+              "body": "The A minor pentatonic scale lives at the 5th fret. Use finger 1 for every note on fret 5, finger 3 for fret 7, and finger 4 for fret 8. Play each note cleanly, one at a time — this is where great solos begin. You've got this, one fret at a time."
+            },
+            {
+              "type": "notes",
+              "title": "A minor pentatonic, up",
+              "notes": [[6, 5], [6, 8], [5, 5], [5, 7], [4, 5], [4, 7], [3, 5], [3, 7], [2, 5], [2, 8], [1, 5], [1, 8]]
+            },
+            {
+              "type": "notes",
+              "title": "A minor pentatonic, down",
+              "notes": [[1, 8], [1, 5], [2, 8], [2, 5], [3, 7], [3, 5], [4, 7], [4, 5], [5, 7], [5, 5], [6, 8], [6, 5]]
+            }
+          ]
+        },
+        {
+          "id": "L11-2",
+          "title": "First licks",
+          "summary": "Short phrases from the scale.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Licks",
+              "body": "A lick is a short musical phrase that brings your playing to life. Focus on the rhythm and repetition as you practice these simple patterns. Once the notes are clean, add expression by letting the last note ring or using gentle vibrato. You're doing great — keep it slow and steady, and let your sound shine through. Have fun exploring these licks!"
+            },
+            {
+              "type": "notes",
+              "title": "Lick 1",
+              "body": "A descending phrase across strings 2, 3 and 4.",
+              "notes": [[2, 8], [2, 5], [3, 7], [3, 5], [4, 7]]
+            },
+            {
+              "type": "notes",
+              "title": "Lick 2",
+              "body": "Around the top two strings, ending on A.",
+              "notes": [[1, 5], [1, 8], [1, 5], [2, 8], [2, 5], [1, 5]]
+            }
+          ]
+        },
+        {
+          "id": "L11-3",
+          "title": "Bends",
+          "summary": "Make notes sing.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Bending strings",
+              "body": "Bending strings is how lead guitarists shape emotion into sound. Push the string toward the ceiling with finger 3, letting fingers 1 and 2 support from behind. A whole-step bend lifts the pitch by two frets — listen carefully and bend until you match the target note. With practice, your bends will become smooth and expressive. Vibrato adds life to every note you play."
+            },
+            {
+              "type": "notes",
+              "title": "Hit the target",
+              "body": "Play string 3 at fret 9 to hear the target. Then bend string 3 at fret 7 up until it matches. The app listens for the target pitch.",
+              "notes": [[3, 9], [3, 9], [3, 9]]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L12",
+      "title": "Hero",
+      "subtitle": "Blues and beyond",
+      "icon": "emoji_events",
+      "lessons": [
+        {
+          "id": "L12-1",
+          "title": "12-bar blues",
+          "summary": "The progression behind thousands of songs.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "12 bars",
+              "body": "The 12-bar blues is the heartbeat of many great songs. In the key of A, you'll play A7 for four bars, then D7 for two, followed by two more bars of A7. Next, one bar each of E7, D7, A7 and E7. It's a simple pattern that creates powerful emotion — once you know it, you can play along with countless blues and rock tracks. Let's get started: strum each chord with a steady rhythm and let the groove take hold."
+            },
+            {
+              "type": "info",
+              "title": "The shuffle",
+              "body": "The shuffle feel is long-short, long-short — like 'HUMP-ty DUMP-ty'. Delay each up-strum slightly to create that swing. Let the rhythm relax and move with the groove, not against it. You're already playing the blues — now let it breathe. One more thing: keep your strumming hand loose, and let the music carry you forward. You've got this."
+            },
+            {
+              "type": "song",
+              "song": "blues_in_a"
+            }
+          ]
+        },
+        {
+          "id": "L12-2",
+          "title": "Red River Valley",
+          "summary": "A campfire classic.",
+          "steps": [
+            {
+              "type": "song",
+              "song": "red_river_valley"
+            }
+          ]
+        },
+        {
+          "id": "L12-3",
+          "title": "Graduation",
+          "summary": "Barre chords, rhythm and changes together.",
+          "steps": [
+            {
+              "type": "strum",
+              "chords": ["C", "G", "Am", "F"],
+              "pattern": "D-DU-UDU",
+              "bpm": 80,
+              "bars": 8,
+              "body": "The famous four-chord loop with the full F barre chord."
+            },
+            {
+              "type": "info",
+              "title": "You're a guitarist",
+              "body": "You've done it! You can now tune your guitar, play open and barre chords, strum in time, fingerpick and solo with the pentatonic scale. Keep practising a little every day, learn songs you love, and play with others — the world is your stage."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "songs": [
+    {
+      "id": "skip_to_my_lou",
+      "title": "Skip to My Lou",
+      "credit": "Traditional",
+      "bpm": 90,
+      "beatsPerBar": 4,
+      "pattern": "D-D-D-D-",
+      "lines": [
+        {
+          "lyrics": "Lou, Lou, skip to my Lou",
+          "bars": ["A", "A"]
+        },
+        {
+          "lyrics": "Lou, Lou, skip to my Lou",
+          "bars": ["E", "E"]
+        },
+        {
+          "lyrics": "Lou, Lou, skip to my Lou",
+          "bars": ["A", "A"]
+        },
+        {
+          "lyrics": "Skip to my Lou, my darling",
+          "bars": ["E", "A"]
+        }
+      ]
+    },
+    {
+      "id": "down_in_the_valley",
+      "title": "Down in the Valley",
+      "credit": "Traditional",
+      "bpm": 90,
+      "beatsPerBar": 3,
+      "pattern": "D-D-D-",
+      "lines": [
+        {
+          "lyrics": "Down in the valley, the valley so low",
+          "bars": ["D", "D", "D", "A"]
+        },
+        {
+          "lyrics": "Hang your head over, hear the wind blow",
+          "bars": ["A", "A", "A", "D"]
+        },
+        {
+          "lyrics": "Hear the wind blow, dear, hear the wind blow",
+          "bars": ["D", "D", "D", "A"]
+        },
+        {
+          "lyrics": "Hang your head over, hear the wind blow",
+          "bars": ["A", "A", "A", "D"]
+        }
+      ]
+    },
+    {
+      "id": "amazing_grace",
+      "title": "Amazing Grace",
+      "credit": "John Newton, 1779",
+      "bpm": 80,
+      "beatsPerBar": 3,
+      "pattern": "D-D-D-",
+      "lines": [
+        {
+          "lyrics": "Amazing grace, how sweet the sound",
+          "bars": ["G", "G", "C", "G"]
+        },
+        {
+          "lyrics": "That saved a wretch like me",
+          "bars": ["G", "G", "D", "D"]
+        },
+        {
+          "lyrics": "I once was lost, but now am found",
+          "bars": ["G", "G", "C", "G"]
+        },
+        {
+          "lyrics": "Was blind, but now I see",
+          "bars": ["G", "D", "G", "G"]
+        }
+      ]
+    },
+    {
+      "id": "when_the_saints",
+      "title": "When the Saints Go Marching In",
+      "credit": "Traditional",
+      "bpm": 100,
+      "beatsPerBar": 4,
+      "pattern": "D-D-D-D-",
+      "lines": [
+        {
+          "lyrics": "Oh, when the saints go marching in",
+          "bars": ["G", "G", "G", "G"]
+        },
+        {
+          "lyrics": "Oh, when the saints go marching in",
+          "bars": ["G", "G", "D", "D"]
+        },
+        {
+          "lyrics": "Oh Lord, I want to be in that number",
+          "bars": ["G", "G", "C", "C"]
+        },
+        {
+          "lyrics": "When the saints go marching in",
+          "bars": ["G", "D", "G", "G"]
+        }
+      ]
+    },
+    {
+      "id": "oh_susanna",
+      "title": "Oh! Susanna",
+      "credit": "Stephen Foster, 1848",
+      "bpm": 100,
+      "beatsPerBar": 4,
+      "pattern": "D-DUD-DU",
+      "lines": [
+        {
+          "lyrics": "I come from Alabama with a banjo on my knee",
+          "bars": ["D", "D", "D", "A"]
+        },
+        {
+          "lyrics": "I'm going to Louisiana, my true love for to see",
+          "bars": ["D", "D", "A", "D"]
+        },
+        {
+          "lyrics": "Oh, Susanna, oh don't you cry for me",
+          "bars": ["G", "G", "D", "A"]
+        },
+        {
+          "lyrics": "For I come from Alabama with a banjo on my knee",
+          "bars": ["D", "D", "A", "D"]
+        }
+      ]
+    },
+    {
+      "id": "scarborough_fair",
+      "title": "Scarborough Fair",
+      "credit": "Traditional",
+      "bpm": 90,
+      "beatsPerBar": 3,
+      "pattern": "D-DUDU",
+      "lines": [
+        {
+          "lyrics": "Are you going to Scarborough Fair?",
+          "bars": ["Am", "Am", "G", "Am"]
+        },
+        {
+          "lyrics": "Parsley, sage, rosemary and thyme",
+          "bars": ["C", "Am", "D", "Am"]
+        },
+        {
+          "lyrics": "Remember me to one who lives there",
+          "bars": ["Am", "C", "G", "G"]
+        },
+        {
+          "lyrics": "She once was a true love of mine",
+          "bars": ["Am", "G", "Em", "Am"]
+        }
+      ]
+    },
+    {
+      "id": "rising_sun_progression",
+      "title": "The Rising Sun Progression",
+      "credit": "Traditional (instrumental)",
+      "bpm": 100,
+      "beatsPerBar": 3,
+      "pattern": "D-DUDU",
+      "lines": [
+        {
+          "lyrics": "",
+          "bars": ["Am", "C", "D", "F"]
+        },
+        {
+          "lyrics": "",
+          "bars": ["Am", "C", "E", "E"]
+        },
+        {
+          "lyrics": "",
+          "bars": ["Am", "C", "D", "F"]
+        },
+        {
+          "lyrics": "",
+          "bars": ["Am", "E", "Am", "Am"]
+        }
+      ]
+    },
+    {
+      "id": "blues_in_a",
+      "title": "12-Bar Blues in A",
+      "credit": "Instrumental",
+      "bpm": 90,
+      "beatsPerBar": 4,
+      "pattern": "D-DUD-DU",
+      "lines": [
+        {
+          "lyrics": "Four bars of the I chord",
+          "bars": ["A7", "A7", "A7", "A7"]
+        },
+        {
+          "lyrics": "Two bars of IV, back to I",
+          "bars": ["D7", "D7", "A7", "A7"]
+        },
+        {
+          "lyrics": "V, IV, I, and the turnaround",
+          "bars": ["E7", "D7", "A7", "E7"]
+        }
+      ]
+    },
+    {
+      "id": "red_river_valley",
+      "title": "Red River Valley",
+      "credit": "Traditional",
+      "bpm": 90,
+      "beatsPerBar": 4,
+      "pattern": "D-DUD-DU",
+      "lines": [
+        {
+          "lyrics": "From this valley they say you are going",
+          "bars": ["G", "G", "G", "D"]
+        },
+        {
+          "lyrics": "We will miss your bright eyes and sweet smile",
+          "bars": ["D", "D", "D", "G"]
+        },
+        {
+          "lyrics": "For they say you are taking the sunshine",
+          "bars": ["G", "G", "C", "C"]
+        },
+        {
+          "lyrics": "That has brightened our pathway a while",
+          "bars": ["G", "D", "G", "G"]
+        }
+      ]
+    }
+  ]
+}
