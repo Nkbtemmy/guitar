@@ -81,3 +81,4 @@ if detection feels strict or loose, these are the knobs:
 - `NoteMatcher.matches(centsTolerance)`: how in tune a note must be.
 - The in-app *Microphone sensitivity* setting scales the loudness gate.
 # guitar
+# guitar
