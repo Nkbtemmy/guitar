@@ -163,7 +163,7 @@ void main() {
       // which Flutter web announces as a checkbox.
       final semantics = tester.ensureSemantics();
       expect(tester.getSemantics(find.widgetWithText(OutlinedButton, 'Intro')),
-          containsSemantics(isButton: true, hasSelectedState: false, hasCheckedState: false));
+          isSemantics(isButton: true, hasSelectedState: false, hasCheckedState: false));
       semantics.dispose();
 
       await tester.tap(find.text('Your guitar, up close').first);
