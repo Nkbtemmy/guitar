@@ -6,6 +6,7 @@ import '../../curriculum/models.dart';
 import '../../progress/progress_store.dart';
 import '../lesson/lesson_screen.dart';
 import '../theme.dart';
+import '../widgets/brand_mark.dart';
 
 class LearnScreen extends StatelessWidget {
   const LearnScreen({super.key});
@@ -23,6 +24,8 @@ class LearnScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
           child: Row(children: [
+            const BrandMark(size: 34),
+            const SizedBox(width: 10),
             const Expanded(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -103,23 +106,23 @@ class _ContinueCard extends StatelessWidget {
           child: Ink(
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [Color(0xFFFF9F43), Color(0xFFE8642C)]),
+              gradient: LinearGradient(colors: [kAccent, kAccentSoft]),
             ),
             child: Row(children: [
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text('UP NEXT · ${level.title.toUpperCase()}',
-                      style: const TextStyle(color: Color(0xCC231300), fontWeight: FontWeight.w800, fontSize: 12, letterSpacing: 1)),
+                      style: const TextStyle(color: Color(0xCCFFFFFF), fontWeight: FontWeight.w800, fontSize: 12, letterSpacing: 1)),
                   const SizedBox(height: 6),
                   Text(lesson.title,
-                      style: const TextStyle(color: Color(0xFF231300), fontSize: 24, fontWeight: FontWeight.w900)),
+                      style: const TextStyle(color: kOnAccent, fontSize: 24, fontWeight: FontWeight.w900)),
                   const SizedBox(height: 2),
-                  Text(lesson.summary, style: const TextStyle(color: Color(0xDD231300))),
+                  Text(lesson.summary, style: const TextStyle(color: Color(0xDDFFFFFF))),
                 ]),
               ),
               const CircleAvatar(
                 radius: 28,
-                backgroundColor: Color(0xFF231300),
+                backgroundColor: kOnAccent,
                 child: Icon(Icons.play_arrow_rounded, color: kAccent, size: 34),
               ),
             ]),

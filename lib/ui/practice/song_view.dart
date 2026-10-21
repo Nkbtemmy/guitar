@@ -164,7 +164,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
         ]),
         Padding(
           padding: const EdgeInsets.only(top: 4, bottom: 12, left: 4),
-          child: Text(line.lyrics.isEmpty ? '♪' : line.lyrics, style: const TextStyle(fontSize: 16, color: Color(0xFFDCD3CB))),
+          child: Text(line.lyrics.isEmpty ? '♪' : line.lyrics, style: const TextStyle(fontSize: 16, color: kTextSoft)),
         ),
       ],
       if (_mode == SongMode.playAlong && s == null) ...[
@@ -227,7 +227,7 @@ class _BarCell extends StatelessWidget {
         ),
         child: Text(symbol,
             style: TextStyle(
-                fontWeight: FontWeight.w800, fontSize: 17, color: isCurrent ? const Color(0xFF231300) : (done ? kSuccess : null))),
+                fontWeight: FontWeight.w800, fontSize: 17, color: isCurrent ? kOnAccent : (done ? kSuccess : null))),
       ),
     );
   }

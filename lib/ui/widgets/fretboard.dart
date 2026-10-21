@@ -53,7 +53,7 @@ class _FretboardPainter extends CustomPainter {
     final board = Rect.fromLTWH(boardL, top - 8, boardW, h + 16);
     canvas.drawRRect(
       RRect.fromRectAndRadius(leftHanded ? board.translate(size.width - 2 * boardL - boardW, 0) : board, const Radius.circular(6)),
-      Paint()..color = const Color(0xFF3A2B20),
+      Paint()..color = const Color(0xFFEBDCC9),
     );
     for (var k = 0; k <= last - first + 1; k++) {
       final fx = mirror(boardL + k * fretW);
@@ -62,7 +62,7 @@ class _FretboardPainter extends CustomPainter {
         Offset(fx, top - 8),
         Offset(fx, top + h + 8),
         Paint()
-          ..color = nut ? const Color(0xFFEDE4DA) : const Color(0xFFB9AFA6)
+          ..color = nut ? kText : const Color(0xFFB4A08C)
           ..strokeWidth = nut ? 6 : 2,
       );
     }
@@ -77,7 +77,7 @@ class _FretboardPainter extends CustomPainter {
         Offset(x0, y(s)),
         Offset(x0 + boardW, y(s)),
         Paint()
-          ..color = const Color(0xFFD9CFC5)
+          ..color = const Color(0xFF8C7868)
           ..strokeWidth = 0.8 + (s - 1) * 0.35,
       );
       _label(canvas, stringLetters[s]!, Offset(mirror(openW * 0.16), y(s)), size.height * 0.065, kMuted.withValues(alpha: 0.7));
@@ -90,7 +90,7 @@ class _FretboardPainter extends CustomPainter {
     final c = Offset(x(target.fret), y(target.string));
     canvas.drawCircle(c, r * 1.45, Paint()..color = kAccent.withValues(alpha: 0.22));
     canvas.drawCircle(c, r, Paint()..color = kAccent);
-    _label(canvas, noteName(target.midi), c, r * 1.0, const Color(0xFF231300));
+    _label(canvas, noteName(target.midi), c, r * 1.0, kOnAccent);
   }
 
   void _label(Canvas canvas, String s, Offset center, double fontSize, Color color) {

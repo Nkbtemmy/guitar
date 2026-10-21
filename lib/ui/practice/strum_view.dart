@@ -167,12 +167,12 @@ class _PatternRow extends StatelessWidget {
               Icon(
                 switch (slots[i]) { 'D' => Icons.arrow_downward_rounded, 'U' => Icons.arrow_upward_rounded, _ => Icons.circle },
                 size: slots[i] == '-' ? 6 : 26,
-                color: i == active ? const Color(0xFF231300) : (slots[i] == '-' ? kMuted : null),
+                color: i == active ? kOnAccent : (slots[i] == '-' ? kMuted : null),
               ),
               const SizedBox(height: 4),
               Text(i.isEven ? '${i ~/ 2 + 1}' : '&',
                   style: TextStyle(
-                      fontSize: 12, color: i == active ? const Color(0xFF231300) : kMuted, fontWeight: FontWeight.w700)),
+                      fontSize: 12, color: i == active ? kOnAccent : kMuted, fontWeight: FontWeight.w700)),
             ]),
           ),
         ),
