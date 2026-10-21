@@ -16,6 +16,8 @@ import 'ui/tuner/tuner_panel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Dark status-bar icons over the white UI.
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
   final progress = ProgressStore(await SharedPreferences.getInstance());
   final mic = MicListener(sensitivity: progress.sensitivity);
   progress.addListener(() => mic.sensitivity = progress.sensitivity);

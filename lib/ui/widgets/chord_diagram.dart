@@ -63,7 +63,7 @@ class _ChordPainter extends CustomPainter {
     if (base == 1) {
       canvas.drawRect(
           Rect.fromLTWH(left - line.strokeWidth / 2, top - size.height * 0.03, gridW + line.strokeWidth, size.height * 0.03),
-          Paint()..color = const Color(0xFFE8E0D8));
+          Paint()..color = kText);
     } else {
       _text(canvas, '${base}fr', Offset(left * 0.45, top + dy / 2), size.width * 0.1, kMuted);
     }
@@ -78,7 +78,7 @@ class _ChordPainter extends CustomPainter {
             Rect.fromLTRB((a < b ? a : b) - dotR, y - dotR, (a < b ? b : a) + dotR, y + dotR), Radius.circular(dotR)),
         Paint()..color = kAccent,
       );
-      _text(canvas, '1', Offset((a + b) / 2, y), dotR * 1.2, const Color(0xFF231300));
+      _text(canvas, '1', Offset((a + b) / 2, y), dotR * 1.2, kOnAccent);
     }
 
     for (var i = 0; i < 6; i++) {
@@ -99,7 +99,7 @@ class _ChordPainter extends CustomPainter {
         if (barre != null && finger == 1 && fret == barre.fret) continue;
         final c = Offset(x, top + (fret - base + 0.5) * dy);
         canvas.drawCircle(c, dotR, Paint()..color = kAccent);
-        if (finger > 0) _text(canvas, '$finger', c, dotR * 1.2, const Color(0xFF231300));
+        if (finger > 0) _text(canvas, '$finger', c, dotR * 1.2, kOnAccent);
       }
     }
   }

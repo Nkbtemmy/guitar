@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app_services.dart';
 import '../../progress/progress_store.dart';
 import '../theme.dart';
+import '../widgets/brand_mark.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -89,6 +90,13 @@ class ProfileScreen extends StatelessWidget {
         'Tip: practise in a quiet room with the phone about half a metre from the guitar. '
         'If the app misses soft playing, raise the sensitivity; if it reacts to background noise, lower it.',
         style: TextStyle(color: kMuted, height: 1.4),
+      ),
+      const SizedBox(height: 32),
+      const Center(child: BrandMark(size: 44)),
+      const SizedBox(height: 8),
+      const Center(
+        child: Text('PLAY · LEARN · GROW',
+            style: TextStyle(color: kAccent, fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 3)),
       ),
     ]);
   }

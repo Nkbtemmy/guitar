@@ -29,7 +29,7 @@ class StepTitle extends StatelessWidget {
         Text(title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, height: 1.15)),
         if (body != null) ...[
           const SizedBox(height: 10),
-          Text(body!, style: const TextStyle(fontSize: 16.5, height: 1.45, color: Color(0xFFDCD3CB))),
+          Text(body!, style: const TextStyle(fontSize: 16.5, height: 1.45, color: kTextSoft)),
         ],
       ]);
 }
