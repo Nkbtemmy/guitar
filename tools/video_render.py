@@ -32,11 +32,15 @@ SCRIPTS = os.path.join(ROOT, "content", "videos")
 OUT = os.path.join(ROOT, "assets", "videos")
 WORK = os.path.join(ROOT, "tools", ".video_cache")
 DATA = os.path.join(ROOT, "assets", "data")
-RENDERER_VERSION = "1"
+RENDERER_VERSION = "2"
 
 W, H, S, FPS, SR = 1280, 720, 2, 24, 44100
-BG, SURFACE, SURFACE_HIGH = (20, 17, 15), (31, 26, 23), (42, 36, 32)
-ACCENT, SUCCESS, MISS, MUTED, TEXT, DARK = (255, 159, 67), (91, 214, 138), (242, 114, 111), (168, 159, 151), (243, 236, 230), (35, 19, 0)
+# Brand palette, kept in step with lib/ui/theme.dart: chocolate on white.
+BG, SURFACE, SURFACE_HIGH = (255, 255, 255), (245, 239, 232), (234, 223, 211)
+ACCENT, SUCCESS, MISS, MUTED = (74, 37, 17), (46, 158, 91), (200, 67, 63), (124, 107, 95)
+TEXT, TEXT_SOFT, ON_ACCENT = (31, 27, 24), (61, 51, 44), (255, 255, 255)
+LINE, BOARD, FRET, STRING = (150, 136, 124), (235, 220, 201), (180, 160, 140), (140, 120, 104)
+LOGO = os.path.join(ROOT, "assets", "brand", "3.0x", "logo_mark.png")
 FONT = "/System/Library/Fonts/Avenir Next.ttc"
 WEIGHTS = {"bold": 0, "demi": 2, "medium": 5, "regular": 7, "heavy": 8}
 TUNING = {6: 40, 5: 45, 4: 50, 3: 55, 2: 59, 1: 64}
@@ -148,7 +152,7 @@ def background():
     glow = np.exp(-(((xx - W * S * 0.85) / (W * S * 0.55)) ** 2 + ((yy + H * S * 0.1) / (H * S * 0.7)) ** 2))
     img = np.empty((H * S, W * S, 3), np.float32)
     for c in range(3):
-        img[..., c] = BG[c] + (ACCENT[c] - BG[c]) * 0.09 * glow
+        img[..., c] = BG[c] + (ACCENT[c] - BG[c]) * 0.035 * glow
     return Image.fromarray(img.clip(0, 255).astype(np.uint8))
 
 
@@ -205,11 +209,11 @@ def draw_chord(cv, cid, x, y, w, shown=None, glow=None, name=True):
     for i in range(6):
         string = 6 - i
         lit = glow == "all" or glow == string
-        cv.line(sx(i), top, sx(i), top + grid_h, ACCENT if lit and frets[i] >= 0 else (140, 131, 123), w * (0.022 if lit else 0.012))
+        cv.line(sx(i), top, sx(i), top + grid_h, ACCENT if lit and frets[i] >= 0 else LINE, w * (0.022 if lit else 0.012))
     for f in range(5):
-        cv.line(left, top + f * dy, right, top + f * dy, (140, 131, 123), w * 0.012)
+        cv.line(left, top + f * dy, right, top + f * dy, LINE, w * 0.012)
     if base == 1:
-        cv.rect(left - 1, top - h * 0.03, grid_w + 2, h * 0.03, fill=(232, 224, 216))
+        cv.rect(left - 1, top - h * 0.03, grid_w + 2, h * 0.03, fill=TEXT)
     else:
         cv.text(left - w * 0.1, top + dy / 2, "%dfr" % base, font("demi", w * 0.09), MUTED, "mm")
     elements = placement_elements(cid)
@@ -220,12 +224,12 @@ def draw_chord(cv, cid, x, y, w, shown=None, glow=None, name=True):
             a, b = sx(6 - data["from"]), sx(6 - data["to"])
             cy = top + (data["fret"] - base + 0.5) * dy
             cv.rect(min(a, b) - r, cy - r, abs(b - a) + 2 * r, 2 * r, fill=ACCENT, r=r)
-            cv.text((a + b) / 2, cy, "1", font("heavy", r * 1.2), DARK, "mm")
+            cv.text((a + b) / 2, cy, "1", font("heavy", r * 1.2), ON_ACCENT, "mm")
         elif kind == "finger":
             finger, string, fret = data
             cx, cy = sx(6 - string), top + (fret - base + 0.5) * dy
             cv.circle(cx, cy, r, fill=ACCENT)
-            cv.text(cx, cy, str(finger), font("heavy", r * 1.2), DARK, "mm")
+            cv.text(cx, cy, str(finger), font("heavy", r * 1.2), ON_ACCENT, "mm")
     show_muted = shown is None or any(k == "muted" for k, _ in visible)
     for i, f in enumerate(frets):
         if f == 0:
@@ -246,10 +250,10 @@ def draw_tab(cv, columns, x, y, col_w, gap, size, current=-1, done=False):
         cx = x + gutter + (current + 0.5) * col_w
         cv.rect(cx - col_w * 0.43, top - gap * 0.6, col_w * 0.86, gap * 6.2, fill=ACCENT + (46,), r=10)
     for s in range(1, 7):
-        cv.line(x + gutter - 4, yy(s), right, yy(s), (110, 101, 94), 1.4)
+        cv.line(x + gutter - 4, yy(s), right, yy(s), LINE, 1.4)
         cv.text(x + gutter / 2 - 2, yy(s), LETTERS[s], font("bold", size * 0.75), MUTED, "mm")
-    cv.line(x + gutter - 4, yy(1), x + gutter - 4, yy(6), (110, 101, 94), 3)
-    cv.line(right, yy(1), right, yy(6), (110, 101, 94), 3)
+    cv.line(x + gutter - 4, yy(1), x + gutter - 4, yy(6), LINE, 3)
+    cv.line(right, yy(1), right, yy(6), LINE, 3)
     for ci, (frets, muted, label) in enumerate(columns):
         cx = x + gutter + (ci + 0.5) * col_w
         color = ACCENT if ci == current else (SUCCESS if done and 0 <= current and ci < current else TEXT)
@@ -281,15 +285,15 @@ def draw_fretboard(cv, notes, current, x, y, w, h):
     top, gap = y + h * 0.08, h * 0.76 / 5
     sy = lambda s: top + (s - 1) * gap
     fx = lambda f: x + open_w * 0.62 if f == 0 else board_l + (f - first + 0.5) * fret_w
-    cv.rect(board_l, top - 10, board_w, gap * 5 + 20, fill=(58, 43, 32), r=8)
+    cv.rect(board_l, top - 10, board_w, gap * 5 + 20, fill=BOARD, r=8)
     for k in range(last - first + 2):
         nut = k == 0 and first == 1
-        cv.line(board_l + k * fret_w, top - 10, board_l + k * fret_w, top + gap * 5 + 10, (237, 228, 218) if nut else (185, 175, 166), 7 if nut else 2.5)
+        cv.line(board_l + k * fret_w, top - 10, board_l + k * fret_w, top + gap * 5 + 10, TEXT if nut else FRET, 7 if nut else 2.5)
     for f in range(first, last + 1):
         if f in (3, 5, 7, 9, 12, 15):
             cv.text(fx(f), top + gap * 5 + 30, str(f), font("demi", 20), MUTED, "mm")
     for s in range(1, 7):
-        cv.line(board_l, sy(s), board_l + board_w, sy(s), (217, 207, 197), 1 + (s - 1) * 0.45)
+        cv.line(board_l, sy(s), board_l + board_w, sy(s), STRING, 1 + (s - 1) * 0.45)
         cv.text(x + open_w * 0.18, sy(s), LETTERS[s], font("bold", 18), MUTED, "mm")
     r = min(gap * 0.42, fret_w * 0.3)
     for i, (s, f) in enumerate(notes):
@@ -301,7 +305,7 @@ def draw_fretboard(cv, notes, current, x, y, w, h):
         s, f = notes[current]
         cv.circle(fx(f), sy(s), r * 1.45, fill=ACCENT + (60,))
         cv.circle(fx(f), sy(s), r, fill=ACCENT)
-        cv.text(fx(f), sy(s), NOTE_NAMES[(TUNING[s] + f) % 12], font("heavy", r), DARK, "mm")
+        cv.text(fx(f), sy(s), NOTE_NAMES[(TUNING[s] + f) % 12], font("heavy", r), ON_ACCENT, "mm")
 
 
 def draw_pattern(cv, pattern, active, x, y, w):
@@ -310,7 +314,7 @@ def draw_pattern(cv, pattern, active, x, y, w):
     for i, ch in enumerate(pattern):
         on = i == active
         cv.rect(x + i * slot + 4, y, slot - 8, 120, fill=ACCENT if on else SURFACE_HIGH, r=14)
-        col = DARK if on else (TEXT if ch != "-" else MUTED)
+        col = ON_ACCENT if on else (TEXT if ch != "-" else MUTED)
         cx = x + i * slot + slot / 2
         if ch == "D":
             _arrow(cv, cx, y + 50, 1, col)
@@ -318,7 +322,7 @@ def draw_pattern(cv, pattern, active, x, y, w):
             _arrow(cv, cx, y + 50, -1, col)
         else:
             cv.circle(cx, y + 50, 5, fill=col)
-        cv.text(cx, y + 100, str(i // 2 + 1) if i % 2 == 0 else "&", font("bold", 22), DARK if on else MUTED, "mm")
+        cv.text(cx, y + 100, str(i // 2 + 1) if i % 2 == 0 else "&", font("bold", 22), ON_ACCENT if on else MUTED, "mm")
 
 
 def _arrow(cv, cx, cy, direction, color):
@@ -327,26 +331,16 @@ def _arrow(cv, cx, cy, direction, color):
     cv.d.polygon([(cx * S, tip * S), ((cx - 14) * S, (tip - 16 * direction) * S), ((cx + 14) * S, (tip - 16 * direction) * S)], fill=color)
 
 
-def draw_guitar(cv, x, y, scale, alpha=255):
-    """A simple acoustic guitar, tilted by drawing the neck diagonally from the body."""
-    body, edge, wood = SURFACE_HIGH + (alpha,), ACCENT + (alpha,), (58, 43, 32, alpha)
-    cx, cy = x, y
-    cv.circle(cx - 20 * scale, cy + 70 * scale, 105 * scale, fill=body, outline=edge, width=4 * scale)
-    cv.circle(cx + 40 * scale, cy - 20 * scale, 80 * scale, fill=body, outline=edge, width=4 * scale)
-    cv.circle(cx - 20 * scale, cy + 70 * scale, 101 * scale, fill=body)
-    cv.circle(cx + 40 * scale, cy - 20 * scale, 76 * scale, fill=body)
-    cv.circle(cx + 15 * scale, cy + 15 * scale, 30 * scale, fill=BG + (alpha,), outline=edge, width=3 * scale)
-    nx, ny = cx + 70 * scale, cy - 60 * scale
-    ex, ey = nx + 170 * scale, ny - 170 * scale
-    cv.line(nx, ny, ex, ey, wood, 34 * scale)
-    for k in range(1, 8):
-        fx, fy = nx + (ex - nx) * k / 8, ny + (ey - ny) * k / 8
-        cv.line(fx - 12 * scale, fy - 12 * scale, fx + 12 * scale, fy + 12 * scale, (185, 175, 166, alpha), 2 * scale)
-    cv.line(ex - 6 * scale, ey + 6 * scale, ex + 50 * scale, ey - 50 * scale, edge, 44 * scale)
-    for k in range(-2, 3):
-        o = k * 4 * scale
-        cv.line(cx - 40 * scale + o, cy + 120 * scale - o, ex + o, ey - o, (217, 207, 197, alpha), 1.2 * scale)
-    cv.rect(cx - 70 * scale, cy + 105 * scale, 50 * scale, 16 * scale, fill=wood, r=4 * scale)
+@lru_cache(maxsize=8)
+def logo(height):
+    """The brand logo mark at [height] px (on the 2x canvas)."""
+    img = Image.open(LOGO).convert("RGBA")
+    return img.resize((round(img.width * height / img.height), height), Image.LANCZOS)
+
+
+def draw_logo(cv, cx, cy, height):
+    mark = logo(int(height * S))
+    cv.img.paste(mark, (int(cx * S - mark.width / 2), int(cy * S - mark.height / 2)), mark)
 
 
 def _right_arrow(cv, cx, cy, color):
@@ -423,12 +417,11 @@ class TitleScene(Scene):
     def draw(self, cv, state):
         v = self.video
         label = ("LEVEL %d · %s" % (v["levelIndex"], v["levelTitle"].upper())) if v["kind"] == "lesson" else "LEVEL INTRO"
-        cv.text(W / 2, 205, label, font("bold", 24), ACCENT, "mm")
+        cv.text(W / 2, 215, label, font("bold", 24), ACCENT, "mm")
         cv.paragraph(W / 2, 250, self.data["title"], font("heavy", 78), TEXT, 1050, 1.1, "ma", 2)
         cv.rect(W / 2 - 60, 420, 120, 8, fill=ACCENT, r=4)
         cv.paragraph(W / 2, 455, self.data["subtitle"], font("medium", 32), MUTED, 950, 1.3, "ma", 2)
-        draw_guitar(cv, 1130, 560, 0.55, alpha=70)
-        draw_guitar(cv, 150, 150, 0.35, alpha=40)
+        draw_logo(cv, W / 2, 120, 96)
 
 
 class PointsScene(Scene):
@@ -449,7 +442,7 @@ class PointsScene(Scene):
         if self.data.get("chord"):
             draw_chord(cv, self.data["chord"], 900, 150, 230)
         else:
-            draw_guitar(cv, 960, 360, 0.95, alpha=255)
+            draw_logo(cv, 1010, 350, 260)
 
 
 class RecapScene(PointsScene):
@@ -663,9 +656,9 @@ class SongScene(Scene):
             for k, cid in enumerate(line["bars"]):
                 on, done = idx == cur, 0 <= cur and idx < cur
                 cv.rect(110 + k * bw, y, bw - 10, box, fill=ACCENT if on else (SUCCESS + (40,) if done else SURFACE_HIGH), r=12)
-                cv.text(110 + k * bw + (bw - 10) / 2, y + box / 2, symbol(cid), font("heavy", 30), DARK if on else (SUCCESS if done else TEXT), "mm")
+                cv.text(110 + k * bw + (bw - 10) / 2, y + box / 2, symbol(cid), font("heavy", 30), ON_ACCENT if on else (SUCCESS if done else TEXT), "mm")
                 idx += 1
-            cv.text(114, y + box + 6, line["lyrics"] or "(instrumental)", font("medium", 24), (220, 211, 203))
+            cv.text(114, y + box + 6, line["lyrics"] or "(instrumental)", font("medium", 24), TEXT_SOFT)
             y += step
 
 
@@ -737,7 +730,8 @@ SCENES = {"title": TitleScene, "points": PointsScene, "recap": RecapScene, "chor
 
 def chrome(cv, video, title_scene):
     if not title_scene:
-        cv.text(40, 34, "Fretwise", font("heavy", 24), ACCENT)
+        draw_logo(cv, 52, 36, 34)
+        cv.text(76, 34, "Fretwise", font("heavy", 24), ACCENT, "lm")
         label = "LEVEL %d · %s" % (video["levelIndex"], video["levelTitle"].upper())
         cv.text(W - 40, 36, label if video["kind"] == "intro" else "%s  ·  %s" % (label, video["title"]), font("demi", 18), MUTED, "ra")
 
@@ -755,9 +749,9 @@ def draw_subtitle(cv, text):
     lines = cv.wrap(text, f, 1040)[:2]
     h = len(lines) * 40 + 28
     y = 690 - h
-    cv.rect(W / 2 - 560, y, 1120, h, fill=(10, 8, 7, 200), r=16)
+    cv.rect(W / 2 - 560, y, 1120, h, fill=ACCENT + (240,), r=16)
     for i, ln in enumerate(lines):
-        cv.text(W / 2, y + 14 + i * 40, ln, f, TEXT, "ma")
+        cv.text(W / 2, y + 14 + i * 40, ln, f, ON_ACCENT, "ma")
 
 
 # ------------------------------------------------------------------------------------ render
