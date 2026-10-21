@@ -147,8 +147,19 @@ class _TabPainter extends CustomPainter {
     final line = Paint()
       ..color = const Color(0xFF6E655E)
       ..strokeWidth = 1.2;
+    double numberWidth(String t) => fontSize * (t.length > 1 ? 1.3 : 0.9);
     for (var s = 1; s <= 6; s++) {
-      canvas.drawLine(Offset(TabStaff.gutter - 4, y(s)), Offset(right, y(s)), line);
+      // Leave a gap in the line around each number, the way printed tab does, so the staff
+      // reads on any background (cards, the highlighted column).
+      var from = TabStaff.gutter - 4;
+      for (var c = 0; c < columns.length; c++) {
+        final t = columns[c].textFor(s);
+        if (t == null) continue;
+        final half = numberWidth(t) / 2;
+        if (x(c) - half > from) canvas.drawLine(Offset(from, y(s)), Offset(x(c) - half, y(s)), line);
+        from = x(c) + half;
+      }
+      if (from < right) canvas.drawLine(Offset(from, y(s)), Offset(right, y(s)), line);
       _text(canvas, stringLetters[s]!, Offset(TabStaff.gutter / 2 - 2, y(s)), fontSize * 0.75, kMuted, FontWeight.w700);
     }
     canvas.drawLine(Offset(TabStaff.gutter - 4, y(1)), Offset(TabStaff.gutter - 4, y(6)), line..strokeWidth = 2.5);
@@ -166,9 +177,6 @@ class _TabPainter extends CustomPainter {
         final t = col.textFor(s);
         if (t == null) continue;
         final muted = t == 'x';
-        final w = fontSize * (t.length > 1 ? 1.3 : 0.9);
-        // Cut the line behind the number, the way printed tab does.
-        canvas.drawRect(Rect.fromCenter(center: Offset(x(c), y(s)), width: w, height: lineGap * 0.8), Paint()..color = kBackground);
         _text(canvas, t, Offset(x(c), y(s)), muted ? fontSize * 0.85 : fontSize, muted ? kMiss : color, FontWeight.w800);
       }
     }

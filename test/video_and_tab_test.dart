@@ -159,6 +159,12 @@ void main() {
       await tester.pumpWidget(FretwiseApp(services: services, progress: progress, mic: SilentMic()));
       await tester.pumpAndSettle();
       expect(find.text('Intro'), findsOneWidget, reason: 'level 1 has an intro video');
+      // Screen readers must hear a plain button: an ActionChip here carried a "selected" state,
+      // which Flutter web announces as a checkbox.
+      final semantics = tester.ensureSemantics();
+      expect(tester.getSemantics(find.widgetWithText(OutlinedButton, 'Intro')),
+          containsSemantics(isButton: true, hasSelectedState: false, hasCheckedState: false));
+      semantics.dispose();
 
       await tester.tap(find.text('Your guitar, up close').first);
       await tester.pumpAndSettle();

@@ -164,10 +164,15 @@ class _PatternRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(children: [
-              Icon(
-                switch (slots[i]) { 'D' => Icons.arrow_downward_rounded, 'U' => Icons.arrow_upward_rounded, _ => Icons.circle },
-                size: slots[i] == '-' ? 6 : 26,
-                color: i == active ? kOnAccent : (slots[i] == '-' ? kMuted : null),
+              SizedBox(
+                height: 26,
+                child: Center(
+                  child: Icon(
+                    switch (slots[i]) { 'D' => Icons.arrow_downward_rounded, 'U' => Icons.arrow_upward_rounded, _ => Icons.circle },
+                    size: slots[i] == '-' ? 6 : 26,
+                    color: i == active ? kOnAccent : (slots[i] == '-' ? kMuted : null),
+                  ),
+                ),
               ),
               const SizedBox(height: 4),
               Text(i.isEven ? '${i ~/ 2 + 1}' : '&',

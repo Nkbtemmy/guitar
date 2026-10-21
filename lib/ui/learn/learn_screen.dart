@@ -160,10 +160,19 @@ class _LevelHeader extends StatelessWidget {
         if (context.read<AppServices>().videos.introFor(level.id) case final intro?)
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: ActionChip(
-              avatar: const Icon(Icons.play_circle_fill_rounded, color: kAccent, size: 20),
-              label: const Text('Intro'),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => VideoScreen(video: intro))),
+            child: Tooltip(
+              message: 'Watch the ${level.title} intro',
+              child: OutlinedButton.icon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => VideoScreen(video: intro))),
+                icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+                label: const Text('Intro'),
+                style: OutlinedButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  minimumSize: const Size(0, 34),
+                  shape: const StadiumBorder(),
+                ),
+              ),
             ),
           ),
         Text('$done/${level.lessons.length}', style: const TextStyle(color: kMuted, fontWeight: FontWeight.w700)),
