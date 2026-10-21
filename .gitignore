@@ -55,5 +55,6 @@ app.*.map.json
 # Content pipeline caches (regenerable)
 /tools/.venv/
 /tools/.video_cache/
+/tools/.kokoro/
 *.tmp
 .playwright-mcp/

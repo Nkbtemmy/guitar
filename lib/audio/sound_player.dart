@@ -117,7 +117,7 @@ class SoundPlayer {
       source = UrlSource('data:audio/wav;base64,${base64Encode(wav)}');
     } else {
       _dir ??= await getTemporaryDirectory();
-      final file = File('${_dir!.path}/fretwise_${key.replaceAll(RegExp(r'[^A-Za-z0-9_]'), '_')}.wav');
+      final file = File('${_dir!.path}/guitaro_${key.replaceAll(RegExp(r'[^A-Za-z0-9_]'), '_')}.wav');
       await file.writeAsBytes(wav, flush: true);
       source = DeviceFileSource(file.path, mimeType: 'audio/wav');
     }

@@ -31,7 +31,7 @@ class LearnScreen extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
-                child: Text('Fretwise', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
+                child: Text('Guitaro', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
               ),
             ),
             _Pill(icon: Icons.local_fire_department_rounded, text: '${progress.streak()}'),

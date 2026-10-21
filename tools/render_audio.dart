@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:fretwise/audio/synth.dart';
+import 'package:guitaro/audio/synth.dart';
 
 void main(List<String> args) {
   if (args.length != 2) {

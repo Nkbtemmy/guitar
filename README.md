@@ -1,8 +1,8 @@
-# Fretwise
+# Guitaro
 
 Learn guitar from zero to hero with an app that listens to you play. Flutter, Android + iOS.
 
-Fretwise follows the same idea as SimplyGuitar (guided lessons with video, real-time listening),
+Guitaro follows the same idea as SimplyGuitar (guided lessons with video, real-time listening),
 built from scratch: none of its code, lessons, videos or licensed songs are used. Songs are
 public domain.
 
@@ -78,13 +78,13 @@ before building, and keep `index.json` and the `.jpg` posters.
 
 - **Android:** create an upload key, then `android/key.properties` (it's gitignored):
   ```sh
-  keytool -genkey -v -keystore ~/fretwise-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+  keytool -genkey -v -keystore ~/guitaro-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
   ```
   ```properties
   storePassword=…
   keyPassword=…
   keyAlias=upload
-  storeFile=/Users/you/fretwise-upload.jks
+  storeFile=/Users/you/guitaro-upload.jks
   ```
   Then run `flutter build appbundle` and upload `build/app/outputs/bundle/release/app-release.aab`
   to Play Console.

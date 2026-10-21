@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fretwise/audio/analysis.dart';
-import 'package:fretwise/practice/trackers.dart';
-import 'package:fretwise/progress/progress_store.dart';
+import 'package:guitaro/audio/analysis.dart';
+import 'package:guitaro/practice/trackers.dart';
+import 'package:guitaro/progress/progress_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Frames carrying a fake "note" in pitch.frequency so the matcher is trivial.

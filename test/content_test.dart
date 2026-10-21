@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fretwise/curriculum/models.dart';
-import 'package:fretwise/music/chord_library.dart';
-import 'package:fretwise/music/notes.dart';
+import 'package:guitaro/curriculum/models.dart';
+import 'package:guitaro/music/chord_library.dart';
+import 'package:guitaro/music/notes.dart';
 
 void main() {
   final library = ChordLibrary.fromJson(File('assets/data/chords.json').readAsStringSync(),

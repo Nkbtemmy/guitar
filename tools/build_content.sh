@@ -9,8 +9,14 @@ cd "$(dirname "$0")/.."
 
 if [ ! -x tools/.venv/bin/python ]; then
   python3 -m venv tools/.venv
-  tools/.venv/bin/pip install -q pillow numpy
+  tools/.venv/bin/pip install -q pillow numpy kokoro-onnx soundfile
 fi
+# Kokoro narration voice (Apache-2.0), ~350 MB, downloaded once.
+KOKORO_URL=https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0
+mkdir -p tools/.kokoro
+for f in kokoro-v1.0.onnx voices-v1.0.bin; do
+  [ -f "tools/.kokoro/$f" ] || curl -fL --progress-bar -o "tools/.kokoro/$f" "$KOKORO_URL/$f"
+done
 command -v ffmpeg >/dev/null || { echo "ffmpeg missing: brew install ffmpeg"; exit 1; }
 curl -sf http://localhost:11434/api/version >/dev/null || { echo "Ollama is not running (needed for manzi-14b)"; exit 1; }
 

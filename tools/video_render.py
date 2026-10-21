@@ -3,13 +3,16 @@
 
   tools/.venv/bin/python tools/video_render.py                 # everything that changed
   tools/.venv/bin/python tools/video_render.py --only lesson-L03-2 --force
-  tools/.venv/bin/python tools/video_render.py --jobs 6 --voice Samantha
+  tools/.venv/bin/python tools/video_render.py --jobs 6 --voice am_michael
 
 Writes assets/videos/<id>.mp4, <id>.jpg (poster) and index.json.
-Needs ffmpeg, dart and macOS `say`. Python deps: Pillow, numpy (tools/.venv).
+Needs ffmpeg and dart. Python deps: Pillow, numpy, kokoro-onnx, soundfile (tools/.venv).
 
-Narration comes from macOS text-to-speech. Apple licenses its system voices for personal,
-non-commercial use; for a public release, re-render with a voice you have rights to.
+Narration comes from Kokoro (https://github.com/thewh1teagle/kokoro-onnx), a local neural voice
+under the Apache-2.0 licence, so it is fine to ship. Voices are ids such as af_heart, am_michael,
+bf_emma (a/b = US/UK accent, f/m = female/male). The model files live in tools/.kokoro/
+(fetched by tools/build_content.sh). Any other --voice name falls back to macOS `say`, whose
+voices Apple licenses for personal, non-commercial use only.
 """
 import argparse
 import hashlib
@@ -31,6 +34,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPTS = os.path.join(ROOT, "content", "videos")
 OUT = os.path.join(ROOT, "assets", "videos")
 WORK = os.path.join(ROOT, "tools", ".video_cache")
+KOKORO = os.path.join(ROOT, "tools", ".kokoro")
 DATA = os.path.join(ROOT, "assets", "data")
 RENDERER_VERSION = "2"
 
@@ -78,14 +82,57 @@ def spoken(text):
     return text.replace("BPM", "beats per minute").replace("3/4", "three four").replace("—", ", ")
 
 
+DEFAULT_RATE = 172
+
+
+def is_kokoro(voice):
+    return re.fullmatch(r"[a-z][fm]_[a-z]+", voice) is not None
+
+
+@lru_cache(maxsize=None)
+def kokoro():
+    from kokoro_onnx import Kokoro
+    return Kokoro(os.path.join(KOKORO, "kokoro-v1.0.onnx"), os.path.join(KOKORO, "voices-v1.0.bin"))
+
+
+def tts_path(text, voice, rate):
+    return os.path.join(WORK, "tts", hashlib.sha1(("%s|%d|%s" % (voice, rate, text)).encode()).hexdigest() + ".wav")
+
+
 def tts(text, voice, rate):
     os.makedirs(os.path.join(WORK, "tts"), exist_ok=True)
-    path = os.path.join(WORK, "tts", hashlib.sha1(("%s|%d|%s" % (voice, rate, text)).encode()).hexdigest() + ".wav")
+    path = tts_path(text, voice, rate)
     if not os.path.exists(path):
-        subprocess.run(["say", "-v", voice, "-r", str(rate), "-o", path, "--file-format=WAVE",
-                        "--data-format=LEI16@%d" % SR, spoken(text)], check=True)
+        if is_kokoro(voice):
+            import soundfile
+            audio, sr = kokoro().create(spoken(text), voice=voice, speed=rate / DEFAULT_RATE,
+                                        lang="en-gb" if voice[0] == "b" else "en-us")
+            raw = path + ".raw.wav"
+            soundfile.write(raw, audio, sr)
+            subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", raw, "-ac", "1", "-ar", str(SR),
+                            "-sample_fmt", "s16", path], check=True)
+            os.remove(raw)
+        else:
+            subprocess.run(["say", "-v", voice, "-r", str(rate), "-o", path, "--file-format=WAVE",
+                            "--data-format=LEI16@%d" % SR, spoken(text)], check=True)
     with wave.open(path) as w:
         return path, w.getnframes() / w.getframerate()
+
+
+def speak_all(ids, voice, rate):
+    """Synthesises every narration line once, up front, so render workers only read the cache
+    (and don't each load the speech model)."""
+    texts = []
+    for vid in ids:
+        for scene in json.load(open(os.path.join(SCRIPTS, vid + ".json")))["scenes"]:
+            texts += scene.get("lines", [])
+            if scene.get("tip"):
+                texts.append("Tip: " + scene["tip"])
+    todo = [t for t in dict.fromkeys(texts) if not os.path.exists(tts_path(t, voice, rate))]
+    for n, text in enumerate(todo, 1):
+        tts(text, voice, rate)
+        if n % 50 == 0 or n == len(todo):
+            print("speech %d/%d" % (n, len(todo)), flush=True)
 
 
 def read_wav(path):
@@ -731,7 +778,7 @@ SCENES = {"title": TitleScene, "points": PointsScene, "recap": RecapScene, "chor
 def chrome(cv, video, title_scene):
     if not title_scene:
         draw_logo(cv, 52, 36, 34)
-        cv.text(76, 34, "Fretwise", font("heavy", 24), ACCENT, "lm")
+        cv.text(76, 34, "Guitaro", font("heavy", 24), ACCENT, "lm")
         label = "LEVEL %d · %s" % (video["levelIndex"], video["levelTitle"].upper())
         cv.text(W - 40, 36, label if video["kind"] == "intro" else "%s  ·  %s" % (label, video["title"]), font("demi", 18), MUTED, "ra")
 
@@ -866,8 +913,8 @@ def main():
     ap.add_argument("--only", action="append", default=[])
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) // 2))
-    ap.add_argument("--voice", default="Samantha")
-    ap.add_argument("--rate", type=int, default=172)
+    ap.add_argument("--voice", default="am_michael")
+    ap.add_argument("--rate", type=int, default=DEFAULT_RATE)
     args = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(WORK, exist_ok=True)
@@ -878,6 +925,7 @@ def main():
     start = time.time()
     index_path = os.path.join(OUT, "index.json")
     index = {m["id"]: m for m in json.load(open(index_path))} if os.path.exists(index_path) else {}
+    speak_all(ids, args.voice, args.rate)
     with ProcessPoolExecutor(max_workers=args.jobs) as pool:
         for n, (vid, meta, how) in enumerate(pool.map(render_video, ids, [args.voice] * len(ids),
                                                      [args.rate] * len(ids), [args.force] * len(ids)), 1):

@@ -3,12 +3,12 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fretwise/audio/analysis.dart';
-import 'package:fretwise/audio/chord_matcher.dart';
-import 'package:fretwise/audio/synth.dart';
-import 'package:fretwise/music/chord_library.dart';
-import 'package:fretwise/music/notes.dart';
-import 'package:fretwise/practice/trackers.dart';
+import 'package:guitaro/audio/analysis.dart';
+import 'package:guitaro/audio/chord_matcher.dart';
+import 'package:guitaro/audio/synth.dart';
+import 'package:guitaro/music/chord_library.dart';
+import 'package:guitaro/music/notes.dart';
+import 'package:guitaro/practice/trackers.dart';
 
 const sr = 44100;
 
