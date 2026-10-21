@@ -1,0 +1,80 @@
+{
+ "id": "lesson-L05-1",
+ "kind": "lesson",
+ "title": "Keeping time",
+ "subtitle": "Strum on the beat.",
+ "levelId": "L05",
+ "levelIndex": 5,
+ "levelTitle": "Rhythm",
+ "lessonId": "L05-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Keeping time",
+   "subtitle": "Strum on the beat.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn to strum on the beat — the foundation of rhythm.",
+    "Let's begin."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Feel the beat",
+   "points": [
+    "Rhythm is the foundation",
+    "Tap to the steady pulse",
+    "Metronome guides your hand",
+    "Strum on every click"
+   ],
+   "lines": [
+    "Rhythm matters more than fancy chords.",
+    "Tap your foot to the beat — it's the steady pulse of every song.",
+    "The metronome clicks every beat, with a stronger click on beat 1.",
+    "Strum exactly on each click, and let it guide your hand.",
+    "You're doing great, one beat at a time."
+   ],
+   "chord": null
+  },
+  {
+   "type": "strum",
+   "pattern": "D-D-D-D-",
+   "bpm": 70,
+   "beatsPerBar": 4,
+   "chords": [
+    "Em"
+   ],
+   "lines": [
+    "Let's start with a simple strumming pattern.",
+    "Strum down on every metronome click for four beats, keeping time at 70 beats per minute."
+   ]
+  },
+  {
+   "type": "strum",
+   "pattern": "D-D-D-D-",
+   "bpm": 75,
+   "beatsPerBar": 4,
+   "chords": [
+    "G",
+    "D"
+   ],
+   "lines": [
+    "Let's start with a simple strumming pattern.",
+    "Four downstrokes per bar, changing from G to D on beat one."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Rhythm is the foundation",
+    "Tap to the steady pulse",
+    "Metronome guides your hand"
+   ],
+   "lines": [
+    "Rhythm is the foundation.",
+    "Tap to the steady pulse, and let the metronome guide your hand.",
+    "Now, play along — the app is listening."
+   ]
+  }
+ ]
+}

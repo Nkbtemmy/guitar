@@ -1,0 +1,57 @@
+{
+ "id": "intro-L03",
+ "kind": "intro",
+ "title": "Level 3: First chords",
+ "subtitle": "Em, E, Am, A and D",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 3: First chords",
+   "subtitle": "Em, E, Am, A and D",
+   "lines": [
+    "Level 3: Time to play your first chords — Em, E, Am, A and D.",
+    "Each one builds from the last, and together they'll let you strum your first real songs."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "What is a chord?",
+    "E minor",
+    "E major",
+    "A minor",
+    "A major",
+    "D major"
+   ],
+   "lines": [
+    "After this level, you'll be able to play Em, E, Am, A and D chords.",
+    "You'll read chord charts and strum with confidence.",
+    "You'll move between these chords smoothly, ready to play simple songs."
+   ]
+  },
+  {
+   "type": "chordgrid",
+   "chords": [
+    "Em",
+    "E",
+    "Am",
+    "A",
+    "D"
+   ],
+   "lines": [
+    "Let's explore five new chords: E minor, E major, A minor, A major and D major."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with the basics: What is a chord?"
+   ]
+  }
+ ]
+}

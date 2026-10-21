@@ -37,6 +37,13 @@ class GuitarSynth {
     return out;
   }
 
+  /// Mixes one plucked note into [out] at [startSample].
+  void addNote(Float32List out, int startSample, int midi, {double gain = 1.0, int seed = 1}) =>
+      _addPluck(out, startSample, midiToFreq(midi), seed: seed, gain: gain);
+
+  /// Mixes one metronome click into [out] at [startSample].
+  void addClick(Float32List out, int startSample, {bool accent = false}) => _addClick(out, startSample, accent: accent);
+
   /// Plays the notes one at a time, [gapMs] apart, letting each ring.
   Float32List arpeggio(List<int> midiNotes, {double gapMs = 350, double tailSeconds = 1.5}) {
     final gap = (gapMs / 1000 * sampleRate).round();

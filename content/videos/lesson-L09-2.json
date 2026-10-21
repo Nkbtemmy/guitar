@@ -1,0 +1,92 @@
+{
+ "id": "lesson-L09-2",
+ "kind": "lesson",
+ "title": "The E shape",
+ "subtitle": "Movable barre chords on string 6.",
+ "levelId": "L09",
+ "levelIndex": 9,
+ "levelTitle": "Barre chords",
+ "lessonId": "L09-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The E shape",
+   "subtitle": "Movable barre chords on string 6.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the E shape: a movable barre chord on string 6.",
+    "Practice it slowly, and you'll build strength and confidence."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "The E shape",
+   "points": [
+    "Slide the shape up one fret",
+    "Lift finger 2 for minor"
+   ],
+   "lines": [
+    "The F barre chord is the E major shape moved up one fret, with finger 1 acting as the nut.",
+    "Slide the whole shape up and it becomes a new chord: at fret 3 it's G, at fret 5 it's A.",
+    "The note on string 6 under the barre names the chord.",
+    "Lift finger 2 and you get the minor version."
+   ],
+   "chord": "A_barre"
+  },
+  {
+   "type": "chord",
+   "chord": "A_barre",
+   "lines": [
+    "Let's build A major (barre, 5th fret).",
+    "Lay finger 1 flat across fret 5, from string 6 to string 1.",
+    "Finger 2 goes on string 3, fret 6.",
+    "Finger 3 goes on string 5, fret 7.",
+    "Finger 4 goes on string 4, fret 7.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "The E shape at fret 5 is the same chord as open A. Frets this high need less pressure, so it's a good first barre to practise.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "chord",
+   "chord": "Fm",
+   "lines": [
+    "Let's learn the F minor barre chord — a versatile shape that opens up many songs.",
+    "Lay finger 1 flat across fret 1, from string 6 to string 1.",
+    "Finger 3 goes on string 5, fret 3.",
+    "Finger 4 goes on string 4, fret 3.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "F with finger 2 lifted. The barre now sounds string 3, the minor third, so make sure it presses there cleanly.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "chord",
+   "chord": "F#m",
+   "lines": [
+    "Let's build F sharp minor (barre).",
+    "Lay finger 1 flat across fret 2, from string 6 to string 1.",
+    "Finger 3 goes on string 5, fret 4.",
+    "Finger 4 goes on string 4, fret 4.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Fm moved up one fret. Check that the barre presses string 3 cleanly; it carries the minor third.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Slide the shape up one fret",
+    "Lift finger 2 for minor",
+    "A chord shape"
+   ],
+   "lines": [
+    "Slide the shape up one fret for A, lift finger 2 for minor.",
+    "Play now — the app listens through the microphone."
+   ]
+  }
+ ]
+}

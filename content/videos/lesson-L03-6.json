@@ -1,0 +1,75 @@
+{
+ "id": "lesson-L03-6",
+ "kind": "lesson",
+ "title": "D major",
+ "subtitle": "A four-string chord.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-6",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "D major",
+   "subtitle": "A four-string chord.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the D major chord — a four-string shape you'll use in many songs."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "D major (D)",
+   "points": [
+    "D major uses top four strings",
+    "Finger 1: string 3, fret 2",
+    "Finger 2: string 1, fret 2",
+    "Finger 3: string 2, fret 3"
+   ],
+   "lines": [
+    "The D major chord uses the top four strings.",
+    "Place finger 1 on string 3 at fret 2, finger 2 on string 1 at fret 2, and finger 3 on string 2 at fret 3.",
+    "Strum from string 4, skipping strings 5 and 6."
+   ],
+   "chord": "D"
+  },
+  {
+   "type": "chord",
+   "chord": "D",
+   "lines": [
+    "Let's learn the D major chord — a friendly, open shape that's perfect for beginners.",
+    "Finger 1 goes on string 3, fret 2.",
+    "Finger 2 goes on string 1, fret 2.",
+    "Finger 3 goes on string 2, fret 3.",
+    "Don't play strings 6 and 5.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Strum only the top four strings. Aim your strum at string 4 and let strings 5 and 6 stay silent.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "A",
+    "D"
+   ],
+   "lines": [
+    "Let's practice moving between A major and D major.",
+    "Focus on smooth transitions — lift fingers early, place them cleanly, and keep the rhythm steady."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "D major uses top four strings",
+    "Finger 1: string 3, fret 2",
+    "Finger 2: string 1, fret 2"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play D major while the app listens through the microphone — you've got this."
+   ]
+  }
+ ]
+}

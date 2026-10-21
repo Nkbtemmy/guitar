@@ -1,0 +1,40 @@
+{
+ "id": "intro-L10",
+ "kind": "intro",
+ "title": "Level 10: Fingerpicking",
+ "subtitle": "Thumb and fingers",
+ "levelId": "L10",
+ "levelIndex": 10,
+ "levelTitle": "Fingerpicking",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 10: Fingerpicking",
+   "subtitle": "Thumb and fingers",
+   "lines": [
+    "Level 10: Fingerpicking.",
+    "Today, we'll explore arpeggios with your thumb and fingers, and master alternating bass — the heart of Travis-picking.",
+    "Let's make every note sing."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "p-i-m-a",
+    "Alternating bass"
+   ],
+   "lines": [
+    "After this level, you'll play arpeggios using your thumb and fingers in the pattern p-i-m-a.",
+    "You'll also use alternating bass notes, like Travis-picking, to add rhythm and movement to your playing."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's begin with the p-i-m-a pattern — the foundation of fingerpicking."
+   ]
+  }
+ ]
+}

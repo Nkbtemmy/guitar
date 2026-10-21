@@ -1,0 +1,86 @@
+{
+ "id": "lesson-L01-1",
+ "kind": "lesson",
+ "title": "Your guitar, up close",
+ "subtitle": "The parts of the guitar and how to hold it.",
+ "levelId": "L01",
+ "levelIndex": 1,
+ "levelTitle": "Zero",
+ "lessonId": "L01-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Your guitar, up close",
+   "subtitle": "The parts of the guitar and how to hold it.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn the parts of your guitar and how to hold it.",
+    "Let's get started."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Welcome!",
+   "points": [
+    "Quiet room",
+    "Phone near guitar",
+    "Step by step",
+    "No prior experience needed"
+   ],
+   "lines": [
+    "Welcome!",
+    "This course will take you from never having played to playing full songs.",
+    "The app listens through your phone's microphone, so keep it near the guitar in a quiet room.",
+    "We'll go step by step, together.",
+    "Let's begin with your guitar, up close."
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "Parts of the guitar",
+   "points": [
+    "Headstock holds tuning pegs",
+    "Neck leads to fretboard",
+    "Body holds sound hole or pickups",
+    "Bridge anchors strings"
+   ],
+   "lines": [
+    "Let's explore your guitar together.",
+    "The headstock holds the tuning pegs where the strings start.",
+    "The neck leads to the fretboard, marked by metal frets.",
+    "The body is where the sound hole or pickups sit, and the bridge anchors the strings.",
+    "Everything connects to create music — take your time to get familiar with each part."
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "Holding the guitar",
+   "points": [
+    "Sit straight, guitar on right leg",
+    "Neck up left, forearm over body",
+    "Fretting thumb behind neck",
+    "Relax shoulders for control"
+   ],
+   "lines": [
+    "Sit up straight and rest the guitar body on your right leg.",
+    "Point the neck slightly upward to the left, with your strumming forearm over the body.",
+    "Keep your fretting-hand thumb behind the neck and relax your shoulders — it's all about comfort and control."
+   ],
+   "chord": null
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Quiet room",
+    "Phone near guitar",
+    "Step by step"
+   ],
+   "lines": [
+    "You've got the guitar in position, ready to play.",
+    "Let's move to the next step and start exploring the fretboard together."
+   ]
+  }
+ ]
+}

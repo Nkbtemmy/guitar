@@ -1,0 +1,109 @@
+{
+ "id": "lesson-L02-1",
+ "kind": "lesson",
+ "title": "Frets and fingers",
+ "subtitle": "Finger numbers and clean fretted notes.",
+ "levelId": "L02",
+ "levelIndex": 2,
+ "levelTitle": "First notes",
+ "lessonId": "L02-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Frets and fingers",
+   "subtitle": "Finger numbers and clean fretted notes.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches finger numbers and how to play clean, clear notes on the fretboard."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Finger numbers & frets",
+   "points": [
+    "Finger numbers: 1 to 4",
+    "Thumb stays behind",
+    "Fret 1: nut to first bar",
+    "Press behind the fret"
+   ],
+   "lines": [
+    "Your fretting hand fingers are numbered 1 through 4, from index to pinky.",
+    "The thumb stays behind the neck.",
+    "Frets are the metal bars, and the space between the nut and first bar is fret 1.",
+    "Press your fingertip just behind the fret, not on top of it, for a clear sound."
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "Clean notes",
+   "points": [
+    "Press gently for clean sound",
+    "Too much pressure tires your hand",
+    "Buzzing? Move fingertip closer to fret"
+   ],
+   "lines": [
+    "Each fret moves the note up a half step.",
+    "Press gently — too much pressure tires your hand.",
+    "If a note buzzes, slide your fingertip closer to the fret.",
+    "You're doing great — keep exploring those melodies!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Spider walk",
+   "notes": [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     4
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     4
+    ]
+   ],
+   "lines": [
+    "Let's try the spider walk: move each finger one at a time up string 1, from fret 1 to 4.",
+    "Play the pattern twice, slowly, to build control and confidence on the neck."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger numbers: 1 to 4",
+    "Thumb stays behind",
+    "Fret 1: nut to first bar"
+   ],
+   "lines": [
+    "You've got the tools: finger numbers 1 to 4, and your thumb.",
+    "Press gently behind each fret.",
+    "Now play along — the app is listening."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "id": "intro-L12",
+ "kind": "intro",
+ "title": "Level 12: Hero",
+ "subtitle": "Blues and beyond",
+ "levelId": "L12",
+ "levelIndex": 12,
+ "levelTitle": "Hero",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 12: Hero",
+   "subtitle": "Blues and beyond",
+   "lines": [
+    "This is Level 12: Hero — the final step in your journey.",
+    "You'll master the 12-bar blues, play Red River Valley, and graduate with barre chords, rhythm, and smooth changes."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "12-bar blues",
+    "Red River Valley",
+    "Graduation"
+   ],
+   "lines": [
+    "After this level, you'll play the 12-bar blues progression, perform Red River Valley with confidence, and use barre chords to move between keys.",
+    "You'll have everything you need to jam with others or write your own music."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Songs you'll play",
+   "points": [
+    "12-Bar Blues in A",
+    "Red River Valley"
+   ],
+   "lines": [
+    "This level includes two songs: 12-Bar Blues in A and Red River Valley, both great for building confidence and style."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Pick up your guitar — we're starting with the 12-bar blues, the heartbeat of rock, soul and everything in between."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "id": "intro-L05",
+ "kind": "intro",
+ "title": "Level 5: Rhythm",
+ "subtitle": "Strumming in time",
+ "levelId": "L05",
+ "levelIndex": 5,
+ "levelTitle": "Rhythm",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 5: Rhythm",
+   "subtitle": "Strumming in time",
+   "lines": [
+    "Level 5: Rhythm.",
+    "Let's bring your strumming to life with timing, up-strums, and fun patterns like the folk and waltz."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Keeping time",
+    "Down and up",
+    "The folk pattern",
+    "Waltz time"
+   ],
+   "lines": [
+    "After this level, you'll be able to keep a steady rhythm, add up-strums on the 'and' of each beat, and play three common patterns: the folk pattern, and waltz time.",
+    "You'll feel confident playing along with music and keeping time with the beat."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with 'Keeping time' — the first step to strumming in rhythm."
+   ]
+  }
+ ]
+}

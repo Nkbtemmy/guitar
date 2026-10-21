@@ -1,0 +1,53 @@
+{
+ "id": "intro-L04",
+ "kind": "intro",
+ "title": "Level 4: Changing chords",
+ "subtitle": "G, C and smooth changes",
+ "levelId": "L04",
+ "levelIndex": 4,
+ "levelTitle": "Changing chords",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 4: Changing chords",
+   "subtitle": "G, C and smooth changes",
+   "lines": [
+    "Level 4: Changing chords.",
+    "Learn G major, C major, and how to switch between them smoothly — the key to playing real songs."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Smooth changes",
+    "G major",
+    "C major",
+    "One-minute changes"
+   ],
+   "lines": [
+    "After this level, you'll be able to change between G and C major chords smoothly and confidently.",
+    "You'll practice fast, clean transitions using a classic one-minute drill.",
+    "These skills will help you play simple songs with clear, connected chord changes."
+   ]
+  },
+  {
+   "type": "chordgrid",
+   "chords": [
+    "G",
+    "C"
+   ],
+   "lines": [
+    "Today we'll learn two new chords: G major and C major.",
+    "They're simple to play and will open up many songs."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with the secret to fast, smooth chord changes — the foundation of great guitar playing."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "id": "lesson-L07-3",
+ "kind": "lesson",
+ "title": "B7 and G7",
+ "subtitle": "Two chords that pull you home.",
+ "levelId": "L07",
+ "levelIndex": 7,
+ "levelTitle": "More chords",
+ "lessonId": "L07-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "B7 and G7",
+   "subtitle": "Two chords that pull you home.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches two chords that pull you home: B7 and G7.",
+    "They're part of level 7, 'More chords'."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "B7",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 1: string 4, fret 1"
+   ],
+   "lines": [
+    "Place finger 2 on string 5 at fret 2, finger 1 on string 4 at fret 1, finger 3 on string 3 at fret 2, and finger 4 on string 1 at fret 2, with string 2 open.",
+    "Skip string 6.",
+    "B7 is the chord that leads back home to E or Em — use it to guide your playing and explore new sounds."
+   ],
+   "chord": "B7"
+  },
+  {
+   "type": "chord",
+   "chord": "B7",
+   "lines": [
+    "Let's learn B7.",
+    "Place finger 1 on string 4, fret 1, then finger 2 on string 5, fret 2.",
+    "Finger 1 goes on string 4, fret 1.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Finger 3 goes on string 3, fret 2.",
+    "Finger 4 goes on string 1, fret 2.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "String 2 rings open between fingers 3 and 4, so keep finger 4 curved. Skip string 6.",
+   "placementFrom": 2,
+   "placementCount": 5
+  },
+  {
+   "type": "points",
+   "heading": "G7",
+   "points": [
+    "Finger 3: string 6, fret 3",
+    "Finger 2: string 5, fret 2",
+    "Finger 1: string 1, fret 1"
+   ],
+   "lines": [
+    "Place finger 3 on string 6 at fret 3, finger 2 on string 5 at fret 2, and finger 1 on string 1 at fret 1.",
+    "G7 adds a bluesy tension to G major, pulling your playing toward C.",
+    "Let your fingers find the shape — it's a gateway to richer, more expressive guitar sound.",
+    "You're doing great, keep exploring those colors."
+   ],
+   "chord": "G7"
+  },
+  {
+   "type": "chord",
+   "chord": "G7",
+   "lines": [
+    "The G7 chord adds a smooth, bluesy sound.",
+    "Let's place your fingers now.",
+    "Finger 1 goes on string 1, fret 1.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Finger 3 goes on string 6, fret 3.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Like G, but finger 1 drops to fret 1 on string 1. Strum all six strings.",
+   "placementFrom": 2,
+   "placementCount": 3
+  },
+  {
+   "type": "change",
+   "chords": [
+    "Em",
+    "B7"
+   ],
+   "lines": [
+    "Let's practice moving between E minor and B7.",
+    "Focus on smooth transitions — keep your fingers ready and your timing steady."
+   ]
+  },
+  {
+   "type": "change",
+   "chords": [
+    "G7",
+    "C"
+   ],
+   "lines": [
+    "Let's practice moving between G dominant 7 and C major.",
+    "Focus on smooth transitions, keeping each chord clear and ringing out."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 1: string 4, fret 1",
+    "Finger 3: string 6, fret 3"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play B7 and G7 — the app will listen through the microphone and help you sound your best."
+   ]
+  }
+ ]
+}

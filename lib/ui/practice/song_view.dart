@@ -11,9 +11,10 @@ import '../../music/chord.dart';
 import '../../practice/trackers.dart';
 import '../lesson/steps.dart';
 import '../theme.dart';
-import '../widgets/chord_diagram.dart';
+import '../widgets/chord_view.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
+import '../widgets/tab_staff.dart';
 import 'play_along.dart';
 
 enum SongMode { wait, playAlong }
@@ -36,6 +37,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   late final List<Chord> _bars = [for (final id in widget.song.bars) _services.library.byId(id)];
   late final Ticker _ticker = createTicker(_tick);
   SongMode _mode = SongMode.wait;
+  bool _showTab = false;
   double _tempo = 0.8;
   ChordVerdict? _verdict;
   late SequenceTracker<Chord> _wait = _newTracker();
@@ -150,18 +152,44 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                     child: Text(_result ?? (_mode == SongMode.wait ? 'Done!' : 'Press start when ready'),
                         textAlign: TextAlign.center, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)))
                 : Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    ChordDiagram(chord: current, width: 120, showName: true),
+                    ChordView(chord: current, width: 110),
                     if (next != null) ...[
                       const SizedBox(width: 18),
-                      Opacity(opacity: 0.5, child: ChordDiagram(chord: next, width: 66, showName: true)),
+                      Opacity(opacity: 0.5, child: ChordView(chord: next, width: 60, compact: true)),
                     ],
                   ]),
       ),
-      const SizedBox(height: 12),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        SegmentedButton<bool>(
+          showSelectedIcon: false,
+          style: const ButtonStyle(visualDensity: VisualDensity.compact),
+          segments: const [
+            ButtonSegment(value: false, icon: Icon(Icons.view_module_rounded, size: 18), label: Text('Chart')),
+            ButtonSegment(value: true, icon: Icon(Icons.table_rows_rounded, size: 18), label: Text('Tab')),
+          ],
+          selected: {_showTab},
+          onSelectionChanged: (v) => setState(() => _showTab = v.first),
+        ),
+      ]),
+      const SizedBox(height: 8),
       for (final line in song.lines) ...[
-        Row(children: [
-          for (final chordId in line.bars) _BarCell(symbol: _services.library.byId(chordId).symbol, index: barIndex++, current: bar),
-        ]),
+        if (_showTab)
+          Builder(builder: (context) {
+            final start = barIndex;
+            barIndex += line.bars.length;
+            return TabStaff(
+              columns: [for (final id in line.bars) TabColumn.chord(_services.library.byId(id))],
+              current: bar >= start && bar < barIndex ? bar - start : (bar >= barIndex ? line.bars.length : -1),
+              markDone: true,
+              expand: true,
+              lineGap: 15,
+              fontSize: 13,
+            );
+          })
+        else
+          Row(children: [
+            for (final chordId in line.bars) _BarCell(symbol: _services.library.byId(chordId).symbol, index: barIndex++, current: bar),
+          ]),
         Padding(
           padding: const EdgeInsets.only(top: 4, bottom: 12, left: 4),
           child: Text(line.lyrics.isEmpty ? '♪' : line.lyrics, style: const TextStyle(fontSize: 16, color: kTextSoft)),

@@ -6,6 +6,7 @@ import '../../curriculum/models.dart';
 import '../../progress/progress_store.dart';
 import '../lesson/lesson_screen.dart';
 import '../theme.dart';
+import '../video/lesson_video_player.dart';
 import '../widgets/brand_mark.dart';
 
 class LearnScreen extends StatelessWidget {
@@ -156,6 +157,15 @@ class _LevelHeader extends StatelessWidget {
             Text(level.subtitle, style: const TextStyle(color: kMuted)),
           ]),
         ),
+        if (context.read<AppServices>().videos.introFor(level.id) case final intro?)
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ActionChip(
+              avatar: const Icon(Icons.play_circle_fill_rounded, color: kAccent, size: 20),
+              label: const Text('Intro'),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => VideoScreen(video: intro))),
+            ),
+          ),
         Text('$done/${level.lessons.length}', style: const TextStyle(color: kMuted, fontWeight: FontWeight.w700)),
       ]),
     );

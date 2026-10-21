@@ -67,7 +67,7 @@ void main() {
             expect(() => step.strumPattern, returnsNormally, reason: where);
           case SongStep(:final songId):
             expect(curriculum.songs.containsKey(songId), isTrue, reason: '$where $songId');
-          case TuneStep():
+          case TuneStep() || VideoStep():
             break;
         }
       }

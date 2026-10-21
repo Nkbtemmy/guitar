@@ -1,0 +1,41 @@
+{
+ "id": "lesson-L07-6",
+ "kind": "lesson",
+ "title": "Scarborough Fair",
+ "subtitle": "A minor-key ballad.",
+ "levelId": "L07",
+ "levelIndex": 7,
+ "levelTitle": "More chords",
+ "lessonId": "L07-6",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Scarborough Fair",
+   "subtitle": "A minor-key ballad.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the A minor-key ballad 'Scarborough Fair'.",
+    "We'll play it using the chords from level 7."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "scarborough_fair",
+   "lines": [
+    "Let's play Scarborough Fair.",
+    "It uses Am, G, C, D and Em."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play Scarborough Fair",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "You're ready to play.",
+    "Let the app listen through the microphone as you sing and play along."
+   ]
+  }
+ ]
+}

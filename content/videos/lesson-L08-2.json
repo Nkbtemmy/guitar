@@ -1,0 +1,107 @@
+{
+ "id": "lesson-L08-2",
+ "kind": "lesson",
+ "title": "Movable shapes",
+ "subtitle": "One shape, every chord.",
+ "levelId": "L08",
+ "levelIndex": 8,
+ "levelTitle": "Power chords",
+ "lessonId": "L08-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Movable shapes",
+   "subtitle": "One shape, every chord.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches one shape that makes every chord.",
+    "It's part of level 8, 'Power chords'."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "One shape, every chord",
+   "points": [
+    "Finger 1: string 6, any fret",
+    "Slide the shape to change chords"
+   ],
+   "lines": [
+    "Place finger 1 on string 6 at any fret, then finger 3 two frets higher on string 5, and finger 4 on string 4 at the same fret as finger 3.",
+    "Slide the whole shape up or down the neck to play different chords — the note under finger 1 names the chord.",
+    "The same pattern works starting on string 5, so you can play power chords anywhere on the neck with confidence."
+   ],
+   "chord": "G5"
+  },
+  {
+   "type": "chord",
+   "chord": "G5",
+   "lines": [
+    "Let's build G power chord.",
+    "Finger 1 goes on string 6, fret 3.",
+    "Finger 3 goes on string 5, fret 5.",
+    "Finger 4 goes on string 4, fret 5.",
+    "Don't play strings 3, 2 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "The movable shape with its root under finger 1 on string 6. Let finger 1 lightly mute the strings you don't play.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "chord",
+   "chord": "C5",
+   "lines": [
+    "Let's play the C5 power chord — a simple, strong shape with three strings and no major or minor variation.",
+    "Finger 1 goes on string 5, fret 3.",
+    "Finger 3 goes on string 4, fret 5.",
+    "Finger 4 goes on string 3, fret 5.",
+    "Don't play strings 6, 2 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "The G5 shape one string higher; the root is under finger 1 on string 5. Don't hit string 6.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "chord",
+   "chord": "F5",
+   "lines": [
+    "Let's play the F power chord.",
+    "It's a simple shape that moves up and down the neck.",
+    "Finger 1 goes on string 6, fret 1.",
+    "Finger 3 goes on string 5, fret 3.",
+    "Finger 4 goes on string 4, fret 3.",
+    "Don't play strings 3, 2 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "The movable shape at fret 1. Strum only strings 6, 5 and 4.",
+   "placementFrom": 2,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "G5",
+    "C5",
+    "F5",
+    "C5"
+   ],
+   "lines": [
+    "Let's practice changing between G, C and F power chords.",
+    "Move your fingers smoothly and keep the rhythm steady."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 1: string 6, any fret",
+    "Slide the shape to change chords",
+    "G5 chord shape"
+   ],
+   "lines": [
+    "Slide the shape to G5, C5 or F5.",
+    "Now play along while the app listens — it's your turn to shine."
+   ]
+  }
+ ]
+}

@@ -2,25 +2,31 @@
 
 Learn guitar from zero to hero with an app that listens to you play. Flutter, Android + iOS.
 
-Fretwise follows the same idea as SimplyGuitar (guided lessons with real-time listening), built
-from scratch: none of its code, lessons or licensed songs are used. Songs are public domain.
+Fretwise follows the same idea as SimplyGuitar (guided lessons with video, real-time listening),
+built from scratch: none of its code, lessons, videos or licensed songs are used. Songs are
+public domain.
 
 ## What's in it
 
-- **12 levels, 48 lessons:** first notes, open chords, changes, rhythm, songs, 7ths and colour chords,
-  power chords, barre chords, fingerpicking, pentatonic lead, and the 12-bar blues.
-- **Listens through the mic:** detects single notes (YIN pitch), chords (matched against the exact
-  voicing taught, string by string), and strum timing (pick-attack onsets).
-- **Hear everything:** chords, single notes and whole songs are synthesized on the device
-  (Karplus-Strong plucked strings), so there are no audio assets.
+- **12 levels, 48 lessons:** first notes, open chords, changes, rhythm, songs, 7ths and colour
+  chords, power chords, barre chords, fingerpicking, pentatonic lead, and the 12-bar blues.
+- **60 narrated videos:** a teaching video opens every lesson, and every level has an intro.
+  Animated chord diagrams and tab, fingers placed as they're named, strumming patterns,
+  melodies, songs, and subtitles.
+- **Six-line tab everywhere:** chords, melodies and whole songs show as tablature. *Me › Chord
+  display* switches between tab, box diagram, or both.
+- **Listens through the mic:** detects single notes (YIN pitch), chords (matched against the
+  exact voicing taught, string by string), and strum timing (pick-attack onsets).
+- **Hear everything:** chords, notes and songs are synthesized on the device (Karplus-Strong
+  plucked strings).
 - **Songs:** wait mode (pauses until you play the right chord) and play-along with a metronome
-  at adjustable tempo.
+  at adjustable tempo. Shown as a chart or as tab.
 - **Also:** a tuner, a chord library with a "check my chord" mode, stars, XP and streaks,
   left-handed diagrams, and mic sensitivity.
 
 ## Run it
 
-You need the platform SDKs, which this machine doesn't have yet:
+You need the platform SDKs:
 
 ```sh
 # iOS: install Xcode from the App Store, then
@@ -36,27 +42,63 @@ flutter run             # pick a connected phone or simulator
 
 Listening needs a real phone. Simulators have poor or no microphone input.
 
-`flutter test` runs the 32 tests (DSP, practice logic, content validation, widget flows).
-`flutter build web` gives a UI preview in a browser, without reliable mic or audio.
+`flutter test` runs the test suite (DSP, practice logic, content validation, tab, video and
+widget flows).
 
-## Lesson content and the local Qwen model
+## Generated content and the local Qwen model
 
-- `assets/data/chords.json`: chord shapes (hand-written).
-- `assets/data/chord_tips.json`: chord tips (hand-written).
-- `content/curriculum.src.json`: levels, lessons, steps and songs. Steps with a `brief` get
-  their text from Qwen.
-- `assets/data/curriculum.json`: generated. Don't edit it by hand.
-
-To change lesson text, edit the briefs and run:
+Everything generated is checked in, so the app builds without any of this. To regenerate:
 
 ```sh
-python3 tools/qwen_content.py          # uses manzi-14b via Ollama; cached, so only changed briefs rerun
-flutter test test/content_test.dart    # checks every chord/song reference, note, pattern and body
+tools/build_content.sh    # needs Ollama running manzi-14b, ffmpeg, dart; each stage is cached
 ```
 
-Review what Qwen writes. It got about 9 of 51 texts wrong (for example "leave string 6 open"
-for C, where it should be "don't play string 6"). Fix those by replacing that step's `brief`
-with a hand-written `body` in the source file.
+| Stage | Tool | Qwen (manzi-14b) writes | Guarded by |
+|---|---|---|---|
+| Lesson text | `tools/qwen_content.py` | Screen text from short briefs in `content/curriculum.src.json` | Human review; wrong ones replaced by a hand-written `body` |
+| Video scripts | `tools/video_script.py` | Narration and on-screen key points for every scene of 60 videos | A numeric check (every string, fret and finger number must appear in the facts), then a Qwen fact-check pass; retries with feedback, then reviewed text as fallback |
+| Videos | `tools/video_render.py` | — | Renders frames (Pillow), voice (macOS `say`), guitar (the app's synth via `tools/render_audio.dart`), and encodes with ffmpeg |
+
+Hand-written and never generated: chord shapes (`assets/data/chords.json`), chord tips, the
+finger placement each video reads out, notes, strum patterns and songs.
+
+## Serving videos from a server
+
+The videos ship inside the app by default (about 1 MB per minute). To stream them instead,
+upload `assets/videos/*.mp4` to any static host or CDN, then build with:
+
+```sh
+flutter build appbundle --dart-define=VIDEO_BASE_URL=https://your.host/videos
+```
+
+To keep the app download small when streaming, remove the `.mp4` files from `assets/videos/`
+before building, and keep `index.json` and the `.jpg` posters.
+
+## Release builds
+
+- **Android:** create an upload key, then `android/key.properties` (it's gitignored):
+  ```sh
+  keytool -genkey -v -keystore ~/fretwise-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+  ```
+  ```properties
+  storePassword=…
+  keyPassword=…
+  keyAlias=upload
+  storeFile=/Users/you/fretwise-upload.jks
+  ```
+  Then run `flutter build appbundle` and upload `build/app/outputs/bundle/release/app-release.aab`
+  to Play Console.
+- **iOS:** set your team in Xcode (Runner › Signing & Capabilities), then `flutter build ipa`
+  and upload with Transporter or Xcode.
+- **Version:** bump `version:` in `pubspec.yaml` (currently `1.1.0+2`).
+- **Branding:** the app icons, splash and logo mark (`assets/brand/`) come from the brand assets. Replace those files to rebrand.
+- **Privacy policy:** both stores require one for microphone apps. Host [PRIVACY.md](PRIVACY.md)
+  (a GitHub link works) and paste the URL into the store listing.
+
+**Licensing:** the narration uses macOS system voices. Apple licenses those for personal,
+non-commercial use. Before publishing the app publicly, re-render the videos with a voice you
+have rights to (`tools/video_render.py --voice …` takes any installed voice; swapping in an
+open-source TTS engine only touches the `tts()` function).
 
 ## Code map
 
@@ -68,8 +110,11 @@ with a hand-written `body` in the source file.
 | `lib/audio/mic_listener.dart` | Shared mic (ref-counted), PCM16 to frames, self-sound suppression |
 | `lib/audio/sound_player.dart` | Plays rendered sounds; shares the iOS audio session with recording |
 | `lib/practice/trackers.dart` | Note/chord sequences, strum patterns, timing and bar scoring |
-| `lib/curriculum/models.dart` | Levels, lessons, step types, songs |
-| `lib/ui/...` | Learn, lesson runner and steps, songs, chords, tuner, profile |
+| `lib/curriculum/models.dart` | Levels, lessons, step types (including video), songs |
+| `lib/video/video_catalog.dart` | Rendered-video index; bundled or streamed sources |
+| `lib/ui/widgets/tab_staff.dart` | Six-line tablature for chords, melodies and songs |
+| `lib/ui/...` | Learn, lesson runner and steps, video player, songs, chords, tuner, profile |
+| `tools/` | Content pipeline (Qwen text and scripts, video renderer) |
 
 ## Tuning detection
 

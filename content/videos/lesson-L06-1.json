@@ -1,0 +1,58 @@
+{
+ "id": "lesson-L06-1",
+ "kind": "lesson",
+ "title": "Skip to My Lou",
+ "subtitle": "Two chords: A and E.",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "lessonId": "L06-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Skip to My Lou",
+   "subtitle": "Two chords: A and E.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches two chords — A and E — to play 'Skip to My Lou'.",
+    "You'll have everything you need to start playing right away."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Playing songs",
+   "points": [
+    "Pauses for correct chord",
+    "Take time with changes",
+    "Switch to play-along mode",
+    "Metronome keeps rhythm"
+   ],
+   "lines": [
+    "You're ready to play your first song.",
+    "The video pauses until you play the right chord — take your time with every change.",
+    "When you feel ready, switch to play-along mode to keep the rhythm steady with the metronome."
+   ],
+   "chord": null
+  },
+  {
+   "type": "song",
+   "song": "skip_to_my_lou",
+   "lines": [
+    "Skip to My Lou is a fun, bouncy song that's easy to play.",
+    "We'll use just two chords: A and E, and follow the rhythm of four beats per bar at 90 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Pauses for correct chord",
+    "Take time with changes",
+    "Switch to play-along mode"
+   ],
+   "lines": [
+    "You've got the chords and the rhythm.",
+    "Now play along — the app will listen and help you grow."
+   ]
+  }
+ ]
+}

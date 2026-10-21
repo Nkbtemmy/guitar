@@ -1,0 +1,117 @@
+{
+ "id": "lesson-L10-1",
+ "kind": "lesson",
+ "title": "p-i-m-a",
+ "subtitle": "Arpeggios with thumb and fingers.",
+ "levelId": "L10",
+ "levelIndex": 10,
+ "levelTitle": "Fingerpicking",
+ "lessonId": "L10-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "p-i-m-a",
+   "subtitle": "Arpeggios with thumb and fingers.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches arpeggios using your thumb and fingers — p-i-m-a.",
+    "We'll play one at a time, starting with the thumb."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Thumb and fingers",
+   "points": [
+    "Thumb: strings 6, 5, 4",
+    "Fingers: 3, 2, 1 toward palm",
+    "Rest hand, let notes ring"
+   ],
+   "lines": [
+    "Your thumb (p) plays bass strings 6, 5 and 4 by pushing down through the string.",
+    "Your index (i), middle (m) and ring (a) fingers pluck strings 3, 2 and 1 with the fingertips toward your palm.",
+    "Rest your hand lightly, and let each note ring clearly."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Am arpeggio",
+   "notes": [
+    [
+     5,
+     0
+    ],
+    [
+     3,
+     2
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     2
+    ]
+   ],
+   "lines": [
+    "Let's play an Am arpeggio.",
+    "Hold the Am shape and pick p-i-m-a-m-i across strings 5, 3, 2, 1, 2, 3."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "C arpeggio",
+   "notes": [
+    [
+     5,
+     3
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "lines": [
+    "Let's practice the C arpeggio.",
+    "Hold the C chord and play the pattern: fifth string third fret, third string open, second string first fret, and first string open."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Thumb: strings 6, 5, 4",
+    "Fingers: 3, 2, 1 toward palm",
+    "Rest hand, let notes ring"
+   ],
+   "lines": [
+    "Let the app listen as you play p-i-m-a.",
+    "Rest your hand, let the notes ring, and find your sound."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "id": "lesson-L04-1",
+ "kind": "lesson",
+ "title": "Smooth changes",
+ "subtitle": "The secret of fast chord changes.",
+ "levelId": "L04",
+ "levelIndex": 4,
+ "levelTitle": "Changing chords",
+ "lessonId": "L04-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Smooth changes",
+   "subtitle": "The secret of fast chord changes.",
+   "lines": [
+    "Welcome.",
+    "This lesson shows you how to make fast, smooth chord changes.",
+    "You'll learn the one secret that makes everything click."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "The secret of fast changes",
+   "points": [
+    "Anchor finger stays",
+    "Move as one shape",
+    "Practise slowly",
+    "Speed comes from accuracy"
+   ],
+   "lines": [
+    "Changing chords quickly is what turns chords into music.",
+    "Look for an anchor finger that stays on the same string between two chords.",
+    "Move all your fingers together as one shape, and practise slowly — speed comes from accuracy."
+   ],
+   "chord": null
+  },
+  {
+   "type": "change",
+   "chords": [
+    "Em",
+    "Am"
+   ],
+   "lines": [
+    "Let's practice moving between E minor and A minor.",
+    "Focus on smooth transitions — keep your fingers ready and move them together."
+   ]
+  },
+  {
+   "type": "change",
+   "chords": [
+    "A",
+    "D"
+   ],
+   "lines": [
+    "Let's practice moving between A major and D major.",
+    "Focus on smooth, even transitions — your fingers will get faster with time."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Anchor finger stays",
+    "Move as one shape",
+    "Practise slowly"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play along — the app listens, and every smooth change you make brings you closer to sounding great."
+   ]
+  }
+ ]
+}

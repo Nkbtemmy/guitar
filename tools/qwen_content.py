@@ -13,17 +13,15 @@ into prose. Review its output: when a body is wrong, replace that step's "brief"
 "body" in the source file.
 """
 import argparse
-import hashlib
 import json
 import os
 import re
 import sys
 import time
-import urllib.request
+
+import qwen
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-API = os.environ.get("OLLAMA_URL", "http://localhost:11434") + "/api/chat"
-MODEL = os.environ.get("QWEN_MODEL", "manzi-14b")
 CACHE_PATH = os.path.join(ROOT, "tools", ".qwen_cache.json")
 
 LESSON_SYSTEM = (
@@ -53,39 +51,20 @@ def save(path, data):
         f.write(text + "\n")
 
 
-def ask(system, user, max_words):
-    body = json.dumps({
-        "model": MODEL,
-        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-        "stream": False,
-        "think": False,
-        "format": SCHEMA,
-        "options": {"temperature": 0.3, "num_ctx": 4096, "num_predict": 400},
-    }).encode()
-    req = urllib.request.Request(API, body, {"Content-Type": "application/json"})
-    for attempt in range(3):
-        with urllib.request.urlopen(req, timeout=600) as r:
-            content = json.loads(r.read())["message"]["content"]
-        try:
-            text = " ".join(json.loads(content)["text"].split())
-        except (ValueError, KeyError):
-            continue
-        if text and len(text.split()) <= max_words and "#" not in text and "*" not in text:
-            return text
-    raise RuntimeError(f"Qwen gave no usable answer for: {user[:80]}")
-
-
-class Cache:
-    def __init__(self, force):
-        self.force = force
-        self.data = {} if force or not os.path.exists(CACHE_PATH) else load(CACHE_PATH)
-
-    def get(self, system, user, max_words):
-        key = hashlib.sha1(f"{MODEL}\n{system}\n{user}".encode()).hexdigest()
-        if key not in self.data:
-            self.data[key] = ask(system, user, max_words)
-            save(CACHE_PATH, self.data)
-        return self.data[key]
+def ask(cache, system, user, max_words):
+    key = qwen.Cache.key(system, user)
+    if cache.get(key) is None:
+        for _ in range(3):
+            try:
+                text = " ".join(qwen.chat_json(system, user, SCHEMA, max_tokens=400)["text"].split())
+            except (ValueError, KeyError):
+                continue
+            if text and len(text.split()) <= max_words and "#" not in text and "*" not in text:
+                cache.put(key, text)
+                break
+        else:
+            raise RuntimeError(f"Qwen gave no usable answer for: {user[:80]}")
+    return cache.get(key)
 
 
 def build_curriculum(cache):
@@ -96,7 +75,7 @@ def build_curriculum(cache):
     for n, (level, lesson, step) in enumerate(jobs, 1):
         prompt = (f"Course level: {level['title']} ({level['subtitle']}). Lesson: {lesson['title']}. "
                   f"Screen title: {step.get('title', '')}.\nBrief: {step['brief']}")
-        step["body"] = cache.get(LESSON_SYSTEM, prompt, 90)
+        step["body"] = ask(cache, LESSON_SYSTEM, prompt, 90)
         del step["brief"]
         sys.stderr.write(f"\rcurriculum {n}/{len(jobs)}  {time.time() - start:.0f}s")
     sys.stderr.write("\n")
@@ -108,7 +87,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
-    build_curriculum(Cache(args.force))
+    build_curriculum(qwen.Cache(CACHE_PATH, args.force))
 
 
 if __name__ == "__main__":

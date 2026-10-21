@@ -1,0 +1,114 @@
+{
+ "id": "lesson-L01-4",
+ "kind": "lesson",
+ "title": "Open strings",
+ "subtitle": "Play each string and let the app hear it.",
+ "levelId": "L01",
+ "levelIndex": 1,
+ "levelTitle": "Zero",
+ "lessonId": "L01-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Open strings",
+   "subtitle": "Play each string and let the app hear it.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches you to play each open string so the app can hear it.",
+    "Let's begin."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Play the open strings",
+   "points": [],
+   "lines": [
+    "You're holding your guitar like a pro — now let's hear those strings.",
+    "Starting with the thickest, pluck each open string one at a time.",
+    "The app listens for the right note and moves on when it hears it.",
+    "You've got this — it's the first step to making music together."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Thick to thin",
+   "notes": [
+    [
+     6,
+     0
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "lines": [
+    "Let's start with the open strings.",
+    "Pluck each one from string 6 to 1, in order: E, A, D, G, B, E.",
+    "Focus on even volume and a smooth, connected sound."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "Thin to thick",
+   "notes": [
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     6,
+     0
+    ]
+   ],
+   "lines": [
+    "Play each open string one after the other, from the thinnest to the thickest.",
+    "Start with string 1, then move to string 6."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Thick to thin",
+    "Thin to thick"
+   ],
+   "lines": [
+    "Great work on Open strings.",
+    "Now it's your turn: the app is listening."
+   ]
+  }
+ ]
+}

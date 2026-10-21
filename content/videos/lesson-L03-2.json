@@ -1,0 +1,81 @@
+{
+ "id": "lesson-L03-2",
+ "kind": "lesson",
+ "title": "E minor",
+ "subtitle": "Two fingers, six strings.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "E minor",
+   "subtitle": "Two fingers, six strings.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the E minor chord — two fingers, six strings.",
+    "Play it with confidence as you build your first chords."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "E minor (Em)",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 3: string 4, fret 2",
+    "Curl fingers to avoid string noise",
+    "Strum all six strings clearly"
+   ],
+   "lines": [
+    "Place finger 2 on string 5, fret 2, and finger 3 on string 4, fret 2.",
+    "Curl your fingers so they don't touch other strings.",
+    "Strum all six strings — the sound is rich and full.",
+    "You've got this!"
+   ],
+   "chord": "Em"
+  },
+  {
+   "type": "chord",
+   "chord": "Em",
+   "lines": [
+    "The E minor chord uses all six strings — let's place your fingers and strum with confidence.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Finger 3 goes on string 4, fret 2.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Every string belongs to this chord, so strum all six with confidence. Stay on your fingertips so the open G string rings.",
+   "placementFrom": 1,
+   "placementCount": 2
+  },
+  {
+   "type": "points",
+   "heading": "Troubleshooting a chord",
+   "points": [
+    "Check every string in order",
+    "Adjust for mute or buzz",
+    "Press closer or arch slightly",
+    "Keep experimenting"
+   ],
+   "lines": [
+    "Check each string of the Em chord from low to high.",
+    "If a string sounds muted or buzzy, adjust your finger—press closer to the fret or arch it slightly.",
+    "Small changes make a big difference.",
+    "You're doing great—keep experimenting until it feels right."
+   ],
+   "chord": "Em"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 3: string 4, fret 2",
+    "Curl fingers to avoid string noise"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play Em clearly, then let the app listen through the microphone."
+   ]
+  }
+ ]
+}

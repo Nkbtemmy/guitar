@@ -1,0 +1,42 @@
+{
+ "id": "lesson-L09-4",
+ "kind": "lesson",
+ "title": "The Rising Sun",
+ "subtitle": "A classic minor progression.",
+ "levelId": "L09",
+ "levelIndex": 9,
+ "levelTitle": "Barre chords",
+ "lessonId": "L09-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The Rising Sun",
+   "subtitle": "A classic minor progression.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches a classic minor chord progression using barre chords.",
+    "Play it slowly, and let the music rise with you."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "rising_sun_progression",
+   "lines": [
+    "Let's play 'The Rising Sun Progression'.",
+    "It's a traditional instrumental with Am, C, D, F and E chords.",
+    "Three beats per bar at 100 bpm — let's start with the first line."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play The Rising Sun Progression",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "Let's play it together.",
+    "The app will listen through the microphone as you play — just keep the rhythm steady and let the music rise."
+   ]
+  }
+ ]
+}

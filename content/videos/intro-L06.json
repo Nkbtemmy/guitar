@@ -1,0 +1,59 @@
+{
+ "id": "intro-L06",
+ "kind": "intro",
+ "title": "Level 6: First songs",
+ "subtitle": "Play real songs",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 6: First songs",
+   "subtitle": "Play real songs",
+   "lines": [
+    "Level 6: First songs.",
+    "Play real songs with just a few chords each — Skip to My Lou, Down in the Valley, Amazing Grace, When the Saints, and Oh!",
+    "Susanna.",
+    "Let's get started."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Skip to My Lou",
+    "Down in the Valley",
+    "Amazing Grace",
+    "When the Saints",
+    "Oh! Susanna"
+   ],
+   "lines": [
+    "After this level, you'll be able to play four simple songs: Skip to My Lou, Down in the Valley, Amazing Grace, and Oh!",
+    "Susanna.",
+    "Each uses just two or three chords, so you can start sharing your music with friends right away."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Songs you'll play",
+   "points": [
+    "Skip to My Lou",
+    "Down in the Valley",
+    "Amazing Grace",
+    "When the Saints Go Marching In",
+    "Oh! Susanna"
+   ],
+   "lines": [
+    "These songs are simple and fun, perfect for building confidence as you play your first full tunes."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with Skip to My Lou."
+   ]
+  }
+ ]
+}

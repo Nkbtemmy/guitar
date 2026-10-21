@@ -8,7 +8,7 @@ import '../../curriculum/models.dart';
 import '../../practice/trackers.dart';
 import '../lesson/steps.dart';
 import '../theme.dart';
-import '../widgets/chord_diagram.dart';
+import '../widgets/chord_view.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
 import 'play_along.dart';
@@ -101,10 +101,10 @@ class _StrumViewState extends State<StrumView> with Listening, SingleTickerProvi
                 child: Text('${s.countIn}',
                     style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900, color: kAccent)))
             : Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                ChordDiagram(chord: chord, width: 130, showName: true),
+                ChordView(chord: chord, width: 120),
                 if (next.id != chord.id) ...[
                   const SizedBox(width: 18),
-                  Opacity(opacity: 0.5, child: ChordDiagram(chord: next, width: 70, showName: true)),
+                  Opacity(opacity: 0.5, child: ChordView(chord: next, width: 62, compact: true)),
                 ],
               ]),
       ),

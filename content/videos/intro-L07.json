@@ -1,0 +1,69 @@
+{
+ "id": "intro-L07",
+ "kind": "intro",
+ "title": "Level 7: More chords",
+ "subtitle": "7ths, minors and colors",
+ "levelId": "L07",
+ "levelIndex": 7,
+ "levelTitle": "More chords",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 7: More chords",
+   "subtitle": "7ths, minors and colors",
+   "lines": [
+    "This level adds 7th chords, minor tones and color chords.",
+    "You'll play E7, A7, D7, D minor and Sus shapes — and finally get that friendly F."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "7th chords",
+    "D minor",
+    "B7 and G7",
+    "Color chords",
+    "Easy F",
+    "Scarborough Fair"
+   ],
+   "lines": [
+    "After this level, you'll play 7th chords like E7, A7 and D7, and sad-sounding D minor.",
+    "You'll use B7 and G7 to create tension and resolution, and add color with Sus and add9 chords.",
+    "You'll also play Fmaj7 and a simple melody from Scarborough Fair."
+   ]
+  },
+  {
+   "type": "chordgrid",
+   "chords": [
+    "E7",
+    "A7",
+    "D7",
+    "Dm",
+    "B7",
+    "G7"
+   ],
+   "lines": [
+    "Let's explore these five chords: E7, A7, D7, Dm and B7, each with a clear, ringing sound that adds depth to your playing."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Songs you'll play",
+   "points": [
+    "Scarborough Fair"
+   ],
+   "lines": [
+    "This level adds Scarborough Fair, a traditional song that uses the chords you've learned to bring its melody to life."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with 7th chords — E7, A7 and D7.",
+    "Play them slowly, and you'll feel their voice."
+   ]
+  }
+ ]
+}

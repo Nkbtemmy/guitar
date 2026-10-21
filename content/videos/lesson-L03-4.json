@@ -1,0 +1,76 @@
+{
+ "id": "lesson-L03-4",
+ "kind": "lesson",
+ "title": "A minor",
+ "subtitle": "The E shape, one string over.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "A minor",
+   "subtitle": "The E shape, one string over.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn the E shape for A minor — one string over.",
+    "It's part of level 3 of 12, 'First chords'."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "A minor (Am)",
+   "points": [
+    "Finger 1: string 2, fret 1",
+    "Finger 2: string 4, fret 2",
+    "Strum from string 5"
+   ],
+   "lines": [
+    "A minor uses the same shape as E major, moved over by one string.",
+    "Place finger 1 on string 2 at fret 1, finger 2 on string 4 at fret 2, and finger 3 on string 3 at fret 2.",
+    "Skip string 6 and start your strum on string 5 — it's a small shape that sounds rich and full once you get the hang of it."
+   ],
+   "chord": "Am"
+  },
+  {
+   "type": "chord",
+   "chord": "Am",
+   "lines": [
+    "Let's learn the A minor chord — a simple, versatile shape that's great for beginners.",
+    "Finger 1 goes on string 2, fret 1.",
+    "Finger 2 goes on string 4, fret 2.",
+    "Finger 3 goes on string 3, fret 2.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Skip string 6. Keep finger 1 curved so the open high E string rings.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "E",
+    "Am"
+   ],
+   "lines": [
+    "Let's practice changing between E major and A minor.",
+    "Use the same shape: move all three fingers across by one string together."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 1: string 2, fret 1",
+    "Finger 2: string 4, fret 2",
+    "Strum from string 5"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play Am with fingers 1 and 2, and strum from string 5.",
+    "The app is ready to listen — take a turn."
+   ]
+  }
+ ]
+}

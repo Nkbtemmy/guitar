@@ -1,0 +1,113 @@
+{
+ "id": "lesson-L09-3",
+ "kind": "lesson",
+ "title": "The A shape",
+ "subtitle": "Bm, Bb and friends.",
+ "levelId": "L09",
+ "levelIndex": 9,
+ "levelTitle": "Barre chords",
+ "lessonId": "L09-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The A shape",
+   "subtitle": "Bm, Bb and friends.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the A shape: Bm, Bb and friends.",
+    "Practice them slowly, and you'll build strength and confidence with barre chords."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "The A shape",
+   "points": [
+    "Finger 1: strings 5 to 1",
+    "Barre at fret 2 gives Bm"
+   ],
+   "lines": [
+    "Place finger 1 across strings 5 to 1, then form an A or Am shape two frets higher.",
+    "The barre at fret 2 gives you Bm, at fret 1 gives Bb major, and at fret 3 gives C major.",
+    "Skip string 6 — the note on string 5 under the barre tells you the chord's name.",
+    "You've got this — one barre opens the whole neck.",
+    "Play it slow, and let the sound guide you."
+   ],
+   "chord": "Bm"
+  },
+  {
+   "type": "chord",
+   "chord": "Bm",
+   "lines": [
+    "Let's learn the B minor barre chord.",
+    "Press finger 1 flat across fret 2, from string 5 to string 1.",
+    "Lay finger 1 flat across fret 2, from string 5 to string 1.",
+    "Finger 2 goes on string 2, fret 3.",
+    "Finger 3 goes on string 4, fret 4.",
+    "Finger 4 goes on string 3, fret 4.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Barre strings 5 to 1 at fret 2 and skip string 6. If the full barre is hard, start by fretting only strings 4 to 1.",
+   "placementFrom": 2,
+   "placementCount": 5
+  },
+  {
+   "type": "chord",
+   "chord": "Bb",
+   "lines": [
+    "Let's learn B flat major.",
+    "Press finger 1 flat across fret 1, from string 5 to 1.",
+    "Lay finger 1 flat across fret 1, from string 5 to string 1.",
+    "Finger 2 goes on string 4, fret 3.",
+    "Finger 3 goes on string 3, fret 3.",
+    "Finger 4 goes on string 2, fret 3.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Barre fret 1 across strings 5 to 1, with fingers 2, 3 and 4 lined up on fret 3. Keep string 1 ringing under the barre.",
+   "placementFrom": 2,
+   "placementCount": 5
+  },
+  {
+   "type": "chord",
+   "chord": "C_barre",
+   "lines": [
+    "Let's shape the C major chord with a barre at fret 3, keeping the pressure on string 1.",
+    "Lay finger 1 flat across fret 3, from string 5 to string 1.",
+    "Finger 2 goes on string 4, fret 5.",
+    "Finger 3 goes on string 3, fret 5.",
+    "Finger 4 goes on string 2, fret 5.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "The A shape at fret 3: the same chord as open C with a tighter sound. Keep the barre pressing string 1.",
+   "placementFrom": 1,
+   "placementCount": 5
+  },
+  {
+   "type": "change",
+   "chords": [
+    "D",
+    "Bm",
+    "G",
+    "A"
+   ],
+   "lines": [
+    "Let's practice changing between D major, B minor, G major and A major.",
+    "Move smoothly from one to the next, focusing on clear finger placement and even timing."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 1: strings 5 to 1",
+    "Barre at fret 2 gives Bm",
+    "Bm chord shape"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play Bm, Bb or C — the app will listen through the microphone and help you sound your best."
+   ]
+  }
+ ]
+}

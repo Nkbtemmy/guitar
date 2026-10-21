@@ -1,0 +1,40 @@
+{
+ "id": "lesson-L12-2",
+ "kind": "lesson",
+ "title": "Red River Valley",
+ "subtitle": "A campfire classic.",
+ "levelId": "L12",
+ "levelIndex": 12,
+ "levelTitle": "Hero",
+ "lessonId": "L12-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Red River Valley",
+   "subtitle": "A campfire classic.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the A campfire classic 'Red River Valley' — a simple, fingerstyle melody that's perfect for beginners."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "red_river_valley",
+   "lines": [
+    "Let's play 'Red River Valley'.",
+    "The chords are G, D and C.",
+    "Each bar has four beats, and the song plays at 90 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play Red River Valley",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "You're all set to play 'Red River Valley.' Grab your guitar, sing along, and let the app listen through the microphone as you play."
+   ]
+  }
+ ]
+}

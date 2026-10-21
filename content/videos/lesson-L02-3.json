@@ -1,0 +1,86 @@
+{
+ "id": "lesson-L02-3",
+ "kind": "lesson",
+ "title": "Ode to Joy",
+ "subtitle": "Your first melody, by Beethoven.",
+ "levelId": "L02",
+ "levelIndex": 2,
+ "levelTitle": "First notes",
+ "lessonId": "L02-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Ode to Joy",
+   "subtitle": "Your first melody, by Beethoven.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll play the opening melody of Beethoven's Ode to Joy — a simple, uplifting tune that's perfect for your first steps on the guitar."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Ode to Joy",
+   "points": [],
+   "lines": [
+    "You'll play Ode to Joy, a joyful melody by Beethoven.",
+    "It uses the notes C, D, E, F and G you've learned.",
+    "Play slowly and evenly — the app waits for each correct note before moving on.",
+    "You've got this!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Ode to Joy",
+   "notes": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     3
+    ]
+   ],
+   "lines": [
+    "Let's play the opening of Beethoven's Ode to Joy.",
+    "Follow the highlighted notes on the tab and fretboard.",
+    "Each repeated note needs a fresh pluck."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Ode to Joy"
+   ],
+   "lines": [
+    "You've got the melody.",
+    "Play it with confidence — the app is listening, ready to help you sound your best."
+   ]
+  }
+ ]
+}

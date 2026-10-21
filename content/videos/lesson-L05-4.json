@@ -1,0 +1,63 @@
+{
+ "id": "lesson-L05-4",
+ "kind": "lesson",
+ "title": "Waltz time",
+ "subtitle": "Counting in three.",
+ "levelId": "L05",
+ "levelIndex": 5,
+ "levelTitle": "Rhythm",
+ "lessonId": "L05-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Waltz time",
+   "subtitle": "Counting in three.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn to count in three — the heartbeat of waltz time.",
+    "Let's begin."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Counting in three",
+   "points": [
+    "Count in three: 1-2-3",
+    "Use 3/4 time for waltz",
+    "Let the rhythm carry you"
+   ],
+   "lines": [
+    "Some songs count in three: 1-2-3, 1-2-3.",
+    "This is called 3/4 time, or waltz time.",
+    "Let your body follow the rhythm — it feels natural once you move with it."
+   ],
+   "chord": null
+  },
+  {
+   "type": "strum",
+   "pattern": "D-D-D-",
+   "bpm": 80,
+   "beatsPerBar": 3,
+   "chords": [
+    "G",
+    "D"
+   ],
+   "lines": [
+    "Let's try a simple waltz pattern: three even downstrums per bar.",
+    "Play along with the metronome at 80 bpm, and switch between G and D chords as the lights show."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Count in three: 1-2-3",
+    "Use 3/4 time for waltz",
+    "Let the rhythm carry you"
+   ],
+   "lines": [
+    "Waltz time is all about counting 1-2-3 and letting the rhythm carry you.",
+    "Play along now — the app is listening."
+   ]
+  }
+ ]
+}

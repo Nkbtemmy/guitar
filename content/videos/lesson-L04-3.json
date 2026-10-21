@@ -1,0 +1,77 @@
+{
+ "id": "lesson-L04-3",
+ "kind": "lesson",
+ "title": "C major",
+ "subtitle": "The classic stretch.",
+ "levelId": "L04",
+ "levelIndex": 4,
+ "levelTitle": "Changing chords",
+ "lessonId": "L04-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "C major",
+   "subtitle": "The classic stretch.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the classic stretch — the C major chord.",
+    "It's a key shape in changing chords, and we'll learn it step by step."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "C major (C)",
+   "points": [
+    "Finger 3: string 5, fret 3",
+    "Finger 2: string 4, fret 2",
+    "Finger 1: string 2, fret 1",
+    "Thumb low, strum from string 5"
+   ],
+   "lines": [
+    "Place finger 3 on string 5 at fret 3, finger 2 on string 4 at fret 2, and finger 1 on string 2 at fret 1.",
+    "Don't play string 6 — start your strum on string 5.",
+    "The stretch may feel hard at first, but that's normal.",
+    "Keep your thumb low behind the neck and practise slowly."
+   ],
+   "chord": "C"
+  },
+  {
+   "type": "chord",
+   "chord": "C",
+   "lines": [
+    "Let's learn the C major chord — a friendly shape that sounds great in many songs.",
+    "Finger 1 goes on string 2, fret 1.",
+    "Finger 2 goes on string 4, fret 2.",
+    "Finger 3 goes on string 5, fret 3.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Skip string 6. Finger 2 has to arch over string 3 so the open G rings.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "C",
+    "G"
+   ],
+   "lines": [
+    "Let's practice changing between C major and G major.",
+    "Move your fingers smoothly from one shape to the next, and you'll start to feel how these chords fit together."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 3: string 5, fret 3",
+    "Finger 2: string 4, fret 2",
+    "Finger 1: string 2, fret 1"
+   ],
+   "lines": [
+    "Place your fingers, strum from the fifth string, and let's play.",
+    "The app is listening — take a breath, and play your first C major chord."
+   ]
+  }
+ ]
+}

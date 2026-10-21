@@ -1,0 +1,63 @@
+{
+ "id": "lesson-L03-1",
+ "kind": "lesson",
+ "title": "What is a chord?",
+ "subtitle": "Reading chord charts and your first strum.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "What is a chord?",
+   "subtitle": "Reading chord charts and your first strum.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn how to read chord charts and strum your first chord.",
+    "Let's get started."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Reading chord charts",
+   "points": [],
+   "lines": [
+    "A chord is several notes played together by strumming across the strings.",
+    "Chord charts show strings as vertical lines, with string 6 on the left, and frets as horizontal lines.",
+    "Dots tell you where to place your fingers, numbers show which finger to use, O means an open string, and X means a string you should not play.",
+    "Take your time — it all makes sense once you see it in action!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "Your first strum",
+   "points": [
+    "Strum from the lowest string",
+    "Use a loose wrist motion",
+    "Let your hand stay relaxed"
+   ],
+   "lines": [
+    "Your first strum is a smooth, loose motion from the wrist — start at the lowest string of the chord and brush across the others.",
+    "Let your thumb or pick glide down, keeping your hand relaxed.",
+    "You'll find it feels natural once you move with the motion, not against it.",
+    "Take your time — every great guitarist started here.",
+    "You've got this!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Strum from the lowest string",
+    "Use a loose wrist motion",
+    "Let your hand stay relaxed"
+   ],
+   "lines": [
+    "A chord is a group of notes played together.",
+    "Strum from the lowest string with a loose wrist, and keep your hand relaxed."
+   ]
+  }
+ ]
+}

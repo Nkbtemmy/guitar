@@ -1,0 +1,76 @@
+{
+ "id": "lesson-L03-5",
+ "kind": "lesson",
+ "title": "A major",
+ "subtitle": "Three fingers on fret 2.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-5",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "A major",
+   "subtitle": "Three fingers on fret 2.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn the A major chord — three fingers on fret 2.",
+    "It's part of level 3 of 12, 'First chords'."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "A major (A)",
+   "points": [
+    "Fingers 1-3 on fret 2",
+    "Angle fingers for easier pressure",
+    "Strum from string 5 only"
+   ],
+   "lines": [
+    "Place fingers 1, 2 and 3 on fret 2, across strings 4, 3 and 2.",
+    "Angle them slightly to make the squeeze easier.",
+    "Strum from string 5 — skip string 6.",
+    "You've got this, one chord at a time."
+   ],
+   "chord": "A"
+  },
+  {
+   "type": "chord",
+   "chord": "A",
+   "lines": [
+    "The A major chord uses three fingers on fret 2 and plays strings 5 through 1, skipping string 6.",
+    "Finger 1 goes on string 4, fret 2.",
+    "Finger 2 goes on string 3, fret 2.",
+    "Finger 3 goes on string 2, fret 2.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Three fingers share fret 2, so angle them slightly; finger 3 can sit a little further from the fret. Keep string 1 ringing.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "Am",
+    "A"
+   ],
+   "lines": [
+    "Let's practice moving between A minor and A major.",
+    "Focus on smooth transitions — your fingers will get faster with time."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Fingers 1-3 on fret 2",
+    "Angle fingers for easier pressure",
+    "Strum from string 5 only"
+   ],
+   "lines": [
+    "Place fingers 1-3 on fret 2, angle them, and strum from string 5.",
+    "Now play it — the app will listen and help you sound your best."
+   ]
+  }
+ ]
+}

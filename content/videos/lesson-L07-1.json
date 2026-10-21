@@ -1,0 +1,105 @@
+{
+ "id": "lesson-L07-1",
+ "kind": "lesson",
+ "title": "7th chords",
+ "subtitle": "E7, A7 and D7.",
+ "levelId": "L07",
+ "levelIndex": 7,
+ "levelTitle": "More chords",
+ "lessonId": "L07-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "7th chords",
+   "subtitle": "E7, A7 and D7.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches E7, A7 and D7 — three 7th chords to add colour to your playing."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Dominant 7th chords",
+   "points": [
+    "Dominant 7th chords add bluesy tension",
+    "E7: E major, finger 3 lifted",
+    "A7: A major, remove middle note",
+    "Try in favourite songs"
+   ],
+   "lines": [
+    "Dominant 7th chords add a bluesy tension.",
+    "To play E7, use the E major shape but lift finger 3.",
+    "For A7, use the A major shape and remove the middle note.",
+    "These simple shapes work in many styles — try them in your favourite songs."
+   ],
+   "chord": "E7"
+  },
+  {
+   "type": "chord",
+   "chord": "E7",
+   "lines": [
+    "The E7 chord adds a bluesy twist to E major — let's place your fingers.",
+    "Finger 1 goes on string 3, fret 1.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "E major with finger 3 lifted, so string 4 rings open. Strum all six strings.",
+   "placementFrom": 1,
+   "placementCount": 2
+  },
+  {
+   "type": "chord",
+   "chord": "A7",
+   "lines": [
+    "The A dominant 7 chord adds a smooth, bluesy sound to your playing.",
+    "Let's place your fingers now.",
+    "Finger 2 goes on string 4, fret 2.",
+    "Finger 3 goes on string 2, fret 2.",
+    "Don't play string 6.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "A major without the middle finger, so string 3 rings open. Skip string 6.",
+   "placementFrom": 2,
+   "placementCount": 3
+  },
+  {
+   "type": "chord",
+   "chord": "D7",
+   "lines": [
+    "Let's learn the D7 chord — a bright, bluesy sound with a dominant seventh interval.",
+    "Finger 1 goes on string 2, fret 1.",
+    "Finger 2 goes on string 3, fret 2.",
+    "Finger 3 goes on string 1, fret 2.",
+    "Don't play strings 6 and 5.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "A small upside-down triangle: two fingers on fret 2, one on fret 1. Strum from string 4.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "A7",
+    "D7",
+    "E7"
+   ],
+   "lines": [
+    "Let's practice changing between A7, D7 and E7.",
+    "Move your fingers smoothly from one chord to the next, keeping the rhythm steady."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Dominant 7th chords add bluesy tension",
+    "E7: E major, finger 3 lifted",
+    "A7: A major, remove middle note"
+   ],
+   "lines": [
+    "Try E7, A7 and D7 in your favourite songs.",
+    "Play now — the app listens through the microphone and helps you sound great."
+   ]
+  }
+ ]
+}

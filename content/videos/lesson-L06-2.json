@@ -1,0 +1,42 @@
+{
+ "id": "lesson-L06-2",
+ "kind": "lesson",
+ "title": "Down in the Valley",
+ "subtitle": "D and A in waltz time.",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "lessonId": "L06-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Down in the Valley",
+   "subtitle": "D and A in waltz time.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the D and A chords in waltz time.",
+    "You'll play 'Down in the Valley' with simple strumming and clear, easy shapes."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "down_in_the_valley",
+   "lines": [
+    "Let's play 'Down in the Valley'.",
+    "We'll use two simple chords: D and A.",
+    "The song has three beats per bar, played at 90 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play Down in the Valley",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "Now it's your turn.",
+    "Play the tune while the app listens through the microphone, and let's see how it sounds."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,62 @@
+{
+ "id": "lesson-L01-2",
+ "kind": "lesson",
+ "title": "The six strings",
+ "subtitle": "String numbers and their names.",
+ "levelId": "L01",
+ "levelIndex": 1,
+ "levelTitle": "Zero",
+ "lessonId": "L01-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The six strings",
+   "subtitle": "String numbers and their names.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn the names and numbers of the six strings on your guitar."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Meet the strings",
+   "points": [],
+   "lines": [
+    "Meet your guitar's six strings: 6 is the thickest and closest to your face, 1 the thinnest.",
+    "In standard tuning, they're E, A, D, G, B, E.",
+    "Use the memory trick 'Eddie Ate Dynamite, Good Bye Eddie' to remember the order from 6 to 1.",
+    "You're doing great — take your time to explore each string and let the music begin."
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "How to pluck",
+   "points": [
+    "Pick between thumb and index",
+    "Use thumb alone for softer sound",
+    "Gently move wrist to pluck",
+    "Let each note ring fully"
+   ],
+   "lines": [
+    "Hold the pick between your thumb and the side of your index finger, showing only the tip.",
+    "Or use just your thumb for a softer sound.",
+    "Move your wrist gently to pluck the string — let it ring out fully.",
+    "You're already making music with every note you play."
+   ],
+   "chord": null
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Pick between thumb and index",
+    "Use thumb alone for softer sound",
+    "Gently move wrist to pluck"
+   ],
+   "lines": [
+    "Pick between thumb and index, or use thumb alone.",
+    "Gently move your wrist, let each note ring fully."
+   ]
+  }
+ ]
+}

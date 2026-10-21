@@ -1,0 +1,90 @@
+{
+ "id": "lesson-L09-1",
+ "kind": "lesson",
+ "title": "The barre",
+ "subtitle": "Your first full F.",
+ "levelId": "L09",
+ "levelIndex": 9,
+ "levelTitle": "Barre chords",
+ "lessonId": "L09-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The barre",
+   "subtitle": "Your first full F.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches your first full F barre chord — the foundation for many songs to come."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "How to barre",
+   "points": [
+    "Press several strings at once",
+    "Finger flat, behind the fret",
+    "Pull back gently with your arm",
+    "Weeks of practice to sound clean"
+   ],
+   "lines": [
+    "A barre is when your index finger presses several strings at once, flat across the fretboard.",
+    "Roll your finger slightly onto its bony side, keep it just behind the fret, and pull back gently with your arm.",
+    "It takes time — weeks — to sound clean.",
+    "Keep practicing, and you'll get there."
+   ],
+   "chord": "F"
+  },
+  {
+   "type": "chord",
+   "chord": "F",
+   "lines": [
+    "The F major barre chord is a great first step — let's place your fingers one by one.",
+    "Lay finger 1 flat across fret 1, from string 6 to string 1.",
+    "Finger 2 goes on string 3, fret 2.",
+    "Finger 3 goes on string 5, fret 3.",
+    "Finger 4 goes on string 4, fret 3.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Lay finger 1 flat across all six strings at fret 1, rolled slightly onto its bony side. Pull back with your arm instead of squeezing with your thumb.",
+   "placementFrom": 1,
+   "placementCount": 4
+  },
+  {
+   "type": "points",
+   "heading": "Fixing buzzes",
+   "points": [
+    "Slide finger toward headstock or body",
+    "Roll gently until buzz disappears"
+   ],
+   "lines": [
+    "Check your F barre one string at a time.",
+    "If a string buzzes, it may sit in a crease of your index finger.",
+    "Slide the finger slightly toward the headstock or body, or roll it gently until the note rings clear.",
+    "Small adjustments make a big difference — you've got this!"
+   ],
+   "chord": "F"
+  },
+  {
+   "type": "change",
+   "chords": [
+    "C",
+    "F"
+   ],
+   "lines": [
+    "Let's practice changing between C major and F major.",
+    "Move your fingers smoothly and keep the rhythm steady."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Press several strings at once",
+    "Finger flat, behind the fret",
+    "Pull back gently with your arm"
+   ],
+   "lines": [
+    "Press flat, roll gently, and keep practicing — the app is here to listen and help you sound your best."
+   ]
+  }
+ ]
+}

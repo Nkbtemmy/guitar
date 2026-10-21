@@ -11,10 +11,11 @@ import '../../music/notes.dart';
 import '../../practice/trackers.dart';
 import '../theme.dart';
 import '../tuner/tuner_panel.dart';
-import '../widgets/chord_diagram.dart';
+import '../widgets/chord_view.dart';
 import '../widgets/fretboard.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
+import '../widgets/tab_staff.dart';
 
 typedef StepDone = void Function(double score);
 
@@ -74,7 +75,7 @@ class _InfoStepViewState extends State<InfoStepView> {
       StepTitle(widget.step.title!, body: widget.step.body),
       if (chord != null) ...[
         const SizedBox(height: 24),
-        Center(child: ChordDiagram(chord: chord, width: 170, showName: true)),
+        Center(child: ChordView(chord: chord, width: 150)),
         const SizedBox(height: 12),
         for (final line in chord.placement)
           Padding(
@@ -206,7 +207,6 @@ class _NotesStepViewState extends State<NotesStepView> with Listening {
     requiredFrames: 1,
   );
   String? _heard;
-  int _flash = 0;
 
   @override
   void onFrame(AnalysisFrame f) {
@@ -214,10 +214,7 @@ class _NotesStepViewState extends State<NotesStepView> with Listening {
     final heard = p != null && p.clarity >= 0.85 ? 'Heard: ${noteNameWithOctave(p.midi.round())}' : null;
     final advanced = _tracker.process(f);
     if (advanced || heard != _heard) {
-      setState(() {
-        _heard = heard;
-        if (advanced) _flash++;
-      });
+      setState(() => _heard = heard);
       if (advanced && _tracker.done) widget.onDone(1);
     }
   }
@@ -232,7 +229,7 @@ class _NotesStepViewState extends State<NotesStepView> with Listening {
       StepTitle(step.title!, body: step.body),
       const SizedBox(height: 18),
       if (chord != null) ...[
-        Center(child: ChordDiagram(chord: chord, width: 110, showName: true)),
+        Center(child: ChordView(chord: chord, width: 100)),
         const SizedBox(height: 12),
       ],
       if (current != null) ...[
@@ -245,10 +242,11 @@ class _NotesStepViewState extends State<NotesStepView> with Listening {
       ] else
         const _DoneBanner(text: 'All notes played!'),
       const SizedBox(height: 14),
-      _SequenceChips(
-        labels: [for (final n in step.notes) '${stringLetters[n.string]}${n.fret}'],
-        index: _tracker.index,
-        flash: _flash,
+      TabStaff(
+        columns: [for (final n in step.notes) TabColumn.note(n)],
+        current: _tracker.index,
+        markDone: true,
+        columnWidth: 34,
       ),
       const SizedBox(height: 14),
       if (current != null)
@@ -298,7 +296,6 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
   );
   double? _lastOnset;
   String? _hint;
-  int _flash = 0;
 
   @override
   void onFrame(AnalysisFrame f) {
@@ -318,10 +315,7 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
           : 'That sounds more like ${best.symbol}. Check each finger and string.';
       _lastOnset = null;
     }
-    setState(() {
-      _hint = hint;
-      if (advanced) _flash++;
-    });
+    setState(() => _hint = hint);
     if (advanced && _tracker.done) widget.onDone(1);
   }
 
@@ -337,7 +331,7 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
         Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
-            child: ChordDiagram(key: ValueKey(_tracker.index), chord: current, width: 170, showName: true),
+            child: ChordView(key: ValueKey(_tracker.index), chord: current, width: 140),
           ),
           if (next != null && next.id != current.id) ...[
             const SizedBox(width: 18),
@@ -345,7 +339,7 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
               opacity: 0.55,
               child: Column(children: [
                 const Text('Next', style: TextStyle(color: kMuted, fontSize: 12)),
-                ChordDiagram(chord: next, width: 80, showName: true),
+                ChordView(chord: next, width: 70, compact: true),
               ]),
             ),
           ],
@@ -353,7 +347,7 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
       else
         const _DoneBanner(text: 'Great strumming!'),
       const SizedBox(height: 16),
-      _SequenceChips(labels: [for (final c in _chords) c.symbol], index: _tracker.index, flash: _flash),
+      _SequenceChips(labels: [for (final c in _chords) c.symbol], index: _tracker.index),
       const SizedBox(height: 14),
       if (current != null) ...[
         Row(children: [
@@ -381,11 +375,10 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
 }
 
 class _SequenceChips extends StatelessWidget {
-  const _SequenceChips({required this.labels, required this.index, required this.flash});
+  const _SequenceChips({required this.labels, required this.index});
 
   final List<String> labels;
   final int index;
-  final int flash;
 
   @override
   Widget build(BuildContext context) {

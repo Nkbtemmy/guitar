@@ -1,0 +1,79 @@
+{
+ "id": "lesson-L07-5",
+ "kind": "lesson",
+ "title": "Easy F",
+ "subtitle": "Fmaj7, the friendly F.",
+ "levelId": "L07",
+ "levelIndex": 7,
+ "levelTitle": "More chords",
+ "lessonId": "L07-5",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Easy F",
+   "subtitle": "Fmaj7, the friendly F.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches Fmaj7 — the friendly F — part of level 7.",
+    "We'll play it clearly, with no tricks."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Fmaj7: the friendly F",
+   "points": [
+    "Finger 3: string 4, fret 3",
+    "Finger 2: string 3, fret 2",
+    "Strum from string 4"
+   ],
+   "lines": [
+    "The full F chord is a barre chord that most beginners find very hard.",
+    "Fmaj7 is a friendly substitute: finger 3 on string 4 at fret 3, finger 2 on string 3 at fret 2, finger 1 on string 2 at fret 1, and string 1 open.",
+    "Strum from string 4.",
+    "Play it slowly at first, then let your fingers find the rhythm.",
+    "You're doing great — every chord you learn brings you closer to playing the songs you love.",
+    "Keep going, you've got this!"
+   ],
+   "chord": "Fmaj7"
+  },
+  {
+   "type": "chord",
+   "chord": "Fmaj7",
+   "lines": [
+    "Let's learn F major 7.",
+    "It's a warm, jazzy chord that adds color to your playing.",
+    "Finger 1 goes on string 2, fret 1.",
+    "Finger 2 goes on string 3, fret 2.",
+    "Finger 3 goes on string 4, fret 3.",
+    "Don't play strings 6 and 5.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Keep finger 1 curved so the open high E rings: that open string is what makes it a major 7.",
+   "placementFrom": 2,
+   "placementCount": 4
+  },
+  {
+   "type": "change",
+   "chords": [
+    "C",
+    "Fmaj7"
+   ],
+   "lines": [
+    "Let's practice changing between C major and F major 7.",
+    "Move your fingers smoothly from one shape to the next, and you'll get the hang of it in no time."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 3: string 4, fret 3",
+    "Finger 2: string 3, fret 2",
+    "Strum from string 4"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play Fmaj7, and the app will listen through the microphone — ready when you are."
+   ]
+  }
+ ]
+}
