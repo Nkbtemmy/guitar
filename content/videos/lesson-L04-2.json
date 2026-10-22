@@ -1,0 +1,75 @@
+{
+ "id": "lesson-L04-2",
+ "kind": "lesson",
+ "title": "G major",
+ "subtitle": "A big, six-string chord.",
+ "levelId": "L04",
+ "levelIndex": 4,
+ "levelTitle": "Changing chords",
+ "lessonId": "L04-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "G major",
+   "subtitle": "A big, six-string chord.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the G major chord — a big, six-string shape.",
+    "We'll play it with your first three fingers, and move to it from C major in the next lesson."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "G major (G)",
+   "points": [
+    "Finger 2: string 6, fret 3",
+    "Finger 1: string 5, fret 2",
+    "Finger 3: string 1, fret 3"
+   ],
+   "lines": [
+    "Place finger 2 on string 6 at fret 3, finger 1 on string 5 at fret 2, and finger 3 on string 1 at fret 3.",
+    "Keep fingers arched so strings 4, 3 and 2 ring open.",
+    "Take your time — smooth changes come with practice.",
+    "You've got this!"
+   ],
+   "chord": "G"
+  },
+  {
+   "type": "chord",
+   "chord": "G",
+   "lines": [
+    "The G major chord is a bright, open sound that's perfect for beginners — here's how to place your fingers.",
+    "Finger 1 goes on string 5, fret 2.",
+    "Finger 2 goes on string 6, fret 3.",
+    "Finger 3 goes on string 1, fret 3.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Stay on the tips of fingers 1 and 2 so strings 4, 3 and 2 ring open; that's where G gets its bright sound.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "change",
+   "chords": [
+    "G",
+    "D"
+   ],
+   "lines": [
+    "Let's practice changing between G major and D major.",
+    "Move your fingers smoothly from one shape to the next, one chord at a time."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 2: string 6, fret 3",
+    "Finger 1: string 5, fret 2",
+    "Finger 3: string 1, fret 3"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Place your fingers as we practiced, and play G major while the app listens and guides you."
+   ]
+  }
+ ]
+}

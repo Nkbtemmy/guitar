@@ -1,0 +1,112 @@
+{
+ "id": "lesson-L02-2",
+ "kind": "lesson",
+ "title": "Five notes",
+ "subtitle": "C, D, E, F and G on the top two strings.",
+ "levelId": "L02",
+ "levelIndex": 2,
+ "levelTitle": "First notes",
+ "lessonId": "L02-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Five notes",
+   "subtitle": "C, D, E, F and G on the top two strings.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches five notes: C, D, E, F and G on the top two strings.",
+    "Practice them slowly, and you'll be ready for the next step."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Five notes",
+   "points": [
+    "String 2: fret 1 = C",
+    "String 2: fret 3 = D",
+    "String 1 open = E",
+    "String 1: fret 3 = G"
+   ],
+   "lines": [
+    "Let's start with five simple notes.",
+    "On string 2, press fret 1 for C and fret 3 for D.",
+    "On string 1, play the open string for E, fret 1 for F, and fret 3 for G.",
+    "Use finger 1 for fret 1 and finger 3 for fret 3.",
+    "Let each note ring clearly."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "C D E F G",
+   "notes": [
+    [
+     2,
+     1
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     3
+    ]
+   ],
+   "lines": [
+    "Let's play five simple notes that climb up the strings.",
+    "Start with C and D on string 2, then move to E, F and G on string 1."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "G F E D C",
+   "notes": [
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "lines": [
+    "G F E D C.",
+    "Watch the tab and listen to each note."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "String 2: fret 1 = C",
+    "String 2: fret 3 = D",
+    "String 1 open = E"
+   ],
+   "lines": [
+    "Now you know five notes on the top two strings.",
+    "Play them while the app listens — it's your turn to make music."
+   ]
+  }
+ ]
+}

@@ -6,6 +6,7 @@ import '../../curriculum/models.dart';
 import '../../progress/progress_store.dart';
 import '../lesson/lesson_screen.dart';
 import '../theme.dart';
+import '../video/lesson_video_player.dart';
 import '../widgets/brand_mark.dart';
 
 class LearnScreen extends StatelessWidget {
@@ -30,7 +31,7 @@ class LearnScreen extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
-                child: Text('Fretwise', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
+                child: Text('Guitaro', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
               ),
             ),
             _Pill(icon: Icons.local_fire_department_rounded, text: '${progress.streak()}'),
@@ -156,6 +157,24 @@ class _LevelHeader extends StatelessWidget {
             Text(level.subtitle, style: const TextStyle(color: kMuted)),
           ]),
         ),
+        if (context.read<AppServices>().videos.introFor(level.id) case final intro?)
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Tooltip(
+              message: 'Watch the ${level.title} intro',
+              child: OutlinedButton.icon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => VideoScreen(video: intro))),
+                icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+                label: const Text('Intro'),
+                style: OutlinedButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  minimumSize: const Size(0, 34),
+                  shape: const StadiumBorder(),
+                ),
+              ),
+            ),
+          ),
         Text('$done/${level.lessons.length}', style: const TextStyle(color: kMuted, fontWeight: FontWeight.w700)),
       ]),
     );

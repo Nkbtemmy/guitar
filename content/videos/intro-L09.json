@@ -1,0 +1,65 @@
+{
+ "id": "intro-L09",
+ "kind": "intro",
+ "title": "Level 9: Barre chords",
+ "subtitle": "Unlock the whole neck",
+ "levelId": "L09",
+ "levelIndex": 9,
+ "levelTitle": "Barre chords",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 9: Barre chords",
+   "subtitle": "Unlock the whole neck",
+   "lines": [
+    "Barre chords open the whole neck — let's start with your first full F, then move the E and A shapes to play Bm, Bb and more."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "The barre",
+    "The E shape",
+    "The A shape",
+    "The Rising Sun"
+   ],
+   "lines": [
+    "After this level, you'll play full F and other barre chords anywhere on the neck.",
+    "You'll use the E and A shapes to move chords around, and you'll play the Rising Sun progression.",
+    "This opens up a world of songs and styles."
+   ]
+  },
+  {
+   "type": "chordgrid",
+   "chords": [
+    "F",
+    "A_barre",
+    "Fm",
+    "F#m",
+    "Bm",
+    "Bb"
+   ],
+   "lines": [
+    "Today we'll explore six barre chords: F major, A major at the 5th fret, F minor, F sharp minor, B minor and B flat major."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Songs you'll play",
+   "points": [
+    "The Rising Sun Progression"
+   ],
+   "lines": [
+    "This level features one song: The Rising Sun Progression, a traditional instrumental that will help you practice and master barre chords."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with 'The barre' — your first full F, and the key to unlocking the whole neck."
+   ]
+  }
+ ]
+}

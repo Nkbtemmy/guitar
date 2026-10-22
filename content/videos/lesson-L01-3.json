@@ -1,0 +1,58 @@
+{
+ "id": "lesson-L01-3",
+ "kind": "lesson",
+ "title": "Tune up",
+ "subtitle": "Use the tuner to get every string in tune.",
+ "levelId": "L01",
+ "levelIndex": 1,
+ "levelTitle": "Zero",
+ "lessonId": "L01-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Tune up",
+   "subtitle": "Use the tuner to get every string in tune.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn to use the tuner to bring every string into perfect tune.",
+    "Let's begin."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Why tuning matters",
+   "points": [
+    "Tune before every session",
+    "Adjust the peg and recheck"
+   ],
+   "lines": [
+    "Tune your guitar before every session — it's the foundation of playing well.",
+    "A tuner shows if a string is flat or sharp, so you know whether to tighten or loosen it.",
+    "Turn the tuning peg a little, pluck the string, and check again until it's right.",
+    "Small adjustments make a big difference in how your guitar sounds and feels.",
+    "Keep going — you're already making progress!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "tuner",
+   "lines": [
+    "Start with string 6.",
+    "Pluck it, then turn the peg until the needle centers.",
+    "Repeat for each string, one at a time, until all are in tune."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Tune before every session",
+    "Adjust the peg and recheck",
+    "Tune all six strings"
+   ],
+   "lines": [
+    "You're all set.",
+    "Play a simple melody or strum some open strings — the app will listen and help you stay in tune."
+   ]
+  }
+ ]
+}

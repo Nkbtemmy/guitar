@@ -1,0 +1,114 @@
+{
+ "id": "lesson-L11-2",
+ "kind": "lesson",
+ "title": "First licks",
+ "subtitle": "Short phrases from the scale.",
+ "levelId": "L11",
+ "levelIndex": 11,
+ "levelTitle": "Lead guitar",
+ "lessonId": "L11-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "First licks",
+   "subtitle": "Short phrases from the scale.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches short, simple phrases from the scale — your first licks.",
+    "Play them slowly, and let your fingers find their way."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Licks",
+   "points": [
+    "Licks bring your playing to life",
+    "Focus on rhythm and repetition"
+   ],
+   "lines": [
+    "A lick is a short musical phrase that brings your playing to life.",
+    "Focus on the rhythm and repetition as you practice these simple patterns.",
+    "Once the notes are clean, add expression by letting the last note ring or using gentle vibrato.",
+    "You're doing great — keep it slow and steady, and let your sound shine through.",
+    "Have fun exploring these licks!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Lick 1",
+   "notes": [
+    [
+     2,
+     8
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     7
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     7
+    ]
+   ],
+   "lines": [
+    "Let's try Lick 1: a smooth, descending phrase that moves across strings 2, 3 and 4.",
+    "Play each note in order, following the lights on the tab and fretboard."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "Lick 2",
+   "notes": [
+    [
+     1,
+     5
+    ],
+    [
+     1,
+     8
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     2,
+     8
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     1,
+     5
+    ]
+   ],
+   "lines": [
+    "Let's try Lick 2: a simple melody on the top two strings.",
+    "Start at string 1, fret 5, then move to fret 8, back to 5, and across to string 2."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Licks bring your playing to life",
+    "Focus on rhythm and repetition",
+    "Lick 1"
+   ],
+   "lines": [
+    "Licks bring your playing to life.",
+    "Play them with rhythm and repetition — the app listens through the microphone as you try."
+   ]
+  }
+ ]
+}

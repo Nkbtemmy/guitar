@@ -1,0 +1,94 @@
+{
+ "id": "lesson-L08-1",
+ "kind": "lesson",
+ "title": "Power chords",
+ "subtitle": "E5, A5 and D5.",
+ "levelId": "L08",
+ "levelIndex": 8,
+ "levelTitle": "Power chords",
+ "lessonId": "L08-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Power chords",
+   "subtitle": "E5, A5 and D5.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches three power chords: E5, A5 and D5.",
+    "They're the building blocks for many rock and pop riffs."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "What is a power chord?",
+   "points": [
+    "Two notes: root and fifth",
+    "Played on low strings",
+    "Neutral, no third",
+    "Written as E5 or A5"
+   ],
+   "lines": [
+    "A power chord is simple — just two notes: the root and the fifth.",
+    "They're played on the low strings and form the backbone of rock and punk music.",
+    "Without a third, they stay neutral, and you'll see them written as E5 or A5.",
+    "Let's play one together — it's easy, and you'll feel the difference right away."
+   ],
+   "chord": "E5"
+  },
+  {
+   "type": "chord",
+   "chord": "E5",
+   "lines": [
+    "The E power chord is a simple, three-string shape that forms the backbone of many rock riffs.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Finger 3 goes on string 4, fret 2.",
+    "Don't play strings 3, 2 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Strum only the three low strings. Palm-mute near the bridge for a punchy rock sound.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "chord",
+   "chord": "A5",
+   "lines": [
+    "The A5 power chord is simple and strong — just three strings, two fingers, and a clear, ringing sound.",
+    "Finger 2 goes on string 4, fret 2.",
+    "Finger 3 goes on string 3, fret 2.",
+    "Don't play strings 6, 2 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Strum strings 5, 4 and 3 only. Let your fretting fingers lightly touch the higher strings to mute them.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "chord",
+   "chord": "D5",
+   "lines": [
+    "Let's learn the D power chord — a simple, strong shape that's perfect for beginners.",
+    "Finger 1 goes on string 3, fret 2.",
+    "Finger 3 goes on string 2, fret 3.",
+    "Don't play strings 6, 5 and 1.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Strum strings 4, 3 and 2 only. Keep the motion short and controlled.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Two notes: root and fifth",
+    "Played on low strings",
+    "Neutral, no third"
+   ],
+   "lines": [
+    "Power chords are two notes: the root and fifth.",
+    "Play E5, A5 and D5 on the low strings.",
+    "Now, play along while the app listens through the microphone."
+   ]
+  }
+ ]
+}

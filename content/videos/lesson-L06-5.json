@@ -1,0 +1,43 @@
+{
+ "id": "lesson-L06-5",
+ "kind": "lesson",
+ "title": "Oh! Susanna",
+ "subtitle": "D, G and A.",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "lessonId": "L06-5",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Oh! Susanna",
+   "subtitle": "D, G and A.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the chords D, G and A.",
+    "We'll play Oh!",
+    "Susanna, a fun song that brings these shapes together."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "oh_susanna",
+   "lines": [
+    "Let's play 'Oh!",
+    "Susanna' — a lively tune from 1848.",
+    "We'll use three simple chords: D, A and G, with four beats per bar at 100 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play Oh! Susanna",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "Now it's your turn.",
+    "Play along, and the app will listen — no chords, no rules, just you and your guitar."
+   ]
+  }
+ ]
+}

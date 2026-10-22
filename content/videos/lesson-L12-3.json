@@ -1,0 +1,65 @@
+{
+ "id": "lesson-L12-3",
+ "kind": "lesson",
+ "title": "Graduation",
+ "subtitle": "Barre chords, rhythm and changes together.",
+ "levelId": "L12",
+ "levelIndex": 12,
+ "levelTitle": "Hero",
+ "lessonId": "L12-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Graduation",
+   "subtitle": "Barre chords, rhythm and changes together.",
+   "lines": [
+    "Welcome to your final lesson.",
+    "Today, we'll learn barre chords, rhythm, and how to change between them smoothly."
+   ]
+  },
+  {
+   "type": "strum",
+   "pattern": "D-DU-UDU",
+   "bpm": 80,
+   "beatsPerBar": 4,
+   "chords": [
+    "C",
+    "G",
+    "Am",
+    "F"
+   ],
+   "lines": [
+    "Let's try this strumming pattern: down, down-up, up, down-up.",
+    "It's a common rhythm that fits these chords well."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "You're a guitarist",
+   "points": [
+    "Tune your guitar",
+    "Play open and barre chords",
+    "Strum in time",
+    "Pentatonic scale solo"
+   ],
+   "lines": [
+    "You're a guitarist now.",
+    "You can tune your guitar, play open and barre chords, strum in time, fingerpick and solo with the pentatonic scale.",
+    "Keep practising daily, learn songs you love, and play with others — the world is your stage."
+   ],
+   "chord": null
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Tune your guitar",
+    "Play open and barre chords",
+    "Strum in time"
+   ],
+   "lines": [
+    "You're all set to play.",
+    "Let the app listen as you try the chords and the solo — it's your time to shine."
+   ]
+  }
+ ]
+}

@@ -53,6 +53,22 @@ class ProfileScreen extends StatelessWidget {
             subtitle: Slider(value: progress.sensitivity, onChanged: (v) => progress.sensitivity = v),
             trailing: Text(progress.sensitivity < 0.34 ? 'Low' : (progress.sensitivity < 0.67 ? 'Medium' : 'High')),
           ),
+          ListTile(
+            title: const Text('Chord display'),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SegmentedButton<ChordDisplay>(
+                showSelectedIcon: false,
+                segments: const [
+                  ButtonSegment(value: ChordDisplay.both, label: Text('Both')),
+                  ButtonSegment(value: ChordDisplay.tab, label: Text('Tab')),
+                  ButtonSegment(value: ChordDisplay.diagram, label: Text('Diagram')),
+                ],
+                selected: {progress.chordDisplay},
+                onSelectionChanged: (v) => progress.chordDisplay = v.first,
+              ),
+            ),
+          ),
           SwitchListTile(
             title: const Text('Left-handed diagrams'),
             subtitle: const Text('Mirror chord charts and fretboards'),

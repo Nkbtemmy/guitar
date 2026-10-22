@@ -1,0 +1,75 @@
+{
+ "id": "lesson-L11-3",
+ "kind": "lesson",
+ "title": "Bends",
+ "subtitle": "Make notes sing.",
+ "levelId": "L11",
+ "levelIndex": 11,
+ "levelTitle": "Lead guitar",
+ "lessonId": "L11-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Bends",
+   "subtitle": "Make notes sing.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches how to make notes sing using bends.",
+    "Practice slowly, and let the sound guide you."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Bending strings",
+   "points": [
+    "Bend with finger 3",
+    "Hold with fingers 1 and 2",
+    "Match the target pitch",
+    "Practice smooth bends"
+   ],
+   "lines": [
+    "Bending strings gives guitar playing emotion.",
+    "Push the string toward the ceiling with finger 3, while fingers 1 and 2 hold it steady.",
+    "Bend until the pitch matches the target — a whole-step bend raises the sound by two frets.",
+    "With practice, your bends will feel smooth and expressive.",
+    "Add vibrato to make every note sing."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Hit the target",
+   "notes": [
+    [
+     3,
+     9
+    ],
+    [
+     3,
+     9
+    ],
+    [
+     3,
+     9
+    ]
+   ],
+   "lines": [
+    "Let's practice bending.",
+    "Play string 3 at fret 9 to set the target pitch.",
+    "Then bend string 3 at fret 7 up until it matches."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Bend with finger 3",
+    "Hold with fingers 1 and 2",
+    "Match the target pitch"
+   ],
+   "lines": [
+    "Now it's your turn.",
+    "Play a bend, and the app will listen through the microphone."
+   ]
+  }
+ ]
+}

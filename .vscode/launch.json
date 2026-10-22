@@ -1,0 +1,10 @@
+{
+  // Release (the default) installs a build that opens from the iPhone home screen.
+  // On iOS 14+ a debug build only runs while VS Code/Xcode is attached; use it for hot reload.
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Guitaro (release)", "request": "launch", "type": "dart", "flutterMode": "release" },
+    { "name": "Guitaro (debug, hot reload)", "request": "launch", "type": "dart", "flutterMode": "debug" },
+    { "name": "Guitaro (profile)", "request": "launch", "type": "dart", "flutterMode": "profile" }
+  ]
+}

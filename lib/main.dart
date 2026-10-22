@@ -28,11 +28,11 @@ Future<void> main() async {
   }
   final player = SoundPlayer(onReferenceSound: (d) => mic.suppress(d + const Duration(milliseconds: 300)));
   final services = await AppServices.load(rootBundle, player);
-  runApp(FretwiseApp(services: services, progress: progress, mic: mic));
+  runApp(GuitaroApp(services: services, progress: progress, mic: mic));
 }
 
-class FretwiseApp extends StatelessWidget {
-  const FretwiseApp({super.key, required this.services, required this.progress, required this.mic});
+class GuitaroApp extends StatelessWidget {
+  const GuitaroApp({super.key, required this.services, required this.progress, required this.mic});
 
   final AppServices services;
   final ProgressStore progress;
@@ -46,7 +46,7 @@ class FretwiseApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: mic),
         ],
         child: MaterialApp(
-          title: 'Fretwise',
+          title: 'Guitaro',
           debugShowCheckedModeBanner: false,
           theme: buildTheme(),
           home: const HomeShell(),

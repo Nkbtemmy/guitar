@@ -1,0 +1,74 @@
+{
+ "id": "lesson-L04-4",
+ "kind": "lesson",
+ "title": "One-minute changes",
+ "subtitle": "The classic practice drill.",
+ "levelId": "L04",
+ "levelIndex": 4,
+ "levelTitle": "Changing chords",
+ "lessonId": "L04-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "One-minute changes",
+   "subtitle": "The classic practice drill.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the classic practice drill for changing chords.",
+    "Spend one minute on each pair, moving smoothly from one to the next."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "One-minute changes",
+   "points": [
+    "Pick two chords and switch quickly",
+    "Count your changes and improve daily"
+   ],
+   "lines": [
+    "The one-minute change is a classic drill: pick two chords and switch between them as many times as you can in one minute, aiming for a clean strum every time.",
+    "Count your changes and try to beat your record each day.",
+    "It's a fun way to build speed and confidence."
+   ],
+   "chord": null
+  },
+  {
+   "type": "change",
+   "chords": [
+    "G",
+    "C",
+    "D"
+   ],
+   "lines": [
+    "Let's practice changing between G, C and D major.",
+    "Strum each chord once, clearly and evenly, to build smooth transitions."
+   ]
+  },
+  {
+   "type": "change",
+   "chords": [
+    "Em",
+    "C",
+    "G",
+    "D"
+   ],
+   "lines": [
+    "Let's practice these four chords: E minor, C major, G major and D major.",
+    "They're the building blocks of thousands of songs, and changing between them is a great way to start playing."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Pick two chords and switch quickly",
+    "Count your changes and improve daily",
+    "Change G to C"
+   ],
+   "lines": [
+    "Pick two chords and switch quickly.",
+    "Count your changes and improve daily.",
+    "Now play while the app listens — it's time to practice."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "id": "intro-L11",
+ "kind": "intro",
+ "title": "Level 11: Lead guitar",
+ "subtitle": "Scales, licks and bends",
+ "levelId": "L11",
+ "levelIndex": 11,
+ "levelTitle": "Lead guitar",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 11: Lead guitar",
+   "subtitle": "Scales, licks and bends",
+   "lines": [
+    "Level 11: Lead guitar.",
+    "Learn the minor pentatonic scale, craft your first licks, and bend notes to make them sing.",
+    "This is where your solos come to life."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Minor pentatonic",
+    "First licks",
+    "Bends"
+   ],
+   "lines": [
+    "After this level, you'll play minor pentatonic scales, create short melodic licks and bend notes to add emotion to your solos.",
+    "You'll have the tools to improvise confidently in rock, blues and modern styles."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with the minor pentatonic scale — the foundation of rock and blues solos."
+   ]
+  }
+ ]
+}

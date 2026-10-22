@@ -8,6 +8,7 @@ import '../../progress/progress_store.dart';
 import '../practice/song_view.dart';
 import '../practice/strum_view.dart';
 import '../theme.dart';
+import '../video/lesson_video_player.dart';
 import 'steps.dart';
 
 /// Runs a lesson step by step. Listening steps can be skipped (for fewer stars).
@@ -23,8 +24,15 @@ class LessonScreen extends StatefulWidget {
 class _LessonScreenState extends State<LessonScreen> {
   int _index = 0;
   final _scores = <int, double>{};
+  late final AppServices _services = context.read<AppServices>();
 
-  LessonStep get _step => widget.lesson.steps[_index];
+  /// The lesson's steps, opened by its teaching video when one has been rendered.
+  late final List<LessonStep> _steps = [
+    if (_services.videos.forLesson(widget.lesson.id) case final video?) VideoStep(videoId: video.id, title: video.title),
+    ...widget.lesson.steps,
+  ];
+
+  LessonStep get _step => _steps[_index];
   bool get _stepDone => _scores.containsKey(_index);
 
   void _onDone(int index, double score) {
@@ -38,11 +46,12 @@ class _LessonScreenState extends State<LessonScreen> {
   }
 
   void _next() {
-    if (_index + 1 < widget.lesson.steps.length) {
+    if (_index + 1 < _steps.length) {
       setState(() => _index++);
       return;
     }
-    final scores = [for (var i = 0; i < widget.lesson.steps.length; i++) _scores[i] ?? 0.4];
+    // Videos don't count toward stars.
+    final scores = [for (var i = 0; i < _steps.length; i++) if (_steps[i] is! VideoStep) _scores[i] ?? 0.4];
     final avg = scores.reduce((a, b) => a + b) / scores.length;
     final stars = starsFor(avg);
     final xp = context.read<ProgressStore>().completeLesson(widget.lesson.id, stars);
@@ -52,7 +61,7 @@ class _LessonScreenState extends State<LessonScreen> {
   }
 
   Widget _buildStep(LessonStep step) {
-    final services = context.read<AppServices>();
+    final services = _services;
     final i = _index;
     void done(double s) => _onDone(i, s);
     return switch (step) {
@@ -63,12 +72,13 @@ class _LessonScreenState extends State<LessonScreen> {
       ChordStep() || ChangeStep() => ChordSequenceView.forStep(step, done, services.library),
       StrumStep() => StrumView(step: step, onDone: done),
       SongStep(:final songId) => SongView(song: services.curriculum.song(songId), onDone: done),
+      VideoStep() => VideoStepView(step: step, onDone: done),
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    final steps = widget.lesson.steps;
+    final steps = _steps;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => Navigator.of(context).pop()),
@@ -153,5 +163,41 @@ class LessonCompleteScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class VideoStepView extends StatefulWidget {
+  const VideoStepView({super.key, required this.step, required this.onDone});
+
+  final VideoStep step;
+  final StepDone onDone;
+
+  @override
+  State<VideoStepView> createState() => _VideoStepViewState();
+}
+
+class _VideoStepViewState extends State<VideoStepView> {
+  @override
+  void initState() {
+    super.initState();
+    // Videos never block the lesson: Continue is available straight away.
+    WidgetsBinding.instance.addPostFrameCallback((_) => widget.onDone(1));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final video = context.read<AppServices>().videos.all.firstWhere((v) => v.id == widget.step.videoId);
+    return ListView(padding: const EdgeInsets.all(20), children: [
+      const Text('WATCH', style: TextStyle(color: kAccent, fontWeight: FontWeight.w800, letterSpacing: 1.2, fontSize: 12)),
+      const SizedBox(height: 4),
+      Text(video.title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+      const SizedBox(height: 14),
+      LessonVideoPlayer(video: video),
+      const SizedBox(height: 14),
+      Text(video.subtitle, style: const TextStyle(fontSize: 16, color: kMuted)),
+      const SizedBox(height: 6),
+      const Text('Watch the lesson, then tap Continue to play along. The app will listen.',
+          style: TextStyle(color: kMuted)),
+    ]);
   }
 }

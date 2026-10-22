@@ -39,6 +39,7 @@ sealed class LessonStep {
           beatsPerBar: (j['beatsPerBar'] ?? 4) as int,
           body: body),
       'song' => SongStep(songId: j['song'] as String),
+      'video' => VideoStep(videoId: j['video'] as String, title: title),
       final t => throw FormatException('Unknown step type "$t"'),
     };
   }
@@ -128,6 +129,13 @@ class SongStep extends LessonStep {
 
   @override
   bool get listens => true;
+}
+
+/// A lesson video; the lesson runner puts one first when a rendered video exists.
+class VideoStep extends LessonStep {
+  const VideoStep({required this.videoId, super.title});
+
+  final String videoId;
 }
 
 class SongLine {

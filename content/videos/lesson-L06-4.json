@@ -1,0 +1,42 @@
+{
+ "id": "lesson-L06-4",
+ "kind": "lesson",
+ "title": "When the Saints",
+ "subtitle": "G, C and D, upbeat.",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "lessonId": "L06-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "When the Saints",
+   "subtitle": "G, C and D, upbeat.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the upbeat song 'When the Saints', using only the G, C and D chords.",
+    "You'll play it confidently after a few practice runs."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "when_the_saints",
+   "lines": [
+    "Let's play 'When the Saints Go Marching In'.",
+    "The chords are G, D and C.",
+    "The tempo is 100 beats per minute, four beats per bar."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play When the Saints Go Marching In",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "You're all set to play 'When the Saints' with the chords we've learned.",
+    "Let's play along while the app listens and gives you feedback."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,82 @@
+{
+ "id": "lesson-L05-3",
+ "kind": "lesson",
+ "title": "The folk pattern",
+ "subtitle": "Down, down-up, up-down-up.",
+ "levelId": "L05",
+ "levelIndex": 5,
+ "levelTitle": "Rhythm",
+ "lessonId": "L05-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "The folk pattern",
+   "subtitle": "Down, down-up, up-down-up.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the folk pattern: down, down-up, up-down-up.",
+    "Practice it slowly, and it'll feel natural soon."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Down, down-up, up-down-up",
+   "points": [
+    "Folk pattern: Down, Down-Up, Up-Down-Up",
+    "Beat 3: Down motion, then up-strum",
+    "Loose wrist, natural motion"
+   ],
+   "lines": [
+    "Let's practice the folk pattern: Down, Down-Up, Up-Down-Up.",
+    "On beat 3, your hand moves down but misses the strings, then catches the up-strum.",
+    "Keep your wrist loose and let the motion flow naturally — it's all about timing and touch.",
+    "You're doing great, keep going!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "strum",
+   "pattern": "D-DU-UDU",
+   "bpm": 60,
+   "beatsPerBar": 4,
+   "chords": [
+    "G"
+   ],
+   "lines": [
+    "Let's try the folk pattern.",
+    "Strum down, then down-up, up, and down-up.",
+    "With the metronome at 60, each beat is a full strum.",
+    "Keep your wrist loose and let the pattern flow."
+   ]
+  },
+  {
+   "type": "strum",
+   "pattern": "D-DU-UDU",
+   "bpm": 70,
+   "beatsPerBar": 4,
+   "chords": [
+    "G",
+    "C",
+    "D",
+    "G"
+   ],
+   "lines": [
+    "Let's try the folk pattern.",
+    "Strum down, then down-up, up, and down-up.",
+    "Keep time with the metronome at 70 bpm."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Folk pattern: Down, Down-Up, Up-Down-Up",
+    "Beat 3: Down motion, then up-strum",
+    "Loose wrist, natural motion"
+   ],
+   "lines": [
+    "The folk pattern is Down, Down-Up, Up-Down-Up.",
+    "Let's play it — the app will listen through the microphone."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "id": "lesson-L05-2",
+ "kind": "lesson",
+ "title": "Down and up",
+ "subtitle": "Add up-strums on the 'and'.",
+ "levelId": "L05",
+ "levelIndex": 5,
+ "levelTitle": "Rhythm",
+ "lessonId": "L05-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Down and up",
+   "subtitle": "Add up-strums on the 'and'.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches you to add up-strums on the 'and' — the perfect way to build rhythm and control."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Up-strums",
+   "points": [
+    "Up-strums on the 'and' between beats",
+    "Hand swings like a pendulum",
+    "Wrist stays loose and light"
+   ],
+   "lines": [
+    "Up-strums happen on the 'and' between each beat.",
+    "Down on 1, 2, 3, 4 — up on the 'and' in between.",
+    "Let your hand swing smoothly, like a pendulum, and keep your wrist loose so you only catch the higher strings."
+   ],
+   "chord": null
+  },
+  {
+   "type": "strum",
+   "pattern": "DUDUDUDU",
+   "bpm": 60,
+   "beatsPerBar": 4,
+   "chords": [
+    "Am"
+   ],
+   "lines": [
+    "Let's practice a simple down-up strumming pattern.",
+    "With the metronome at 60 beats per minute, play Am on every beat, keeping your strums even and clear."
+   ]
+  },
+  {
+   "type": "strum",
+   "pattern": "D-DUD-DU",
+   "bpm": 70,
+   "beatsPerBar": 4,
+   "chords": [
+    "C"
+   ],
+   "lines": [
+    "Let's practice a simple strumming pattern.",
+    "Down, down-up, down, down-up — that's one bar at 70 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Up-strums on the 'and' between beats",
+    "Hand swings like a pendulum",
+    "Wrist stays loose and light"
+   ],
+   "lines": [
+    "Play along now — the app listens through the microphone.",
+    "Let your hand swing like a pendulum, and keep your wrist loose."
+   ]
+  }
+ ]
+}

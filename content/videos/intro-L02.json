@@ -1,0 +1,41 @@
+{
+ "id": "intro-L02",
+ "kind": "intro",
+ "title": "Level 2: First notes",
+ "subtitle": "Frets, fingers and melodies",
+ "levelId": "L02",
+ "levelIndex": 2,
+ "levelTitle": "First notes",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 2: First notes",
+   "subtitle": "Frets, fingers and melodies",
+   "lines": [
+    "Level 2: First notes.",
+    "Learn finger numbers, play C, D, E, F and G on the top two strings, and make your first melody — Ode to Joy by Beethoven."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Frets and fingers",
+    "Five notes",
+    "Ode to Joy",
+    "Twinkle, Twinkle"
+   ],
+   "lines": [
+    "After this level, you'll place your fingers correctly on the top two strings, play five notes — C, D, E, F and G — and use them to play two short melodies: 'Ode to Joy' and 'Twinkle, Twinkle'.",
+    "You'll also reach the A note on the fifth fret of the top string."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with 'Frets and fingers' — learn finger numbers and how to play clean, clear notes on the guitar."
+   ]
+  }
+ ]
+}

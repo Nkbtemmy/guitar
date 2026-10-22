@@ -1,0 +1,43 @@
+{
+ "id": "intro-L01",
+ "kind": "intro",
+ "title": "Level 1: Zero",
+ "subtitle": "Meet your guitar",
+ "levelId": "L01",
+ "levelIndex": 1,
+ "levelTitle": "Zero",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 1: Zero",
+   "subtitle": "Meet your guitar",
+   "lines": [
+    "Level 1: Zero.",
+    "Meet your guitar, learn its parts, and get every string in tune.",
+    "Play each open string — let's make music together."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Your guitar, up close",
+    "The six strings",
+    "Tune up",
+    "Open strings"
+   ],
+   "lines": [
+    "After this level, you'll know your guitar's parts, hold it confidently, and tune it yourself.",
+    "You'll play each of the six strings clearly, one by one, so the app can hear them.",
+    "You'll be ready to move on to your next lesson, where you'll start playing your first chords."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with your guitar — take a close look at its parts and how to hold it."
+   ]
+  }
+ ]
+}

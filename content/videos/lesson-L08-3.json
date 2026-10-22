@@ -1,0 +1,82 @@
+{
+ "id": "lesson-L08-3",
+ "kind": "lesson",
+ "title": "Palm muting",
+ "subtitle": "Chunky rock rhythm.",
+ "levelId": "L08",
+ "levelIndex": 8,
+ "levelTitle": "Power chords",
+ "lessonId": "L08-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Palm muting",
+   "subtitle": "Chunky rock rhythm.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches chunky rock rhythm using palm mutting.",
+    "We'll focus on power chords and how to mute the strings with the palm of your hand."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Palm muting",
+   "points": [
+    "Edge of hand on strings",
+    "Where strings meet bridge",
+    "Avoid neck or far bridge",
+    "Find the balance"
+   ],
+   "lines": [
+    "Rest the edge of your strumming hand lightly on the strings where they meet the bridge.",
+    "This gives a chunky, percussive sound.",
+    "If your hand drifts toward the neck, the notes die.",
+    "If it sits too far back, nothing is muted.",
+    "Find the spot in between."
+   ],
+   "chord": null
+  },
+  {
+   "type": "strum",
+   "pattern": "DDDDDDDD",
+   "bpm": 80,
+   "beatsPerBar": 4,
+   "chords": [
+    "E5"
+   ],
+   "lines": [
+    "Let's try a simple palm-muting pattern.",
+    "Strum eight eighth-note downstrokes, two per beat, keeping time with the metronome."
+   ]
+  },
+  {
+   "type": "strum",
+   "pattern": "DDDDDDDD",
+   "bpm": 80,
+   "beatsPerBar": 4,
+   "chords": [
+    "E5",
+    "G5",
+    "A5",
+    "E5"
+   ],
+   "lines": [
+    "Let's try a simple rock rhythm.",
+    "Strum each chord with eight even downstrokes, matching the metronome.",
+    "The pattern lights up as it plays — just follow the beats."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Edge of hand on strings",
+    "Where strings meet bridge",
+    "Avoid neck or far bridge"
+   ],
+   "lines": [
+    "Let that muted sound sit in your hand.",
+    "Play along — the app is listening, ready to help you find the balance."
+   ]
+  }
+ ]
+}

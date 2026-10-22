@@ -1,0 +1,94 @@
+{
+ "id": "lesson-L02-4",
+ "kind": "lesson",
+ "title": "Twinkle, Twinkle",
+ "subtitle": "A new note: A on fret 5.",
+ "levelId": "L02",
+ "levelIndex": 2,
+ "levelTitle": "First notes",
+ "lessonId": "L02-4",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Twinkle, Twinkle",
+   "subtitle": "A new note: A on fret 5.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn the note A on fret 5.",
+    "It's part of level 2 of 12, 'First notes'."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "A new note: A",
+   "points": [
+    "Reach fret 5 on string 1",
+    "Stretch finger 4 to fret 5",
+    "Shift hand up slightly"
+   ],
+   "lines": [
+    "You've played up to fret 4 — now reach to fret 5 on string 1 for the note A.",
+    "Use finger 3 on fret 3, then stretch finger 4 (your pinky) to fret 5, or shift your hand up slightly.",
+    "It feels a little awkward at first, but your fingers will grow stronger and more flexible with practice.",
+    "Keep going — you're doing great!",
+    "You're learning to play real music, one note at a time."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "Twinkle, Twinkle, Little Star",
+   "notes": [
+    [
+     2,
+     1
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "lines": [
+    "Let's play 'Twinkle, Twinkle, Little Star'.",
+    "Each note lights up as you play it.",
+    "Follow the pattern on the tab and fretboard."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Reach fret 5 on string 1",
+    "Stretch finger 4 to fret 5",
+    "Shift hand up slightly"
+   ],
+   "lines": [
+    "Play the A on fret 5, stretching finger 4.",
+    "The app is ready to listen — play your Twinkle, Twinkle now."
+   ]
+  }
+ ]
+}

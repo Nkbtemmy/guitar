@@ -1,0 +1,135 @@
+{
+ "id": "lesson-L11-1",
+ "kind": "lesson",
+ "title": "Minor pentatonic",
+ "subtitle": "The scale behind rock and blues solos.",
+ "levelId": "L11",
+ "levelIndex": 11,
+ "levelTitle": "Lead guitar",
+ "lessonId": "L11-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Minor pentatonic",
+   "subtitle": "The scale behind rock and blues solos.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the minor pentatonic scale — the foundation of rock and blues solos.",
+    "Play it over a backing track to start finding your sound."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Box 1",
+   "points": [
+    "Box 1: A minor pentatonic",
+    "Fret 5: finger 1",
+    "Fret 7: finger 3",
+    "Fret 8: finger 4"
+   ],
+   "lines": [
+    "We're looking at Box 1 of the A minor pentatonic scale.",
+    "All the notes here live at the 5th fret.",
+    "Use finger 1 for every note on fret 5, finger 3 on fret 7, and finger 4 on fret 8.",
+    "Play each note cleanly, one at a time — this is where great solos begin."
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "A minor pentatonic, up",
+   "notes": [
+    [
+     6,
+     5
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     5,
+     5
+    ],
+    [
+     5,
+     7
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     4,
+     7
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     3,
+     7
+    ]
+   ],
+   "lines": [
+    "Let's play the A minor pentatonic scale.",
+    "Start on the 5th fret of the 6th string, and follow the highlighted notes up the fretboard."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "A minor pentatonic, down",
+   "notes": [
+    [
+     1,
+     8
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     2,
+     8
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     7
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     7
+    ],
+    [
+     4,
+     5
+    ]
+   ],
+   "lines": [
+    "Let's play the A minor pentatonic scale.",
+    "Each note lights up as you play it, showing you where to press and when to move."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Box 1: A minor pentatonic",
+    "Fret 5: finger 1",
+    "Fret 7: finger 3"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play the A minor pentatonic scale, and the app will listen through the microphone."
+   ]
+  }
+ ]
+}

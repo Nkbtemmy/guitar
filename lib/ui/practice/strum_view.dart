@@ -8,7 +8,7 @@ import '../../curriculum/models.dart';
 import '../../practice/trackers.dart';
 import '../lesson/steps.dart';
 import '../theme.dart';
-import '../widgets/chord_diagram.dart';
+import '../widgets/chord_view.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
 import 'play_along.dart';
@@ -101,10 +101,10 @@ class _StrumViewState extends State<StrumView> with Listening, SingleTickerProvi
                 child: Text('${s.countIn}',
                     style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900, color: kAccent)))
             : Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                ChordDiagram(chord: chord, width: 130, showName: true),
+                ChordView(chord: chord, width: 120),
                 if (next.id != chord.id) ...[
                   const SizedBox(width: 18),
-                  Opacity(opacity: 0.5, child: ChordDiagram(chord: next, width: 70, showName: true)),
+                  Opacity(opacity: 0.5, child: ChordView(chord: next, width: 62, compact: true)),
                 ],
               ]),
       ),
@@ -164,10 +164,15 @@ class _PatternRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(children: [
-              Icon(
-                switch (slots[i]) { 'D' => Icons.arrow_downward_rounded, 'U' => Icons.arrow_upward_rounded, _ => Icons.circle },
-                size: slots[i] == '-' ? 6 : 26,
-                color: i == active ? kOnAccent : (slots[i] == '-' ? kMuted : null),
+              SizedBox(
+                height: 26,
+                child: Center(
+                  child: Icon(
+                    switch (slots[i]) { 'D' => Icons.arrow_downward_rounded, 'U' => Icons.arrow_upward_rounded, _ => Icons.circle },
+                    size: slots[i] == '-' ? 6 : 26,
+                    color: i == active ? kOnAccent : (slots[i] == '-' ? kMuted : null),
+                  ),
+                ),
               ),
               const SizedBox(height: 4),
               Text(i.isEven ? '${i ~/ 2 + 1}' : '&',

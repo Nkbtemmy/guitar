@@ -6,9 +6,10 @@ import '../../audio/analysis.dart';
 import '../../audio/chord_matcher.dart';
 import '../../music/chord.dart';
 import '../../music/chord_library.dart';
+import '../../progress/progress_store.dart';
 import '../lesson/steps.dart';
 import '../theme.dart';
-import '../widgets/chord_diagram.dart';
+import '../widgets/chord_view.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
 
@@ -64,7 +65,7 @@ class _ChordCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: LayoutBuilder(
-              builder: (context, c) => ChordDiagram(chord: chord, width: c.maxWidth * 0.8, showName: true),
+              builder: (context, c) => ChordView(chord: chord, width: c.maxWidth * 0.8, compact: true),
             ),
           ),
         ),
@@ -90,7 +91,7 @@ class _ChordDetailScreenState extends State<ChordDetailScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(chord.name)),
       body: ListView(padding: const EdgeInsets.all(20), children: [
-        Center(child: ChordDiagram(chord: chord, width: 200)),
+        Center(child: ChordView(chord: chord, width: 170, showName: false, display: ChordDisplay.both)),
         const SizedBox(height: 16),
         for (final line in chord.placement)
           Padding(

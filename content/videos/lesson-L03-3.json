@@ -1,0 +1,73 @@
+{
+ "id": "lesson-L03-3",
+ "kind": "lesson",
+ "title": "E major",
+ "subtitle": "Em plus one finger.",
+ "levelId": "L03",
+ "levelIndex": 3,
+ "levelTitle": "First chords",
+ "lessonId": "L03-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "E major",
+   "subtitle": "Em plus one finger.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches E major — Em plus one finger.",
+    "You'll play it cleanly in position, and move to the next chord with control."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "E major (E)",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 3: string 4, fret 2"
+   ],
+   "lines": [
+    "E major is E minor plus one finger.",
+    "Keep the Em shape (fingers 2 and 3 on fret 2 of strings 5 and 4) and add finger 1 on string 3 at fret 1.",
+    "Strum all six strings — that single note turns a sad, minor sound into a bright, major one."
+   ],
+   "chord": "E"
+  },
+  {
+   "type": "chord",
+   "chord": "E",
+   "lines": [
+    "Let's learn E major — a bright, open chord that's perfect for beginners.",
+    "Finger 1 goes on string 3, fret 1.",
+    "Finger 2 goes on string 5, fret 2.",
+    "Finger 3 goes on string 4, fret 2.",
+    "Here's how it sounds: strummed, then string by string."
+   ],
+   "tip": "Em plus finger 1 on string 3. Arch finger 1 so it doesn't touch the open B string next to it.",
+   "placementFrom": 1,
+   "placementCount": 3
+  },
+  {
+   "type": "change",
+   "chords": [
+    "Em",
+    "E"
+   ],
+   "lines": [
+    "Let's practice changing between E minor and E major.",
+    "Only finger 1 moves — lift it for E major, press it for Em."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Finger 2: string 5, fret 2",
+    "Finger 3: string 4, fret 2",
+    "E chord shape"
+   ],
+   "lines": [
+    "Let's put it all together.",
+    "Play E major — the app will listen through the microphone and help you sound your best."
+   ]
+  }
+ ]
+}

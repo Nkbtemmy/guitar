@@ -1,0 +1,75 @@
+{
+ "id": "lesson-L12-1",
+ "kind": "lesson",
+ "title": "12-bar blues",
+ "subtitle": "The progression behind thousands of songs.",
+ "levelId": "L12",
+ "levelIndex": 12,
+ "levelTitle": "Hero",
+ "lessonId": "L12-1",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "12-bar blues",
+   "subtitle": "The progression behind thousands of songs.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the 12-bar blues progression — the foundation behind thousands of songs.",
+    "You'll play it in the key of E, using just three chords."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "12 bars",
+   "points": [],
+   "lines": [
+    "The 12-bar blues is the heartbeat of many great songs.",
+    "In the key of A, you'll play A7 for four bars, then D7 for two, followed by two more bars of A7.",
+    "Next, one bar each of E7, D7, A7 and E7.",
+    "It's a simple pattern that creates powerful emotion — once you know it, you can play along with countless blues and rock tracks.",
+    "Let's get started: strum each chord with a steady rhythm and let the groove take hold."
+   ],
+   "chord": null
+  },
+  {
+   "type": "points",
+   "heading": "The shuffle",
+   "points": [
+    "Shuffle feel: long-short pattern",
+    "Delay up-strums for swing",
+    "Let rhythm move with the groove",
+    "Keep your strumming hand loose"
+   ],
+   "lines": [
+    "The shuffle feel is long-short, long-short — like 'HUMP-ty DUMP-ty'.",
+    "Delay each up-strum slightly to create that swing.",
+    "Let the rhythm relax and move with the groove, not against it.",
+    "You're already playing the blues — now let it breathe.",
+    "One more thing: keep your strumming hand loose, and let the music carry you forward.",
+    "You've got this."
+   ],
+   "chord": null
+  },
+  {
+   "type": "song",
+   "song": "blues_in_a",
+   "lines": [
+    "Let's play the 12-bar blues in A.",
+    "The song uses three chords: A7, D7 and E7.",
+    "Each bar is four beats, and the whole song is 90 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Shuffle feel: long-short pattern",
+    "Delay up-strums for swing",
+    "Let rhythm move with the groove"
+   ],
+   "lines": [
+    "Let the rhythm carry you.",
+    "Play along — the app is listening, ready to help you sound your best."
+   ]
+  }
+ ]
+}

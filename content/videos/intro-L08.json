@@ -1,0 +1,58 @@
+{
+ "id": "intro-L08",
+ "kind": "intro",
+ "title": "Level 8: Power chords",
+ "subtitle": "Rock and riffs",
+ "levelId": "L08",
+ "levelIndex": 8,
+ "levelTitle": "Power chords",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Level 8: Power chords",
+   "subtitle": "Rock and riffs",
+   "lines": [
+    "Level 8: Power chords.",
+    "Rock and riffs start here.",
+    "Three chords — E5, A5, D5 — all using the same shape.",
+    "One shape, every chord.",
+    "Palm muting adds that chunky rhythm."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "In this level",
+   "points": [
+    "Power chords",
+    "Movable shapes",
+    "Palm muting"
+   ],
+   "lines": [
+    "After this level, you'll play E5, A5 and D5 power chords, use one shape for any power chord, and add palm muting to your rhythm.",
+    "These skills will help you play rock riffs and build your confidence on the guitar."
+   ]
+  },
+  {
+   "type": "chordgrid",
+   "chords": [
+    "E5",
+    "A5",
+    "D5",
+    "G5",
+    "C5",
+    "F5"
+   ],
+   "lines": [
+    "Let's explore the power chords: E, A, D, G, C and F.",
+    "They're simple, strong and perfect for beginners."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [],
+   "lines": [
+    "Let's start with power chords — the building blocks of rock and riffs."
+   ]
+  }
+ ]
+}

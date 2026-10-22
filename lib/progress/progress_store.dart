@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../curriculum/models.dart';
 
+/// How chords are drawn: a fretboard box diagram, six-line tab, or both side by side.
+enum ChordDisplay { both, tab, diagram }
+
 /// Learner progress and settings, persisted as one JSON blob in shared preferences.
 class ProgressStore extends ChangeNotifier {
   ProgressStore(this._prefs) {
@@ -17,6 +20,7 @@ class ProgressStore extends ChangeNotifier {
       _unlockAll = j['unlockAll'] as bool? ?? false;
       _leftHanded = j['leftHanded'] as bool? ?? false;
       _sensitivity = (j['sensitivity'] as num?)?.toDouble() ?? 0.5;
+      _chordDisplay = ChordDisplay.values.asNameMap()[j['chordDisplay']] ?? ChordDisplay.both;
     }
   }
 
@@ -28,10 +32,12 @@ class ProgressStore extends ChangeNotifier {
   bool _unlockAll = false;
   bool _leftHanded = false;
   double _sensitivity = 0.5;
+  ChordDisplay _chordDisplay = ChordDisplay.both;
 
   int get xp => _xp;
   bool get unlockAll => _unlockAll;
   bool get leftHanded => _leftHanded;
+  ChordDisplay get chordDisplay => _chordDisplay;
 
   /// 0 (needs loud playing) .. 1 (hears soft playing, but also more noise).
   double get sensitivity => _sensitivity;
@@ -79,6 +85,7 @@ class ProgressStore extends ChangeNotifier {
 
   set unlockAll(bool v) => _update(() => _unlockAll = v);
   set leftHanded(bool v) => _update(() => _leftHanded = v);
+  set chordDisplay(ChordDisplay v) => _update(() => _chordDisplay = v);
   set sensitivity(double v) => _update(() => _sensitivity = v.clamp(0.0, 1.0));
 
   void reset() => _update(() {
@@ -102,6 +109,7 @@ class ProgressStore extends ChangeNotifier {
           'unlockAll': _unlockAll,
           'leftHanded': _leftHanded,
           'sensitivity': _sensitivity,
+          'chordDisplay': _chordDisplay.name,
         }));
     notifyListeners();
   }

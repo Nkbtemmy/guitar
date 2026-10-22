@@ -1,0 +1,41 @@
+{
+ "id": "lesson-L06-3",
+ "kind": "lesson",
+ "title": "Amazing Grace",
+ "subtitle": "G, C and D.",
+ "levelId": "L06",
+ "levelIndex": 6,
+ "levelTitle": "First songs",
+ "lessonId": "L06-3",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Amazing Grace",
+   "subtitle": "G, C and D.",
+   "lines": [
+    "Welcome.",
+    "In this lesson, you'll learn to play 'Amazing Grace' using the chords G, C and D.",
+    "It's part of level 6 of 12, 'First songs'."
+   ]
+  },
+  {
+   "type": "song",
+   "song": "amazing_grace",
+   "lines": [
+    "We'll play 'Amazing Grace' using just three chords: G, C and D.",
+    "The song has a gentle rhythm of three beats per bar at 80 beats per minute."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Play Amazing Grace",
+    "Wait mode, then play along"
+   ],
+   "lines": [
+    "You're all set to play 'Amazing Grace' with the chords we've learned.",
+    "Take a breath, strum with confidence, and let the app listen through the microphone as you play."
+   ]
+  }
+ ]
+}

@@ -1,11 +1,11 @@
 {
-    "name": "fretwise",
-    "short_name": "fretwise",
+    "name": "Guitaro",
+    "short_name": "Guitaro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#4A2511",
     "theme_color": "#4A2511",
-    "description": "A new Flutter project.",
+    "description": "Learn guitar from zero to hero, with an app that listens to you play.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

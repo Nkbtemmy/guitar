@@ -1,0 +1,133 @@
+{
+ "id": "lesson-L10-2",
+ "kind": "lesson",
+ "title": "Alternating bass",
+ "subtitle": "The Travis-picking foundation.",
+ "levelId": "L10",
+ "levelIndex": 10,
+ "levelTitle": "Fingerpicking",
+ "lessonId": "L10-2",
+ "scenes": [
+  {
+   "type": "title",
+   "title": "Alternating bass",
+   "subtitle": "The Travis-picking foundation.",
+   "lines": [
+    "Welcome.",
+    "This lesson teaches the Travis-picking foundation: alternating bass notes with your thumb, while your fingers play melody and rhythm on the higher strings."
+   ]
+  },
+  {
+   "type": "points",
+   "heading": "Alternating bass",
+   "points": [
+    "Travis-style: thumb on 5 and 4",
+    "Let rhythm flow naturally"
+   ],
+   "lines": [
+    "Let's try Travis-style picking: your thumb alternates between two bass strings on every beat, while your fingers add notes in between.",
+    "For a C chord, use thumb on string 5 and string 4; for G, thumb on string 6 and string 4.",
+    "Keep it steady and let the rhythm flow naturally — you're doing great!"
+   ],
+   "chord": null
+  },
+  {
+   "type": "notes",
+   "title": "C with alternating bass",
+   "notes": [
+    [
+     5,
+     3
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     2
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     2
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "lines": [
+    "Let's practice alternating bass on C.",
+    "Thumb on string 5, index on 3, thumb on 4, middle on 2.",
+    "Repeat the pattern twice."
+   ]
+  },
+  {
+   "type": "notes",
+   "title": "G with alternating bass",
+   "notes": [
+    [
+     6,
+     3
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     6,
+     3
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "lines": [
+    "Let's practice alternating bass with the G chord.",
+    "Play these notes in order: thumb on string 6, index on 3, thumb on 4, middle on 2.",
+    "Repeat twice."
+   ]
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Travis-style: thumb on 5 and 4",
+    "Let rhythm flow naturally",
+    "C with alternating bass"
+   ],
+   "lines": [
+    "Let your thumb move freely between the 5th and 4th strings.",
+    "Play along — the app is listening, ready to help you grow."
+   ]
+  }
+ ]
+}

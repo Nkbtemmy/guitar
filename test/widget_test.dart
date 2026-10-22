@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fretwise/app_services.dart';
-import 'package:fretwise/audio/mic_listener.dart';
-import 'package:fretwise/audio/sound_player.dart';
-import 'package:fretwise/curriculum/models.dart';
-import 'package:fretwise/main.dart';
-import 'package:fretwise/music/chord_library.dart';
-import 'package:fretwise/progress/progress_store.dart';
+import 'package:guitaro/app_services.dart';
+import 'package:guitaro/audio/mic_listener.dart';
+import 'package:guitaro/audio/sound_player.dart';
+import 'package:guitaro/curriculum/models.dart';
+import 'package:guitaro/main.dart';
+import 'package:guitaro/music/chord_library.dart';
+import 'package:guitaro/progress/progress_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A mic that never touches the platform.
@@ -35,7 +35,7 @@ Future<(ProgressStore, FakeMic)> pumpApp(WidgetTester tester) async {
   tester.view.physicalSize = const Size(1170, 2532);
   tester.view.devicePixelRatio = 3;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(FretwiseApp(services: services, progress: progress, mic: mic));
+  await tester.pumpWidget(GuitaroApp(services: services, progress: progress, mic: mic));
   await tester.pumpAndSettle();
   return (progress, mic);
 }
@@ -43,7 +43,7 @@ Future<(ProgressStore, FakeMic)> pumpApp(WidgetTester tester) async {
 void main() {
   testWidgets('home shows the first lesson and every tab renders', (tester) async {
     final (_, mic) = await pumpApp(tester);
-    expect(find.text('Fretwise'), findsOneWidget);
+    expect(find.text('Guitaro'), findsOneWidget);
     expect(find.text('Your guitar, up close'), findsWidgets);
 
     for (final tab in ['Songs', 'Chords', 'Tuner', 'Me', 'Learn']) {

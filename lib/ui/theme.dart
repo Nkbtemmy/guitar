@@ -58,6 +58,14 @@ ThemeData buildTheme() {
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
     ),
+    // Without this, selected segments take a salmon tint derived from the seed color.
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? kAccent : null),
+        foregroundColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? kOnAccent : kAccent),
+        side: WidgetStateProperty.all(const BorderSide(color: kSurfaceHigh)),
+      ),
+    ),
     textTheme: base.textTheme.apply(bodyColor: kText, displayColor: kText),
   );
 }
