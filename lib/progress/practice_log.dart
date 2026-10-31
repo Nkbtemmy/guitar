@@ -120,8 +120,54 @@ class Take {
       );
 }
 
+/// Something a teacher set: a song (or a tab) to play through at [tempo] (a share of its full
+/// speed), by [due]. It's done when the learner manages it, or when ticked off by hand.
+class Homework {
+  Homework({
+    required this.id,
+    required this.place,
+    required this.title,
+    this.tempo = 1.0,
+    this.due,
+    this.note = '',
+    this.done = false,
+    DateTime? created,
+  }) : created = created ?? DateTime.now();
+
+  final String id;
+  final SpotPlace place;
+  final String title;
+  final double tempo;
+  final DateTime? due;
+  final String note;
+  bool done;
+  final DateTime created;
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'place': place.toJson(),
+        'title': title,
+        'tempo': tempo,
+        'due': due?.millisecondsSinceEpoch,
+        'note': note,
+        'done': done,
+        'created': created.millisecondsSinceEpoch,
+      };
+
+  static Homework fromJson(Map<String, dynamic> j) => Homework(
+        id: j['id'] as String,
+        place: SpotPlace.fromJson(Map<String, dynamic>.from(j['place'] as Map)),
+        title: j['title'] as String,
+        tempo: (j['tempo'] as num?)?.toDouble() ?? 1.0,
+        due: j['due'] == null ? null : DateTime.fromMillisecondsSinceEpoch((j['due'] as num).toInt()),
+        note: j['note'] as String? ?? '',
+        done: j['done'] as bool? ?? false,
+        created: DateTime.fromMillisecondsSinceEpoch((j['created'] as num).toInt()),
+      );
+}
+
 /// What the learner has practised, kept on the device: the parts they keep missing (to practise
-/// next), their chord-change minutes, and more as the practice tools record it.
+/// next), their chord-change minutes, homework, and more as the practice tools record it.
 class PracticeLog extends ChangeNotifier {
   PracticeLog([this._prefs]) {
     final raw = _prefs?.getString(_key);
@@ -133,6 +179,11 @@ class PracticeLog extends ChangeNotifier {
       }
       for (final MapEntry(:key, :value) in (j['done'] as Map? ?? const {}).entries) {
         _done[key as String] = {for (final item in value as List) item as String};
+      }
+      for (final h in j['homework'] as List? ?? const []) {
+        try {
+          _homework.add(Homework.fromJson(Map<String, dynamic>.from(h as Map)));
+        } catch (_) {}
       }
       for (final t in j['takes'] as List? ?? const []) {
         try {
@@ -170,6 +221,7 @@ class PracticeLog extends ChangeNotifier {
   final _changes = <String, List<ChangeRun>>{};
   final _bests = <String, int>{};
   final _takes = <Take>[];
+  final _homework = <Homework>[];
 
   /// Seconds practised, and plan items done, by day ("2026-10-31").
   final _seconds = <String, int>{};
@@ -249,6 +301,16 @@ class PracticeLog extends ChangeNotifier {
     return runs == null || runs.isEmpty ? null : runs.map((r) => r.count).reduce((x, y) => x > y ? x : y);
   }
 
+  /// Every pair practised, most recent first.
+  List<(String, String)> get changePairs {
+    final pairs = _changes.entries.where((e) => e.value.isNotEmpty).toList()
+      ..sort((x, y) => y.value.last.at.compareTo(x.value.last.at));
+    return [
+      for (final e in pairs)
+        if (e.key.split('|') case [final a, final b]) (a, b),
+    ];
+  }
+
   /// The pair practised most recently, as (a, b).
   (String, String)? get lastChangePair {
     MapEntry<String, List<ChangeRun>>? latest;
@@ -269,6 +331,43 @@ class PracticeLog extends ChangeNotifier {
     if (runs.length > 60) runs.removeAt(0);
     _save();
     return best == null ? count > 0 : count > best;
+  }
+
+  /// Homework still to do first (soonest due first), then what's done.
+  List<Homework> get homework => [..._homework]..sort((a, b) {
+      if (a.done != b.done) return a.done ? 1 : -1;
+      final ad = a.due ?? DateTime(9999), bd = b.due ?? DateTime(9999);
+      return ad.compareTo(bd);
+    });
+
+  void addHomework(Homework h) {
+    _homework.add(h);
+    _save();
+  }
+
+  void removeHomework(Homework h) {
+    _homework.removeWhere((x) => x.id == h.id);
+    _save();
+  }
+
+  void setHomeworkDone(Homework h, bool done) {
+    h.done = done;
+    _save();
+  }
+
+  /// A run of [place] from beginning to end at [tempo] (share of full speed) with [accuracy] of
+  /// it right: the homework there it meets is done. Returns that homework.
+  List<Homework> completeHomework(SpotPlace place, {required double tempo, required double accuracy}) {
+    final met = [
+      for (final h in _homework)
+        if (!h.done && h.place == place && tempo >= h.tempo - 1e-6 && accuracy >= 0.8) h,
+    ];
+    if (met.isEmpty) return met;
+    for (final h in met) {
+      h.done = true;
+    }
+    _save();
+    return met;
   }
 
   /// The learner's recordings, newest first.
@@ -306,6 +405,7 @@ class PracticeLog extends ChangeNotifier {
           'spots': [for (final s in _spots.values) s.toJson()],
           'bests': _bests,
           'takes': [for (final t in _takes) t.toJson()],
+          'homework': [for (final h in _homework) h.toJson()],
           'seconds': _seconds,
           // Only the last few weeks' plans matter.
           'done': {

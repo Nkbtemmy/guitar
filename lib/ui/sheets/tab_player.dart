@@ -286,8 +286,14 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       } else {
         _judge.judgeUpTo(double.infinity, last: _to);
         final right = _judge.results.sublist(_runFrom, _to + 1).where((r) => r == true).length;
-        _notice = 'You played $right of ${_to - _runFrom + 1} notes right.';
-        _finishTake('$right of ${_to - _runFrom + 1} notes right');
+        final total = _to - _runFrom + 1;
+        // Played from beginning to end: it may be the homework.
+        final whole = _runFrom == 0 && _to == widget.tab.events.length - 1;
+        final homework = whole &&
+            widget.place != null &&
+            context.read<PracticeLog>().completeHomework(widget.place!, tempo: _factor, accuracy: right / total).isNotEmpty;
+        _notice = 'You played $right of $total notes right.${homework ? ' Homework done!' : ''}';
+        _finishTake('$right of $total notes right');
         _pause();
       }
     }

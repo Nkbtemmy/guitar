@@ -70,8 +70,36 @@ public domain.
   app listens to its own playback (the system asks to allow it each time); on other phones it
   listens through the mic. The melody is written down as tab here too. Nothing is downloaded from
   YouTube.
+- **Practice tools** (the Practice row on the Learn tab), with a **Today's practice** plan of
+  about 15 minutes laid out the way a teacher would:
+  1. tune up;
+  2. warm up;
+  3. a chord change;
+  4. the top weak spot;
+  5. any homework;
+  6. the next lesson.
+
+  Each part is ticked off once given a real try, practice minutes are counted, and an optional
+  daily reminder can be set. The tools:
+  - **Practise these:** the song lines and tab bars the learner keeps missing in play-along, most
+    needed first. One tap loops the spot.
+  - **Homework:** a teacher sets a song or tab, a speed to reach and a due date. It ticks itself
+    off after a whole run that fast with 80% right.
+  - **Chord changes:** one-minute changes between any two chords, counted by the mic, with
+    personal bests and a chart.
+  - **Fretboard notes:** name the note at a spot, or play the note named, against the clock.
+  - **Ear training:** major or minor, and play back short phrases by ear.
+  - **Metronome:** tap tempo, plus a speed trainer that steps up to a goal. Play-along and the tab
+    player can also "speed up when I get it right".
+  - **Recordings:** record yourself, or a play-along run ("Record me"), then listen back, star,
+    rename. Recordings stay on the phone.
+  - **Progress report:** a summary to send a teacher or parent from any chat app.
 - **Tuner:** a headstock with a peg per string. Auto picks out the string you play; or tap a peg
-  to tune that one and hear it. A straight cents meter, and a "How to tune?" guide.
+  to tune that one and hear it.
+  - Standard, Drop D, half and whole step down, Open G, Open D or DADGAD.
+  - A song can name its tuning (`{tuning: Drop D}`); its tabs then play and are listened for in
+    it.
+  - A straight cents meter, and a "How to tune?" guide.
 - **Also:** a chord library with a "check my chord" mode, stars, XP and streaks, left-handed
   diagrams, mic sensitivity, and the screen kept on while you play.
 

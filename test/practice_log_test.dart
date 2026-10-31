@@ -2,11 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
+import 'package:guitaro/audio/mic_listener.dart';
+import 'package:guitaro/sheets/songbook_store.dart';
 import 'package:guitaro/app_services.dart';
 import 'package:guitaro/curriculum/models.dart';
 import 'package:guitaro/main.dart';
 import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/practice/plan.dart';
+import 'package:guitaro/practice/report.dart';
+import 'package:guitaro/ui/practice/homework_screen.dart';
+import 'package:guitaro/ui/practice/report_screen.dart';
 import 'package:guitaro/practice/reminders.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
@@ -135,6 +141,99 @@ void main() {
     await tester.tap(find.text('Chord changes: C – G'));
     await tester.pumpAndSettle();
     expect(find.text('Start: 60 seconds'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  test('homework ticks itself off for a whole run fast enough and right enough, and keeps', () {
+    final log = PracticeLog(prefs);
+    final grace = Homework(id: 'a', place: const SpotPlace.sheet('pd:amazing_grace'), title: 'Amazing Grace', tempo: 0.8, due: DateTime(2026, 11, 7));
+    final ode = Homework(id: 'b', place: const SpotPlace.tab('pd:ode_to_joy', 0), title: 'Ode to Joy · Melody', due: DateTime(2026, 11, 3));
+    log
+      ..addHomework(grace)
+      ..addHomework(ode);
+    expect([for (final h in log.homework) h.id], ['b', 'a'], reason: 'soonest due first');
+    expect(log.completeHomework(const SpotPlace.sheet('pd:amazing_grace'), tempo: 0.7, accuracy: 1), isEmpty, reason: 'too slow');
+    expect(log.completeHomework(const SpotPlace.sheet('pd:amazing_grace'), tempo: 0.8, accuracy: 0.7), isEmpty, reason: 'too many missed');
+    expect(log.completeHomework(const SpotPlace.sheet('pd:amazing_grace'), tempo: 0.85, accuracy: 0.9), [grace]);
+    final again = PracticeLog(prefs);
+    expect([for (final h in again.homework) (h.id, h.done)], [('b', false), ('a', true)], reason: 'what is still to do first');
+  });
+
+  test("the report: course, practice, chord changes, best scores, homework and what's next", () {
+    final curriculum = Curriculum.fromJson(File('assets/data/curriculum.json').readAsStringSync());
+    final progress = ProgressStore(prefs)..completeLesson(curriculum.lessons.first.id, 3, now: DateTime(2026, 10, 31));
+    final log = PracticeLog(prefs)
+      ..addPractice(const Duration(minutes: 40), now: DateTime(2026, 10, 30))
+      ..recordChanges('C', 'G', 14, now: DateTime(2026, 10, 1))
+      ..recordChanges('C', 'G', 31, now: DateTime(2026, 10, 30))
+      ..recordBest('ear:quality', 9)
+      ..addHomework(Homework(id: 'a', place: const SpotPlace.sheet('x'), title: 'Amazing Grace', tempo: 0.8, due: DateTime(2026, 11, 7)));
+    miss(log, 4, now: DateTime(2026, 10, 30));
+    final report = progressReport(name: 'Jean', progress: progress, log: log, curriculum: curriculum, now: DateTime(2026, 10, 31, 18));
+    expect(report, startsWith('Guitaro progress · Jean · 31 Oct 2026'));
+    expect(report, contains('Course: 1 of ${curriculum.lessons.length} lessons, 3 stars'));
+    expect(report, contains('Practice: 40 min in the last 7 days'));
+    expect(report, contains('C – G best 31/min (first 14)'));
+    expect(report, contains('Major or minor 9/10'));
+    expect(report, contains('○ Amazing Grace at 80% speed by 7 Nov'));
+    expect(report, contains('Amazing Grace, bars 5–8 (missed 1 of 1)'));
+  });
+
+  test('homework set is part of the day', () {
+    final h = Homework(id: 'a', place: const SpotPlace.sheet('x'), title: 'Amazing Grace', tempo: 0.8);
+    final plan = dailyPlan(day: DateTime(2026, 10, 31), homework: h);
+    expect(plan[4].title, 'Homework: Amazing Grace');
+    expect(plan[4].detail, 'Play it through at 80% speed');
+  });
+
+  testWidgets('a teacher sets homework, and the report is ready to send', (tester) async {
+    final services = AppServices(
+      library: ChordLibrary.fromJson(File('assets/data/chords.json').readAsStringSync(),
+          tipsJson: File('assets/data/chord_tips.json').readAsStringSync()),
+      curriculum: Curriculum.fromJson(File('assets/data/curriculum.json').readAsStringSync()),
+      player: QuietPlayer(),
+    );
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    final log = PracticeLog(prefs);
+    final progress = ProgressStore(prefs);
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        Provider.value(value: services),
+        ChangeNotifierProvider.value(value: progress),
+        ChangeNotifierProvider.value(value: log),
+        ChangeNotifierProvider.value(value: SongbookStore(prefs)),
+        ChangeNotifierProvider<MicListener>.value(value: FakeMic()),
+      ],
+      child: const MaterialApp(home: HomeworkScreen()),
+    ));
+    await tester.tap(find.text('Set homework'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).first, 'Down in the');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Down in the Valley (lesson)').last);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.widgetWithText(TextField, 'Note (optional)'), 'Watch the change to D7');
+    await tester.tap(find.text('Set it'));
+    await tester.pumpAndSettle();
+    expect(find.text('Down in the Valley (lesson)'), findsOneWidget);
+    expect(find.text('At 80% speed · Watch the change to D7'), findsOneWidget);
+    expect(log.homework.single.place, const SpotPlace.song('down_in_the_valley'));
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        Provider.value(value: services),
+        ChangeNotifierProvider.value(value: progress),
+        ChangeNotifierProvider.value(value: log),
+      ],
+      child: const MaterialApp(home: ReportScreen()),
+    ));
+    await tester.enterText(find.byType(TextField), 'Jean');
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Guitaro progress · Jean'), findsOneWidget);
+    expect(find.textContaining('○ Down in the Valley (lesson) at 80% speed'), findsOneWidget);
+    expect(progress.studentName, 'Jean');
     expect(tester.takeException(), isNull);
   });
 

@@ -394,8 +394,11 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
         // practice tops out at two stars.
         final accuracy = right / _bars.length;
         final score = _tempo >= 1.0 ? accuracy : accuracy * 0.85;
+        final homework = widget.place != null &&
+            context.read<PracticeLog>().completeHomework(widget.place!, tempo: _tempo, accuracy: accuracy).isNotEmpty;
         _finish(score,
-            'You played ${(accuracy * 100).round()}% of the bars right${_tempo < 1 ? ' at ${(_tempo * 100).round()}% speed' : ''}$wentBack.');
+            'You played ${(accuracy * 100).round()}% of the bars right${_tempo < 1 ? ' at ${(_tempo * 100).round()}% speed' : ''}$wentBack.'
+            '${homework ? ' Homework done!' : ''}');
       } else {
         // Part of the song is practice: it doesn't count towards the lesson.
         _finish(null, 'Bars ${_runStart + 1}–$_to: you played $right of ${_to - _runStart} right$wentBack.');

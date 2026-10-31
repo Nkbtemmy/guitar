@@ -50,6 +50,8 @@ class _TodayCardState extends State<TodayCard> {
         await openSpot(context, item.spot!);
       case PlanKind.metronome:
         await push('', const MetronomeScreen());
+      case PlanKind.homework:
+        await openPlace(context, item.homework!.place, title: item.homework!.title);
       case PlanKind.lesson:
         await push('', LessonScreen(lesson: item.lesson!));
       case PlanKind.songs:
@@ -65,7 +67,13 @@ class _TodayCardState extends State<TodayCard> {
     final progress = context.watch<ProgressStore>();
     final log = context.watch<PracticeLog>();
     final now = DateTime.now();
-    final plan = dailyPlan(day: now, nextLesson: progress.nextLesson(curriculum), pair: log.lastChangePair, spot: log.weakSpots().firstOrNull);
+    final plan = dailyPlan(
+      day: now,
+      nextLesson: progress.nextLesson(curriculum),
+      pair: log.lastChangePair,
+      spot: log.weakSpots().firstOrNull,
+      homework: log.homework.where((h) => !h.done).firstOrNull,
+    );
     final done = plan.where((i) => log.isDone(i.id)).length;
     final minutes = log.practicedOn(now).inMinutes;
     final total = plan.fold(0, (sum, i) => sum + i.minutes);

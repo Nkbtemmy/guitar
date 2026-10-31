@@ -42,6 +42,7 @@ class ProgressStore extends ChangeNotifier {
       _keepPlaying = j['keepPlaying'] as bool? ?? false;
       _tuning = Tuning.named(j['tuning'] as String? ?? '') ?? Tuning.standard;
       _reminder = (j['reminder'] as num?)?.toInt();
+      _studentName = j['studentName'] as String? ?? '';
       _chordOrientation = ChordOrientation.values.asNameMap()[j['chordChart']] ?? ChordOrientation.upright;
       _stringOrder = StringOrder.values.asNameMap()[j['stringOrder']];
       _chordDisplay = ChordDisplay.values.asNameMap()[j['chordDisplay']] ?? ChordDisplay.both;
@@ -67,6 +68,7 @@ class ProgressStore extends ChangeNotifier {
   bool _keepPlaying = false;
   Tuning _tuning = Tuning.standard;
   int? _reminder;
+  String _studentName = '';
   ChordOrientation _chordOrientation = ChordOrientation.upright;
   // Null until the learner picks one, so it follows the app's default until then.
   StringOrder? _stringOrder;
@@ -94,6 +96,9 @@ class ProgressStore extends ChangeNotifier {
 
   /// When to remind the learner to practise, in minutes past midnight; null for never.
   int? get reminder => _reminder;
+
+  /// The student's name, for their progress report.
+  String get studentName => _studentName;
   ChordOrientation get chordOrientation => _chordOrientation;
   StringOrder get stringOrder => _stringOrder ?? StringOrder.lowOnTop;
   ChordDisplay get chordDisplay => _chordDisplay;
@@ -152,6 +157,7 @@ class ProgressStore extends ChangeNotifier {
   set keepPlaying(bool v) => _update(() => _keepPlaying = v);
   set tuning(Tuning v) => _update(() => _tuning = v);
   set reminder(int? v) => _update(() => _reminder = v);
+  set studentName(String v) => _update(() => _studentName = v);
   set chordOrientation(ChordOrientation v) => _update(() => _chordOrientation = v);
   set stringOrder(StringOrder v) => _update(() => _stringOrder = v);
   set chordDisplay(ChordDisplay v) => _update(() => _chordDisplay = v);
@@ -184,6 +190,7 @@ class ProgressStore extends ChangeNotifier {
           'keepPlaying': _keepPlaying,
           'tuning': _tuning.name,
           'reminder': _reminder,
+          'studentName': _studentName,
           'chordChart': _chordOrientation.name,
           if (_stringOrder != null) 'stringOrder': _stringOrder!.name,
           'chordDisplay': _chordDisplay.name,
