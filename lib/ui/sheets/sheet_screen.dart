@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../analytics.dart';
 import '../../app_services.dart';
+import '../../music/notes.dart';
 import '../../progress/practice_log.dart';
 import '../../sheets/chord_sheet.dart';
 import '../../sheets/chord_symbol.dart';
@@ -13,6 +14,7 @@ import '../../sheets/sheet_song.dart';
 import '../../sheets/songbook_store.dart';
 import '../practice/song_view.dart';
 import '../theme.dart';
+import '../tuner/tuner_panel.dart';
 import '../widgets/chord_view.dart';
 import 'sheet_body.dart';
 import 'sheet_editor.dart';
@@ -191,6 +193,20 @@ class _SheetScreenState extends State<SheetScreen> with SingleTickerProviderStat
                       if (sheet.difficulty != null) _Pill(sheet.difficulty!.label),
                       if (sheet.tempo != null) _Pill('${sheet.tempo} BPM'),
                       if (prefs.simplify) const _Pill('Simplified'),
+                      if (sheet.tuning != Tuning.standard)
+                        ActionChip(
+                          avatar: const Icon(Icons.tune_rounded, size: 18),
+                          label: Text('Tune to ${sheet.tuning.name}'),
+                          tooltip: sheet.tuning.spelled,
+                          onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (_) => Scaffold(
+                              appBar: AppBar(title: Text(sheet.tuning.name)),
+                              body: SafeArea(
+                                child: ListView(padding: const EdgeInsets.all(20), children: [TunerPanel(tuning: sheet.tuning)]),
+                              ),
+                            ),
+                          )),
+                        ),
                     ],
                   ),
                   if (suggested != capo && sounding.isNotEmpty)

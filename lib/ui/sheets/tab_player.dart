@@ -51,6 +51,7 @@ class TabPlayerScreen extends StatefulWidget {
     this.place,
     this.from,
     this.to,
+    this.tuning = Tuning.standard,
   });
 
   final TabSequence tab;
@@ -68,6 +69,9 @@ class TabPlayerScreen extends StatefulWidget {
 
   /// Open on notes [from]..[to], looping them (practising a weak spot).
   final int? from, to;
+
+  /// How the guitar is tuned for this tab: it sounds, and is listened for, in this tuning.
+  final Tuning tuning;
 
   @override
   State<TabPlayerScreen> createState() => _TabPlayerScreenState();
@@ -101,7 +105,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   /// How each note went, judged as the music passes it.
   late final _judge = NoteJudge(
     beats: [for (var i = 0; i < widget.tab.events.length; i++) _beatOf(i)],
-    notes: [for (final e in widget.tab.events) e.midiNotes],
+    notes: [for (var i = 0; i < widget.tab.events.length; i++) _notesOf(widget.tab.events[i])],
     matches: NoteMatcher.matches,
   );
   final _rewinder = Rewinder(misses: 3);
@@ -138,7 +142,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   /// Learn: the notes to play, one at a time.
   late final _learn = SequenceTracker<TabEvent>(
     targets: widget.tab.events,
-    matcher: (f, e) => e.midiNotes.any((m) => NoteMatcher.matches(f, m)),
+    matcher: (f, e) => _notesOf(e).any((m) => NoteMatcher.matches(f, m)),
     requiredFrames: 1,
   );
   String? _heard;
@@ -154,6 +158,9 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
     _services = context.read<AppServices>();
     _position.value = _beatOf(_from);
   }
+
+  /// What [e] sounds as, in this tab's tuning.
+  List<int> _notesOf(TabEvent e) => [for (final MapEntry(key: string, value: fret) in e.frets.entries) widget.tuning.midiAt(string, fret)];
 
   double _beatOf(int event) => widget.tab.events[event].column / TabSequence.columnsPerBeat;
   double get _factor => _trained ?? _speed.factor;
@@ -211,6 +218,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
         countIn: countIn,
         metronome: _metronome,
         listening: true,
+        tuning: widget.tuning,
       );
     } else {
       // Clicks only: a bar to count in, then the passage.
@@ -366,7 +374,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
         _remember(note, true);
       } else if (_keepPlaying &&
           !_learn.done &&
-          _wrong.hear(f, (f) => _learn.current!.midiNotes.any((m) => NoteMatcher.matches(f, m)))) {
+          _wrong.hear(f, (f) => _notesOf(_learn.current!).any((m) => NoteMatcher.matches(f, m)))) {
         // Keeping going: a wrong note moves on too, marked red.
         _judge.results[note] = false;
         _remember(note, false);

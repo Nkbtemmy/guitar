@@ -15,6 +15,9 @@ import 'package:guitaro/progress/progress_store.dart';
 import 'dart:typed_data';
 
 import 'package:guitaro/practice/ear.dart';
+import 'package:guitaro/sheets/chord_sheet.dart';
+import 'package:guitaro/ui/sheets/sheet_body.dart';
+import 'package:guitaro/ui/tuner/tuner_panel.dart';
 import 'package:guitaro/practice/takes.dart';
 import 'package:guitaro/ui/practice/recordings_screen.dart';
 import 'package:guitaro/ui/practice/chord_challenge_screen.dart';
@@ -296,6 +299,63 @@ void main() {
       expect(practice.takes, isEmpty);
       expect(file!.existsSync(), isFalse);
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('tunings', () {
+    test('a song names its tuning any of the usual ways', () {
+      expect(Tuning.named('Drop D'), Tuning.dropD);
+      expect(Tuning.named('drop-d'), Tuning.dropD);
+      expect(Tuning.named('D A D G B E'), Tuning.dropD);
+      expect(Tuning.named('Eb'), Tuning.halfStepDown);
+      expect(Tuning.named('half step down'), Tuning.halfStepDown);
+      expect(Tuning.named('DADGAD'), Tuning.dadgad);
+      expect(Tuning.named('open g'), Tuning.openG);
+      expect(Tuning.named('kazoo'), isNull);
+      expect(Tuning.openD.spelled, 'D A D F# A D');
+      expect(Tuning.dropD.midiAt(6, 0), 38);
+    });
+
+    test('a sheet keeps its tuning, and writes it back out', () {
+      final sheet = ChordSheet.parse('{title: Low Riff}\n{tuning: Drop D}\n\ne|-----|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-0-2-|\n', id: 'x');
+      expect(sheet.tuning, Tuning.dropD);
+      expect(sheet.toChordPro(), contains('{tuning: Drop D}'));
+      expect(ChordSheet.parse('{title: Plain}\n[G]Hi', id: 'y').tuning, Tuning.standard);
+    });
+
+    testWidgets("a tab in Drop D plays, and is listened for, in Drop D", (tester) async {
+      final sheet = ChordSheet.parse('{title: Low Riff}\n{tuning: Drop D}\n\ne|-----|\nB|-----|\nG|-----|\nD|-----|\nA|-----|\nE|-0-2-|\n', id: 'x');
+      final (_, _, mic, player) = await pumpTool(tester, Builder(
+        builder: (context) => Scaffold(body: Center(child: TextButton(onPressed: () => openTabPlayer(context, sheet, 0), child: const Text('Open')))),
+      ));
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Play'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+      expect(player.lastTuning, Tuning.dropD);
+      // Learn listens for the low D the open sixth string sounds in Drop D, not standard's E.
+      await tester.tap(find.byTooltip('Pause'));
+      await tester.pump();
+      await tester.tap(find.text('Learn'));
+      await tester.pumpAndSettle();
+      final d = midiToFreq(38);
+      mic.hear(AnalysisFrame(time: 1, rms: 0.1, pitch: PitchResult(d, 1), peaks: [SpectralPeak(d, 1)], onsets: const [0.99]));
+      await tester.pumpAndSettle();
+      // Notes at columns 1 and 3: beats 0.25 and 0.75.
+      expect(tester.widget<Slider>(find.byType(Slider)).value, 0.75, reason: 'heard: moved on to the second note');
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('the tuner tunes to the tuning picked', (tester) async {
+      final (progress, _, _, _) = await pumpTool(tester, const Scaffold(body: SingleChildScrollView(child: TunerPanel())));
+      await tester.tap(find.text('Guitar · Standard'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Drop D'));
+      await tester.pumpAndSettle();
+      expect(progress.tuning, Tuning.dropD);
+      expect(find.text('D A D G B E'), findsOneWidget);
+      expect(find.text('D'), findsNWidgets(2), reason: 'the low string\'s peg now reads D');
     });
   });
 }

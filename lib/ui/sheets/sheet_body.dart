@@ -55,6 +55,7 @@ void openTabPlayer(BuildContext context, ChordSheet sheet, int index, {int? from
       place: SpotPlace.tab(sheet.id, index),
       from: from,
       to: to,
+      tuning: sheet.tuning,
     ),
   ));
 }

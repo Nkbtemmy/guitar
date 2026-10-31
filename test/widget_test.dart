@@ -72,13 +72,16 @@ class QuietPlayer extends SoundPlayer {
       int beatsPerBar = 4,
       bool countIn = false,
       bool metronome = false,
-      bool listening = false}) async {
+      bool listening = false,
+      Tuning tuning = Tuning.standard}) async {
     tabs.add((from, to, listening));
     lastTab = tab;
+    lastTuning = tuning;
     return Duration.zero;
   }
 
   TabSequence? lastTab;
+  Tuning? lastTuning;
 
   /// Chords strummed, in order.
   final chords = <Chord>[];

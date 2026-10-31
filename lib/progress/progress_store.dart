@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../curriculum/models.dart';
+import '../music/notes.dart';
 
 /// How chords are drawn: a fretboard box diagram, six-line tab, or both side by side.
 enum ChordDisplay { both, tab, diagram }
@@ -39,6 +40,7 @@ class ProgressStore extends ChangeNotifier {
       _shareUsage = j['shareUsage'] as bool? ?? true;
       _keepScreenOn = j['keepScreenOn'] as bool? ?? true;
       _keepPlaying = j['keepPlaying'] as bool? ?? false;
+      _tuning = Tuning.named(j['tuning'] as String? ?? '') ?? Tuning.standard;
       _chordOrientation = ChordOrientation.values.asNameMap()[j['chordChart']] ?? ChordOrientation.upright;
       _stringOrder = StringOrder.values.asNameMap()[j['stringOrder']];
       _chordDisplay = ChordDisplay.values.asNameMap()[j['chordDisplay']] ?? ChordDisplay.both;
@@ -62,6 +64,7 @@ class ProgressStore extends ChangeNotifier {
   bool _shareUsage = true;
   bool _keepScreenOn = true;
   bool _keepPlaying = false;
+  Tuning _tuning = Tuning.standard;
   ChordOrientation _chordOrientation = ChordOrientation.upright;
   // Null until the learner picks one, so it follows the app's default until then.
   StringOrder? _stringOrder;
@@ -83,6 +86,9 @@ class ProgressStore extends ChangeNotifier {
   /// Playing along, carry on through missed notes and bars (they just turn red) instead of
   /// going back to try them again; in Learn, move on after a wrong note instead of waiting.
   bool get keepPlaying => _keepPlaying;
+
+  /// The tuning the tuner tunes to (lessons always use standard).
+  Tuning get tuning => _tuning;
   ChordOrientation get chordOrientation => _chordOrientation;
   StringOrder get stringOrder => _stringOrder ?? StringOrder.lowOnTop;
   ChordDisplay get chordDisplay => _chordDisplay;
@@ -139,6 +145,7 @@ class ProgressStore extends ChangeNotifier {
   set shareUsage(bool v) => _update(() => _shareUsage = v);
   set keepScreenOn(bool v) => _update(() => _keepScreenOn = v);
   set keepPlaying(bool v) => _update(() => _keepPlaying = v);
+  set tuning(Tuning v) => _update(() => _tuning = v);
   set chordOrientation(ChordOrientation v) => _update(() => _chordOrientation = v);
   set stringOrder(StringOrder v) => _update(() => _stringOrder = v);
   set chordDisplay(ChordDisplay v) => _update(() => _chordDisplay = v);
@@ -169,6 +176,7 @@ class ProgressStore extends ChangeNotifier {
           'shareUsage': _shareUsage,
           'keepScreenOn': _keepScreenOn,
           'keepPlaying': _keepPlaying,
+          'tuning': _tuning.name,
           'chordChart': _chordOrientation.name,
           if (_stringOrder != null) 'stringOrder': _stringOrder!.name,
           'chordDisplay': _chordDisplay.name,
