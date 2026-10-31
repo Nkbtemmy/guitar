@@ -71,6 +71,13 @@ class SoundPlayer {
         reference: false,
       );
 
+  /// Metronome clicks, a bar at each tempo in [barBpms] (a speed trainer steps them up), beat 1
+  /// of each bar accented. Streamed like a song, so minutes of it cost little memory. Not a
+  /// reference sound: the mic keeps listening.
+  Future<Duration> playMetronome({required List<int> barBpms, required int beatsPerBar}) => _playTrack(
+      'metronome:$beatsPerBar:${barBpms.length}:${Object.hashAll(barBpms)}', _metronomeJob(synth, barBpms, beatsPerBar),
+      reference: false);
+
   /// A strummed demo of a song or exercise: one chord per bar, following [strum].
   Future<Duration> playProgression({
     required String key,
@@ -128,6 +135,23 @@ class SoundPlayer {
   static SynthTrack Function() _barsJob(GuitarSynth synth, List<Chord> bars, StrumPattern strum, int bpm,
           {bool countIn = false, bool clicks = false}) =>
       () => renderBars(synth, bars, strum: strum, bpm: bpm, countIn: countIn, clicks: clicks);
+
+  static SynthTrack Function() _metronomeJob(GuitarSynth synth, List<int> barBpms, int beatsPerBar) => () {
+        final sr = synth.sampleRate;
+        final clicks = <(int, bool)>[];
+        var t = 0.0;
+        for (final bpm in barBpms) {
+          for (var b = 0; b < beatsPerBar; b++) {
+            clicks.add(((t * sr).round(), b == 0));
+            t += 60 / bpm;
+          }
+        }
+        final out = SynthTrack(synth, ((t + 0.2) * sr).round());
+        for (final (at, accent) in clicks) {
+          out.addClick(at, accent: accent);
+        }
+        return out;
+      };
 
   static SynthTrack Function() _tabJob(
           GuitarSynth synth, TabSequence tab, int bpm, int from, int last, int beatsPerBar,

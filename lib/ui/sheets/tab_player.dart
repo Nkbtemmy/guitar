@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -116,6 +118,10 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   /// The note this run started from (going back doesn't start a new run).
   int _runFrom = 0;
 
+  /// While looping: after a clean pass, play the next one a little faster ([_trained]).
+  bool _speedUp = false;
+  double? _trained;
+
   /// Learn: the notes to play, one at a time.
   late final _learn = SequenceTracker<TabEvent>(
     targets: widget.tab.events,
@@ -137,7 +143,8 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   }
 
   double _beatOf(int event) => widget.tab.events[event].column / TabSequence.columnsPerBeat;
-  int get _bpm => (widget.bpm * (_learning ? 1 : _speed.factor)).round().clamp(20, 300);
+  double get _factor => _trained ?? _speed.factor;
+  int get _bpm => (widget.bpm * (_learning ? 1 : _factor)).round().clamp(20, 300);
   int get _from => _loop.start.round();
   int get _to => _loop.end.round();
   bool get _playing => _clock.isRunning;
@@ -235,6 +242,17 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
     if (beats * 60 / _bpm >= widget.tab.durationOf(_bpm, from: _passFrom, to: _to)) {
       if (_looping) {
         _clock.stop();
+        // The pass's last notes, before the next pass judges them afresh.
+        for (final i in _judge.judgeUpTo(double.infinity, last: _to)) {
+          _remember(i, _judge.results[i]!);
+        }
+        final right = _judge.results.sublist(_from, _to + 1).where((r) => r == true).length;
+        if (_speedUp && right >= 0.9 * (_to - _from + 1) && _factor < 1.5) {
+          setState(() {
+            _trained = math.min(1.5, _factor + 0.05);
+            _notice = 'Clean! Speeding up to $_bpm BPM.';
+          });
+        }
         _startPass(_from, countIn: false);
       } else {
         _judge.judgeUpTo(double.infinity, last: _to);
@@ -297,6 +315,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
     if (wasPlaying) _pause();
     setState(() {
       _speed = speed;
+      _trained = null;
       _heard = null;
       if (speed == TabSpeed.learn) {
         final event = _eventAt(_position.value);
@@ -509,6 +528,13 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
                   label: const Text('Loop'),
                   selected: _looping,
                   onSelected: (v) => setState(() => _looping = v),
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.trending_up_rounded, size: 18),
+                  label: const Text('Speed up when I get it right'),
+                  tooltip: 'While looping: after a clean pass, 5% faster.',
+                  selected: _speedUp,
+                  onSelected: (v) => setState(() => _speedUp = v),
                 ),
                 FilterChip(
                   label: const Text('Count-in'),

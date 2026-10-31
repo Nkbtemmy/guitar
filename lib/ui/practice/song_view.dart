@@ -101,6 +101,9 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   /// Goes back about ten seconds when the learner keeps missing, unless Keep playing is on.
   final _rewinder = Rewinder();
 
+  /// With Repeat: after a clean time through, play the next one a little faster.
+  bool _speedUp = false;
+
   /// Bars of the running session judged so far; where this run began (going back doesn't start a
   /// new run), and how many times it went back.
   int _judged = 0, _runStart = 0, _rewinds = 0;
@@ -352,7 +355,12 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       if (_repeat) {
         final right = [for (var i = 0; i < s.barChords.length; i++) s.bars.barCorrect(i)].where((ok) => ok).length;
         _passes++;
-        setState(() => _result = 'Time $_passes: $right of ${s.barChords.length} bars right. Again!');
+        var message = 'Time $_passes: $right of ${s.barChords.length} bars right. Again!';
+        if (_speedUp && right >= 0.9 * s.barChords.length && _tempo < 1) {
+          _tempo = math.min(1.0, _tempo + 0.05);
+          message = 'Clean! Speeding up to ${(_tempo * 100).round()}%: ${(widget.song.bpm * _tempo).round()} BPM.';
+        }
+        setState(() => _result = message);
         _startPlayAlong();
         return;
       }
@@ -532,7 +540,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                     value: _tempo,
                     min: 0.5,
                     max: 1.0,
-                    divisions: 5,
+                    divisions: 10,
                     label: '${(song.bpm * _tempo).round()} BPM',
                     onChanged: (v) => setState(() => _tempo = v),
                   ),
@@ -555,6 +563,13 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                   label: const Text('Repeat this line'),
                   selected: _repeat,
                   onSelected: _setRepeat,
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.trending_up_rounded, size: 18),
+                  label: const Text('Speed up when I get it right'),
+                  tooltip: 'With Repeat on: after a clean time through, 5% faster, up to full speed.',
+                  selected: _speedUp,
+                  onSelected: (v) => setState(() => _speedUp = v),
                 ),
                 if (_startBar > 0)
                   ActionChip(

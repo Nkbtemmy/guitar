@@ -86,6 +86,15 @@ class QuietPlayer extends SoundPlayer {
   @override
   Future<Duration> playNote(int midi) async => Duration.zero;
 
+  /// Bars of each metronome run asked for.
+  final metronomes = <List<int>>[];
+
+  @override
+  Future<Duration> playMetronome({required List<int> barBpms, required int beatsPerBar}) async {
+    metronomes.add(barBpms);
+    return Duration.zero;
+  }
+
   @override
   Future<void> stop() async {}
 }

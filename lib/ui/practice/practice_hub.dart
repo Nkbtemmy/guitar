@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../progress/practice_log.dart';
 import '../theme.dart';
+import 'metronome_screen.dart';
 import 'weak_spots_screen.dart';
 
 /// The practice tools, as a row of tiles on the Learn tab.
@@ -22,6 +23,12 @@ class PracticeTools extends StatelessWidget {
         subtitle: spots == 0 ? 'Your weak spots' : '$spots to fix',
         badge: spots > 0,
         onTap: () => _open(context, const WeakSpotsScreen()),
+      ),
+      _Tool(
+        icon: Icons.timer_outlined,
+        title: 'Metronome',
+        subtitle: 'And speed trainer',
+        onTap: () => _open(context, const MetronomeScreen()),
       ),
     ];
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
