@@ -9,14 +9,15 @@ import '../theme.dart';
 import 'song_view.dart';
 
 /// Goes straight to a weak spot: its song's line in play-along, looping, or its tab's bar,
-/// looping. A spot whose song has since been deleted is dropped.
-void openSpot(BuildContext context, WeakSpot spot) {
+/// looping. A spot whose song has since been deleted is dropped. Completes when the learner
+/// comes back.
+Future<void> openSpot(BuildContext context, WeakSpot spot) async {
   final place = spot.place;
   switch (place.kind) {
     case SpotKind.song:
       final song = context.read<AppServices>().curriculum.songs[place.id];
       if (song == null) return _gone(context, spot);
-      Navigator.of(context).push(MaterialPageRoute<void>(
+      await Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (_) => Scaffold(
           appBar: AppBar(title: Text(spot.title)),
           body: SafeArea(child: SongView(song: song, place: place, startBar: spot.from, repeat: true)),
@@ -24,11 +25,11 @@ void openSpot(BuildContext context, WeakSpot spot) {
       ));
     case SpotKind.sheet:
       if (findSheet(context, place.id) == null) return _gone(context, spot);
-      openPlayAlong(context, place.id, startBar: spot.from, repeat: true);
+      await openPlayAlong(context, place.id, startBar: spot.from, repeat: true);
     case SpotKind.tab:
       final sheet = findSheet(context, place.id);
       if (sheet == null) return _gone(context, spot);
-      openTabPlayer(context, sheet, place.index, from: spot.from, to: spot.to);
+      await openTabPlayer(context, sheet, place.index, from: spot.from, to: spot.to);
   }
 }
 

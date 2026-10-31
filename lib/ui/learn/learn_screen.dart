@@ -6,6 +6,7 @@ import '../../curriculum/models.dart';
 import '../../progress/progress_store.dart';
 import '../lesson/lesson_screen.dart';
 import '../practice/practice_hub.dart';
+import '../practice/today_card.dart';
 import '../theme.dart';
 import '../video/lesson_video_player.dart';
 import '../widgets/brand_mark.dart';
@@ -48,6 +49,7 @@ class LearnScreen extends StatelessWidget {
             child: _ContinueCard(lesson: next, level: curriculum.levelOf(next), onTap: () => _open(context, next)),
           ),
         ),
+      const SliverToBoxAdapter(child: TodayCard()),
       const SliverToBoxAdapter(child: PracticeTools()),
       for (final level in curriculum.levels) ...[
         SliverToBoxAdapter(child: _LevelHeader(level: level, progress: progress)),

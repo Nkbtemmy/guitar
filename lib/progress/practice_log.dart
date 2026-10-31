@@ -128,6 +128,12 @@ class PracticeLog extends ChangeNotifier {
     if (raw == null) return;
     try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
+      for (final MapEntry(:key, :value) in (j['seconds'] as Map? ?? const {}).entries) {
+        _seconds[key as String] = (value as num).toInt();
+      }
+      for (final MapEntry(:key, :value) in (j['done'] as Map? ?? const {}).entries) {
+        _done[key as String] = {for (final item in value as List) item as String};
+      }
       for (final t in j['takes'] as List? ?? const []) {
         try {
           _takes.add(Take.fromJson(Map<String, dynamic>.from(t as Map)));
@@ -164,6 +170,40 @@ class PracticeLog extends ChangeNotifier {
   final _changes = <String, List<ChangeRun>>{};
   final _bests = <String, int>{};
   final _takes = <Take>[];
+
+  /// Seconds practised, and plan items done, by day ("2026-10-31").
+  final _seconds = <String, int>{};
+  final _done = <String, Set<String>>{};
+
+  static String _day(DateTime t) => '${t.year}-${t.month.toString().padLeft(2, '0')}-${t.day.toString().padLeft(2, '0')}';
+
+  /// Adds time spent practising (playing while Guitaro listened) to today.
+  void addPractice(Duration d, {DateTime? now}) {
+    if (d <= Duration.zero) return;
+    final day = _day(now ?? DateTime.now());
+    // Anything past a few hours is the phone left listening, not practice.
+    _seconds[day] = ((_seconds[day] ?? 0) + d.inSeconds).clamp(0, 6 * 3600);
+    _save();
+  }
+
+  Duration practicedOn(DateTime day) => Duration(seconds: _seconds[_day(day)] ?? 0);
+
+  /// Time practised in the [days] days up to and including [now]'s.
+  Duration practicedOver(int days, {DateTime? now}) {
+    final today = now ?? DateTime.now();
+    var total = Duration.zero;
+    for (var i = 0; i < days; i++) {
+      total += practicedOn(DateTime(today.year, today.month, today.day - i));
+    }
+    return total;
+  }
+
+  /// Ticks a plan item off for today.
+  void markDone(String item, {DateTime? now}) {
+    if ((_done[_day(now ?? DateTime.now())] ??= {}).add(item)) _save();
+  }
+
+  bool isDone(String item, {DateTime? now}) => _done[_day(now ?? DateTime.now())]?.contains(item) ?? false;
 
   /// How long a spot stays on the list without being played.
   static const forgetAfter = Duration(days: 30);
@@ -266,6 +306,12 @@ class PracticeLog extends ChangeNotifier {
           'spots': [for (final s in _spots.values) s.toJson()],
           'bests': _bests,
           'takes': [for (final t in _takes) t.toJson()],
+          'seconds': _seconds,
+          // Only the last few weeks' plans matter.
+          'done': {
+            for (final MapEntry(:key, :value) in _done.entries)
+              if (key.compareTo(_day(DateTime.now().subtract(const Duration(days: 30)))) >= 0) key: value.toList(),
+          },
           'changes': {
             for (final MapEntry(:key, :value) in _changes.entries) key: [for (final r in value) [r.at.millisecondsSinceEpoch, r.count]],
           },

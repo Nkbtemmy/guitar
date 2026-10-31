@@ -36,13 +36,13 @@ SheetDisplay sheetDisplay(ChordSheet sheet, SheetPrefs prefs) {
 
 /// Wait mode and play-along on sheet [sheetId], in the shapes the learner sees it in. [startBar]
 /// and [repeat] open it on a line to practise.
-void openPlayAlong(BuildContext context, String sheetId, {int startBar = 0, bool repeat = false}) {
+Future<void> openPlayAlong(BuildContext context, String sheetId, {int startBar = 0, bool repeat = false}) async {
   final sheet = findSheet(context, sheetId);
   if (sheet == null) return;
   final resolver = context.read<AppServices>().resolver;
   final display = sheetDisplay(sheet, context.read<SongbookStore>().prefsFor(sheet.id));
   final song = sheetSong(sheet, shape: (n) => display.label(n, resolver), resolver: resolver);
-  Navigator.of(context).push(MaterialPageRoute<void>(
+  await Navigator.of(context).push(MaterialPageRoute<void>(
     builder: (_) => Scaffold(
       appBar: AppBar(title: const Text('Play along')),
       body: SafeArea(

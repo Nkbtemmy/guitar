@@ -8,6 +8,7 @@ import 'analytics.dart';
 import 'app_services.dart';
 import 'audio/mic_listener.dart';
 import 'audio/sound_player.dart';
+import 'practice/reminders.dart';
 import 'progress/practice_log.dart';
 import 'progress/progress_store.dart';
 import 'sheets/songbook_store.dart';
@@ -38,6 +39,30 @@ Future<void> main() async {
 
   keepAwake();
   progress.addListener(keepAwake);
+  final practice = PracticeLog(prefs);
+  // The daily reminder, set again at every start (see Reminders.nextAt) and whenever it changes.
+  final reminders = Reminders();
+  int? remindAt;
+  void remind() {
+    if (remindAt == progress.reminder) return;
+    remindAt = progress.reminder;
+    reminders.set(remindAt);
+  }
+
+  reminders.set(progress.reminder);
+  remindAt = progress.reminder;
+  progress.addListener(remind);
+  // Practice time: while the mic listens, the learner is playing.
+  DateTime? listeningSince;
+  mic.addListener(() {
+    final listening = mic.status == MicStatus.listening;
+    if (listening) {
+      listeningSince ??= DateTime.now();
+    } else if (listeningSince case final since?) {
+      practice.addPractice(DateTime.now().difference(since));
+      listeningSince = null;
+    }
+  });
   try {
     await SoundPlayer.configureAudioSession();
   } catch (e) {
@@ -52,7 +77,8 @@ Future<void> main() async {
     progress: progress,
     mic: mic,
     songbook: SongbookStore(prefs),
-    practice: PracticeLog(prefs),
+    practice: practice,
+    reminders: reminders,
     analytics: analytics,
     splash: true,
   ));
@@ -66,10 +92,12 @@ class GuitaroApp extends StatelessWidget {
     required this.mic,
     SongbookStore? songbook,
     PracticeLog? practice,
+    Reminders? reminders,
     Analytics? analytics,
     this.splash = false,
   })  : songbook = songbook ?? SongbookStore(),
         practice = practice ?? PracticeLog(),
+        reminders = reminders ?? Reminders(),
         analytics = analytics ?? const Analytics();
 
   final AppServices services;
@@ -81,6 +109,9 @@ class GuitaroApp extends StatelessWidget {
 
   /// What the learner has practised: weak spots and more.
   final PracticeLog practice;
+
+  /// The daily practice reminder.
+  final Reminders reminders;
 
   /// Anonymous usage stats; sends nothing unless Firebase started.
   final Analytics analytics;
@@ -96,6 +127,7 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: mic),
           ChangeNotifierProvider.value(value: songbook),
           ChangeNotifierProvider.value(value: practice),
+          Provider.value(value: reminders),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(

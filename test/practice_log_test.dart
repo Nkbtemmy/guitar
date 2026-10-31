@@ -6,6 +6,8 @@ import 'package:guitaro/app_services.dart';
 import 'package:guitaro/curriculum/models.dart';
 import 'package:guitaro/main.dart';
 import 'package:guitaro/music/chord_library.dart';
+import 'package:guitaro/practice/plan.dart';
+import 'package:guitaro/practice/reminders.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
 import 'package:guitaro/ui/practice/song_view.dart';
@@ -72,6 +74,68 @@ void main() {
     expect([for (final r in again.changeRuns('C', 'G')) r.count], [14, 12, 21]);
     expect(again.lastChangePair, ('C', 'G'));
     expect(again.bestChanges('Em', 'Am'), isNull);
+  });
+
+  test('practice minutes add up by day, and plan items tick off for the day', () {
+    final log = PracticeLog(prefs);
+    final mon = DateTime(2026, 10, 26, 9), tue = DateTime(2026, 10, 27, 20);
+    log.addPractice(const Duration(minutes: 10), now: mon);
+    log.addPractice(const Duration(minutes: 5), now: mon);
+    log.addPractice(const Duration(hours: 9), now: tue);
+    log.markDone('tune', now: tue);
+    final again = PracticeLog(prefs);
+    expect(again.practicedOn(mon), const Duration(minutes: 15));
+    expect(again.practicedOn(tue), const Duration(hours: 6), reason: 'a phone left listening is not nine hours of practice');
+    expect(again.practicedOver(7, now: tue), const Duration(hours: 6, minutes: 15));
+    expect(again.isDone('tune', now: tue), isTrue);
+    expect(again.isDone('tune', now: mon), isFalse);
+  });
+
+  test("today's plan: tune, warm up (alternating), changes, the weak spot, the next lesson", () {
+    final lesson = Curriculum.fromJson(File('assets/data/curriculum.json').readAsStringSync()).lessons.first;
+    final spot = WeakSpot(place: grace, from: 4, to: 8, title: 'Amazing Grace', detail: 'Bars 5–8', misses: 3);
+    final plan = dailyPlan(day: DateTime(2026, 10, 30), nextLesson: lesson, pair: ('A', 'D'), spot: spot);
+    expect([for (final i in plan) i.kind],
+        [PlanKind.tune, PlanKind.fretboard, PlanKind.changes, PlanKind.spot, PlanKind.lesson]);
+    expect(plan[2].title, 'Chord changes: A – D');
+    expect(plan.fold(0, (sum, i) => sum + i.minutes), 15);
+    final light = dailyPlan(day: DateTime(2026, 10, 31));
+    expect([for (final i in light) i.kind], [PlanKind.tune, PlanKind.ear, PlanKind.changes, PlanKind.metronome, PlanKind.songs]);
+    expect(light[2].pair, ('C', 'G'));
+  });
+
+  test('the reminder fires next at its time today, or tomorrow once it has passed', () {
+    final morning = DateTime(2026, 10, 31, 9);
+    // The same instants, given in UTC.
+    DateTime local(DateTime t) => DateTime.fromMillisecondsSinceEpoch(t.millisecondsSinceEpoch);
+    expect(local(Reminders.nextAt(18 * 60 + 30, morning)), DateTime(2026, 10, 31, 18, 30));
+    expect(local(Reminders.nextAt(8 * 60, morning)), DateTime(2026, 11, 1, 8));
+    expect(Reminders.nextAt(8 * 60, morning).location.name, 'Etc/UTC');
+  });
+
+  testWidgets("today's practice shows what's next, the whole plan on a tap, and opens each part", (tester) async {
+    final services = AppServices(
+      library: ChordLibrary.fromJson(File('assets/data/chords.json').readAsStringSync(),
+          tipsJson: File('assets/data/chord_tips.json').readAsStringSync()),
+      curriculum: Curriculum.fromJson(File('assets/data/curriculum.json').readAsStringSync()),
+      player: QuietPlayer(),
+    );
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    final log = PracticeLog(prefs)..markDone('tune');
+    await tester.pumpWidget(GuitaroApp(services: services, progress: ProgressStore(prefs), mic: FakeMic(), practice: log));
+    await tester.pumpAndSettle();
+    expect(find.text("Today's practice · 15 min"), findsOneWidget);
+    expect(find.text('1/5'), findsOneWidget);
+    expect(find.text('Tune up'), findsNothing, reason: 'done: what shows is the next part');
+    await tester.tap(find.text('Whole plan (5)'));
+    await tester.pumpAndSettle();
+    expect(find.text('Tune up'), findsOneWidget);
+    await tester.tap(find.text('Chord changes: C – G'));
+    await tester.pumpAndSettle();
+    expect(find.text('Start: 60 seconds'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('a weak spot opens its song in play-along, looping its line', (tester) async {

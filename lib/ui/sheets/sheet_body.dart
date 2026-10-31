@@ -39,12 +39,12 @@ class SheetDisplay {
 
 /// Opens tab [index] of [sheet] (counting its tab blocks) in the player. With [from] and [to]
 /// it opens on those notes, looping them (practising a weak spot).
-void openTabPlayer(BuildContext context, ChordSheet sheet, int index, {int? from, int? to}) {
+Future<void> openTabPlayer(BuildContext context, ChordSheet sheet, int index, {int? from, int? to}) async {
   final blocks = sheet.lines.whereType<TabLines>().toList();
   final seq = index < blocks.length ? blocks[index].sequence : null;
   if (seq == null) return;
   final label = blocks[index].label;
-  Navigator.of(context).push(MaterialPageRoute<void>(
+  await Navigator.of(context).push(MaterialPageRoute<void>(
     builder: (_) => TabPlayerScreen(
       tab: seq,
       title: label == null ? sheet.title : '${sheet.title} · $label',
