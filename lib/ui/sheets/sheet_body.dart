@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_services.dart';
 import '../../music/chord.dart';
+import '../../progress/practice_log.dart';
 import '../../sheets/chord_resolver.dart';
 import '../../sheets/chord_sheet.dart';
 import '../../sheets/chord_symbol.dart';
@@ -34,6 +35,29 @@ class SheetDisplay {
 
   Chord? voicing(String written, ChordResolver resolver) =>
       resolver.resolve(transposeName(written, shift), simplify: simplify);
+}
+
+/// Opens tab [index] of [sheet] (counting its tab blocks) in the player. With [from] and [to]
+/// it opens on those notes, looping them (practising a weak spot).
+Future<void> openTabPlayer(BuildContext context, ChordSheet sheet, int index, {int? from, int? to}) async {
+  final blocks = sheet.lines.whereType<TabLines>().toList();
+  final seq = index < blocks.length ? blocks[index].sequence : null;
+  if (seq == null) return;
+  final label = blocks[index].label;
+  await Navigator.of(context).push(MaterialPageRoute<void>(
+    builder: (_) => TabPlayerScreen(
+      tab: seq,
+      title: label == null ? sheet.title : '${sheet.title} · $label',
+      bpm: sheet.tempo ?? 90,
+      beatsPerBar: sheet.beatsPerBar,
+      // The tab's text is in the key, so an edited song doesn't replay its old audio.
+      id: '${sheet.id}#$index:${Object.hashAll(blocks[index].lines)}',
+      place: SpotPlace.tab(sheet.id, index),
+      from: from,
+      to: to,
+      tuning: sheet.tuning,
+    ),
+  ));
 }
 
 /// The lines of a sheet: section labels, chords over lyrics (tap a chord for its diagram), and
@@ -264,18 +288,7 @@ class _TabBlock extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton.icon(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => TabPlayerScreen(
-                          tab: seq,
-                          title: block.label ?? sheet.title,
-                          bpm: sheet.tempo ?? 90,
-                          beatsPerBar: sheet.beatsPerBar,
-                          // The tab's text is in the key, so an edited song doesn't replay its old audio.
-                          id: '${sheet.id}#$index:${Object.hashAll(block.lines)}',
-                        ),
-                      ),
-                    ),
+                    onPressed: () => openTabPlayer(context, sheet, index),
                     icon: const Icon(Icons.play_circle_rounded),
                     label: const Text('Play tab'),
                   ),

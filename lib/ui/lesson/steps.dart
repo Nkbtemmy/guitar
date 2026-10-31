@@ -189,7 +189,7 @@ class TuneStepView extends StatelessWidget {
   Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(20), children: [
         StepTitle(step.title ?? 'Tune up', body: step.body),
         const SizedBox(height: 20),
-        TunerPanel(onAllTuned: () => onDone(1)),
+        TunerPanel(tuning: Tuning.standard, onAllTuned: () => onDone(1)),
       ]);
 }
 

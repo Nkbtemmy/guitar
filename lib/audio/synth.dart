@@ -149,30 +149,7 @@ class GuitarSynth {
   }
 
   /// The 44-byte header of a 16-bit mono WAV file holding [samples] samples.
-  Uint8List wavHeader(int samples) {
-    final dataLen = samples * 2;
-    final bytes = ByteData(44);
-    void ascii(int offset, String s) {
-      for (var i = 0; i < s.length; i++) {
-        bytes.setUint8(offset + i, s.codeUnitAt(i));
-      }
-    }
-
-    ascii(0, 'RIFF');
-    bytes.setUint32(4, 36 + dataLen, Endian.little);
-    ascii(8, 'WAVE');
-    ascii(12, 'fmt ');
-    bytes.setUint32(16, 16, Endian.little);
-    bytes.setUint16(20, 1, Endian.little);
-    bytes.setUint16(22, 1, Endian.little);
-    bytes.setUint32(24, sampleRate, Endian.little);
-    bytes.setUint32(28, sampleRate * 2, Endian.little);
-    bytes.setUint16(32, 2, Endian.little);
-    bytes.setUint16(34, 16, Endian.little);
-    ascii(36, 'data');
-    bytes.setUint32(40, dataLen, Endian.little);
-    return bytes.buffer.asUint8List();
-  }
+  Uint8List wavHeader(int samples) => pcm16WavHeader(samples, sampleRate);
 
   /// [samples] as little-endian 16-bit PCM, the body of a WAV file.
   Uint8List pcm16(Float32List samples) {
@@ -391,4 +368,30 @@ class _Mixer {
       }
     }
   }
+}
+
+/// The 44-byte header of a 16-bit mono WAV file holding [samples] samples at [sampleRate].
+Uint8List pcm16WavHeader(int samples, int sampleRate) {
+  final dataLen = samples * 2;
+  final bytes = ByteData(44);
+  void ascii(int offset, String s) {
+    for (var i = 0; i < s.length; i++) {
+      bytes.setUint8(offset + i, s.codeUnitAt(i));
+    }
+  }
+
+  ascii(0, 'RIFF');
+  bytes.setUint32(4, 36 + dataLen, Endian.little);
+  ascii(8, 'WAVE');
+  ascii(12, 'fmt ');
+  bytes.setUint32(16, 16, Endian.little);
+  bytes.setUint16(20, 1, Endian.little);
+  bytes.setUint16(22, 1, Endian.little);
+  bytes.setUint32(24, sampleRate, Endian.little);
+  bytes.setUint32(28, sampleRate * 2, Endian.little);
+  bytes.setUint16(32, 2, Endian.little);
+  bytes.setUint16(34, 16, Endian.little);
+  ascii(36, 'data');
+  bytes.setUint32(40, dataLen, Endian.little);
+  return bytes.buffer.asUint8List();
 }

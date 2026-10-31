@@ -9,7 +9,9 @@ import '../../audio/analysis.dart';
 import '../../audio/chord_matcher.dart';
 import '../../curriculum/models.dart';
 import '../../music/chord.dart';
+import '../../practice/takes.dart';
 import '../../practice/trackers.dart';
+import '../../progress/practice_log.dart';
 import '../../progress/progress_store.dart';
 import '../../sheets/chord_resolver.dart';
 import '../lesson/steps.dart';
@@ -32,7 +34,17 @@ enum SongMode { wait, playAlong }
 /// play-along each bar turns green or red as it's judged, and after two missed in a row the song
 /// goes back about ten seconds and carries on from there (see [Rewinder]).
 class SongView extends StatefulWidget {
-  const SongView({super.key, required this.song, this.onDone, this.showHeader = true, this.chordFor, this.capo = 0});
+  const SongView({
+    super.key,
+    required this.song,
+    this.onDone,
+    this.showHeader = true,
+    this.chordFor,
+    this.capo = 0,
+    this.place,
+    this.startBar = 0,
+    this.repeat = false,
+  });
 
   final Song song;
   final StepDone? onDone;
@@ -43,6 +55,14 @@ class SongView extends StatefulWidget {
 
   /// The capo the learner plays with: shapes are shown as written and heard this many frets up.
   final int capo;
+
+  /// Where this song lives, so the lines the learner keeps missing are kept as weak spots to
+  /// practise (none for a song that can't be found again).
+  final SpotPlace? place;
+
+  /// Open in play-along at [startBar], looping its line when [repeat] (practising a weak spot).
+  final int startBar;
+  final bool repeat;
 
   @override
   State<SongView> createState() => _SongViewState();
@@ -56,7 +76,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   late final List<Chord> _heard = [for (final c in _bars) c.withCapo(widget.capo)];
   late final _lines = SongLines([for (final line in widget.song.lines) line.bars.length]);
   late final Ticker _ticker = createTicker(_tick);
-  SongMode _mode = SongMode.wait;
+  late SongMode _mode = widget.repeat || widget.startBar > 0 ? SongMode.playAlong : SongMode.wait;
   bool _showTab = false;
   // On in the songbook; off in lessons, where the mic must hear only the learner to give stars.
   late bool _backing = widget.onDone == null;
@@ -69,10 +89,11 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   int _followedLine = -1;
 
   /// Where the next play-along starts (tap a bar to choose it).
-  int _startBar = 0;
+  // A weak spot from a song edited since may point past its end.
+  late int _startBar = widget.startBar.clamp(0, math.max(0, _bars.length - 1));
 
   /// Play the line holding [_startBar] over and over, until stopped.
-  bool _repeat = false;
+  late bool _repeat = widget.repeat;
   int _passes = 0;
 
   /// The bars the running play-along covers: [_from, _to).
@@ -80,6 +101,21 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
 
   /// Goes back about ten seconds when the learner keeps missing, unless Keep playing is on.
   final _rewinder = Rewinder();
+
+  /// With Repeat: after a clean time through, play the next one a little faster.
+  bool _speedUp = false;
+
+  /// Record the run, song and all, as a take ([_take] while it records, and where it's kept).
+  bool _record = false;
+  ({String id, PracticeLog log})? _take;
+
+  /// Ends the take being recorded and keeps it, with how the run went.
+  void _finishTake([String note = '']) {
+    final take = _take;
+    if (take == null) return;
+    _take = null;
+    Takes.finish(mic, take.log, take.id, title: widget.song.title, note: note);
+  }
 
   /// Bars of the running session judged so far; where this run began (going back doesn't start a
   /// new run), and how many times it went back.
@@ -101,6 +137,18 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   ];
   late final List<double> _barBeats = [for (var i = 1; i < _bars.length; i++) (i * _beatsPerBar).toDouble()];
   final _beat = ValueNotifier<double>(0);
+
+  /// Each line's lyrics, by the bar it starts on: how a weak spot is named.
+  late final Map<int, String> _lyricsAt = () {
+    final at = <int, String>{};
+    var bar = 0;
+    for (final line in widget.song.lines) {
+      if (line.bars.isEmpty) continue;
+      at[bar] = line.lyrics;
+      bar += line.bars.length;
+    }
+    return at;
+  }();
 
   HighwayNote _highwayNote(int bar) {
     final column = TabColumn.chord(_bars[bar], label: false);
@@ -189,6 +237,13 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       barChords: _heard.sublist(from, to),
       backing: _backing ? (key: '${widget.song.id}@${widget.capo}:$from-$to', strum: widget.song.strumPattern) : null,
     );
+    // A take runs from the first start to the end of the run, going back and repeats included.
+    if (_record && _take == null) {
+      final log = context.read<PracticeLog>();
+      final id = await Takes.start(mic);
+      if (!mounted) return;
+      _take = (id: id, log: log);
+    }
     setState(() {
       _session = session;
       _from = from;
@@ -224,6 +279,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
     _keepMarks(s, upTo: s.currentBar < 0 ? 0 : s.currentBar);
     s.stop();
     _ticker.stop();
+    _finishTake();
     setState(() {
       _session = null;
       _passes = 0;
@@ -243,6 +299,20 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
     _startPlayAlong(resume: auto);
   }
 
+  /// Counts [bar] towards its line's weak spot.
+  void _remember(int bar, bool right) {
+    final place = widget.place;
+    if (place == null) return;
+    final start = _lines.startOf(bar), end = _lines.endOf(bar);
+    final words = _lyricsAt[start] ?? '';
+    context.read<PracticeLog>().recordSpot(place,
+        from: start,
+        to: end,
+        title: widget.song.title,
+        detail: 'Bars ${start + 1}–$end${words.isEmpty ? '' : ': "$words"'}',
+        right: right);
+  }
+
   /// Judges each bar of [s] a moment after it ends (the mic runs a little behind). True when the
   /// learner kept missing and the song has gone back.
   bool _judge(PlayAlongSession s) {
@@ -250,6 +320,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       final bar = _from + _judged;
       final right = s.bars.barCorrect(_judged++);
       _marks[bar] = right;
+      _remember(bar, right);
       if (context.read<ProgressStore>().keepPlaying || _repeat || !_rewinder.record(right)) continue;
       // About ten seconds back, from the start of a line, but not before this run began.
       final back = math.max(_runStart, _lines.startOf(bar + 1 - (Rewinder.seconds / s.bars.barSeconds).ceil()));
@@ -305,20 +376,29 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       if (_repeat) {
         final right = [for (var i = 0; i < s.barChords.length; i++) s.bars.barCorrect(i)].where((ok) => ok).length;
         _passes++;
-        setState(() => _result = 'Time $_passes: $right of ${s.barChords.length} bars right. Again!');
+        var message = 'Time $_passes: $right of ${s.barChords.length} bars right. Again!';
+        if (_speedUp && right >= 0.9 * s.barChords.length && _tempo < 1) {
+          _tempo = math.min(1.0, _tempo + 0.05);
+          message = 'Clean! Speeding up to ${(_tempo * 100).round()}%: ${(widget.song.bpm * _tempo).round()} BPM.';
+        }
+        setState(() => _result = message);
         _startPlayAlong();
         return;
       }
       setState(() => _session = null);
       final right = _marks.sublist(_runStart, _to).where((m) => m == true).length;
+      _finishTake('$right of ${_to - _runStart} bars right');
       final wentBack = _rewinds == 0 ? '' : ', going back $_rewinds time${_rewinds == 1 ? '' : 's'}';
       if (_runStart == 0 && _to == _bars.length) {
         // Each bar as it went the last time it was played. Full marks need full tempo; slower
         // practice tops out at two stars.
         final accuracy = right / _bars.length;
         final score = _tempo >= 1.0 ? accuracy : accuracy * 0.85;
+        final homework = widget.place != null &&
+            context.read<PracticeLog>().completeHomework(widget.place!, tempo: _tempo, accuracy: accuracy).isNotEmpty;
         _finish(score,
-            'You played ${(accuracy * 100).round()}% of the bars right${_tempo < 1 ? ' at ${(_tempo * 100).round()}% speed' : ''}$wentBack.');
+            'You played ${(accuracy * 100).round()}% of the bars right${_tempo < 1 ? ' at ${(_tempo * 100).round()}% speed' : ''}$wentBack.'
+            '${homework ? ' Homework done!' : ''}');
       } else {
         // Part of the song is practice: it doesn't count towards the lesson.
         _finish(null, 'Bars ${_runStart + 1}–$_to: you played $right of ${_to - _runStart} right$wentBack.');
@@ -351,6 +431,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   @override
   void dispose() {
     _session?.stop();
+    _finishTake();
     _ticker.dispose();
     _beat.dispose();
     super.dispose();
@@ -485,7 +566,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                     value: _tempo,
                     min: 0.5,
                     max: 1.0,
-                    divisions: 5,
+                    divisions: 10,
                     label: '${(song.bpm * _tempo).round()} BPM',
                     onChanged: (v) => setState(() => _tempo = v),
                   ),
@@ -508,6 +589,20 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                   label: const Text('Repeat this line'),
                   selected: _repeat,
                   onSelected: _setRepeat,
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.fiber_manual_record_rounded, size: 18, color: kMiss),
+                  label: const Text('Record me'),
+                  tooltip: 'Keep a recording of the run, to listen back to in Recordings.',
+                  selected: _record,
+                  onSelected: (v) => setState(() => _record = v),
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.trending_up_rounded, size: 18),
+                  label: const Text('Speed up when I get it right'),
+                  tooltip: 'With Repeat on: after a clean time through, 5% faster, up to full speed.',
+                  selected: _speedUp,
+                  onSelected: (v) => setState(() => _speedUp = v),
                 ),
                 if (_startBar > 0)
                   ActionChip(

@@ -1,3 +1,4 @@
+import '../music/notes.dart';
 import 'chord_symbol.dart';
 import 'tab_sequence.dart';
 
@@ -74,6 +75,7 @@ class ChordSheet {
     this.difficulty,
     this.tags = const [],
     this.link,
+    this.tuning = Tuning.standard,
     required this.lines,
   });
 
@@ -89,6 +91,9 @@ class ChordSheet {
 
   /// A YouTube video of the song, to play while learning it.
   final String? link;
+
+  /// How the guitar is tuned for it (`{tuning: Drop D}`): its tabs sound in this tuning.
+  final Tuning tuning;
   final List<SheetLine> lines;
 
   /// Every chord name in order of first appearance.
@@ -130,6 +135,7 @@ class ChordSheet {
         difficulty: difficulty,
         tags: tags,
         link: link ?? this.link,
+        tuning: tuning,
         lines: lines,
       );
 
@@ -168,6 +174,7 @@ class ChordSheet {
       directive('difficulty', difficulty?.name);
       if (tags.isNotEmpty) directive('tags', tags.join(', '));
       directive('youtube', link);
+      if (tuning != Tuning.standard) directive('tuning', tuning.name);
       out.writeln();
     }
     for (final l in lines) {
@@ -272,6 +279,7 @@ class _Meta {
   Difficulty? difficulty;
   List<String> tags = const [];
   String? link;
+  Tuning tuning = Tuning.standard;
 
   /// Applies a metadata directive; false when [name] isn't one.
   bool apply(String name, String value) {
@@ -297,6 +305,8 @@ class _Meta {
         ];
       case 'youtube' || 'x_youtube' || 'link':
         link = youtubeUrl(value);
+      case 'tuning' || 'x_tuning':
+        tuning = Tuning.named(value) ?? Tuning.standard;
       default:
         return false;
     }
@@ -324,6 +334,7 @@ class _Meta {
       difficulty: difficulty,
       tags: tags,
       link: link,
+      tuning: tuning,
       lines: tidy,
     );
   }

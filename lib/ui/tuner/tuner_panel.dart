@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app_services.dart';
 import '../../audio/analysis.dart';
 import '../../music/notes.dart';
+import '../../progress/progress_store.dart';
 import '../theme.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
@@ -11,10 +12,14 @@ import '../widgets/listening_badge.dart';
 /// Guitar tuner: a headstock with a peg for each string. With Auto on it works out which string
 /// is ringing; with Auto off, tap a peg to tune that string (and hear it). A straight meter shows
 /// how many cents off it is, and each peg is ticked off once its string stays in tune briefly.
+/// It tunes to the learner's chosen tuning (standard, Drop D, open G…), or to [tuning].
 class TunerPanel extends StatefulWidget {
-  const TunerPanel({super.key, this.onAllTuned});
+  const TunerPanel({super.key, this.onAllTuned, this.tuning});
 
   final VoidCallback? onAllTuned;
+
+  /// Tune to this rather than the learner's choice: a lesson needs standard, a song its own.
+  final Tuning? tuning;
 
   @override
   State<TunerPanel> createState() => _TunerPanelState();
@@ -29,6 +34,8 @@ class _TunerPanelState extends State<TunerPanel> with Listening {
   double? _inTuneSince;
   final _tuned = <int>{};
 
+  Tuning get _tuning => widget.tuning ?? context.read<ProgressStore>().tuning;
+
   @override
   void onFrame(AnalysisFrame f) {
     final p = f.pitch;
@@ -38,9 +45,9 @@ class _TunerPanelState extends State<TunerPanel> with Listening {
       return;
     }
     final midi = p.midi;
-    final string = _selected ??
-        standardTuning.entries.reduce((a, b) => (midi - a.value).abs() < (midi - b.value).abs() ? a : b).key;
-    final target = standardTuning[string]!;
+    final tuning = _tuning.notes;
+    final string = _selected ?? tuning.entries.reduce((a, b) => (midi - a.value).abs() < (midi - b.value).abs() ? a : b).key;
+    final target = tuning[string]!;
     if (_selected == null && (midi - target).abs() > 5) return;
     final cents = (midi - target) * 100;
     setState(() {
@@ -60,18 +67,48 @@ class _TunerPanelState extends State<TunerPanel> with Listening {
   /// Tuning one string: Auto goes off, and the string's note plays so the learner can hear it.
   void _select(int string) {
     setState(() => _selected = string);
-    context.read<AppServices>().player.playNote(standardTuning[string]!);
+    context.read<AppServices>().player.playNote(_tuning.notes[string]!);
+  }
+
+  Future<void> _pickTuning() async {
+    final store = context.read<ProgressStore>();
+    final picked = await showModalBottomSheet<Tuning>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (c) => SafeArea(
+        child: SingleChildScrollView(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            for (final t in Tuning.all)
+              ListTile(
+                leading: Icon(t == store.tuning ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded, color: kAccent),
+                title: Text(t.name, style: const TextStyle(fontWeight: FontWeight.w700)),
+                subtitle: Text(t.spelled),
+                onTap: () => Navigator.pop(c, t),
+              ),
+          ]),
+        ),
+      ),
+    );
+    if (picked == null || picked == store.tuning) return;
+    store.tuning = picked;
+    // A new tuning: every string needs tuning again.
+    setState(() {
+      _tuned.clear();
+      _cents = null;
+    });
   }
 
   void _setAuto(bool auto) => setState(() => _selected = auto ? null : (_string ?? 6));
 
   @override
   Widget build(BuildContext context) {
+    final tuning = widget.tuning ?? context.select<ProgressStore, Tuning>((p) => p.tuning);
     final cents = _cents;
     final inTune = cents != null && cents.abs() <= 6;
     final color = cents == null ? kMuted : (inTune ? kSuccess : kAccent);
     final hint = cents == null
-        ? (_selected == null ? 'Pluck any string' : 'Pluck the ${stringLetters[_selected]} string')
+        ? (_selected == null ? 'Pluck any string' : 'Pluck the ${noteName(tuning.notes[_selected]!)} string')
         : inTune
             ? 'In tune!'
             : cents.abs() > 50
@@ -80,10 +117,23 @@ class _TunerPanelState extends State<TunerPanel> with Listening {
     return Column(children: [
       Row(children: [
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Guitar · Standard', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
-            Text([for (var s = 6; s >= 1; s--) stringLetters[s]!.toUpperCase()].join(' '), style: const TextStyle(color: kMuted)),
-          ]),
+          child: InkWell(
+            // A lesson or a song decides the tuning; otherwise the learner picks it here.
+            onTap: widget.tuning == null ? _pickTuning : null,
+            borderRadius: BorderRadius.circular(10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(children: [
+                Flexible(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text('Guitar · ${tuning.name}', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                    Text(tuning.spelled, style: const TextStyle(color: kMuted)),
+                  ]),
+                ),
+                if (widget.tuning == null) const Icon(Icons.expand_more_rounded, color: kMuted),
+              ]),
+            ),
+          ),
         ),
         const Text('AUTO', style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1.2, fontSize: 13)),
         const SizedBox(width: 6),
@@ -109,6 +159,7 @@ class _TunerPanelState extends State<TunerPanel> with Listening {
       Text(hint, style: TextStyle(fontSize: 16, color: color, fontWeight: FontWeight.w700)),
       const SizedBox(height: 14),
       _Headstock(
+        tuning: tuning,
         selected: _selected,
         active: cents == null ? null : _string,
         inTune: inTune,
@@ -224,8 +275,16 @@ class _CentsMeterPainter extends CustomPainter {
 /// A three-a-side headstock seen from the front: D A E pegs down the left, G B e down the right,
 /// each string running from its post down to the nut. The string being tuned lights up.
 class _Headstock extends StatelessWidget {
-  const _Headstock({required this.selected, required this.active, required this.inTune, required this.tuned, required this.onTap});
+  const _Headstock({
+    required this.tuning,
+    required this.selected,
+    required this.active,
+    required this.inTune,
+    required this.tuned,
+    required this.onTap,
+  });
 
+  final Tuning tuning;
   final int? selected, active;
   final bool inTune;
   final Set<int> tuned;
@@ -253,6 +312,7 @@ class _Headstock extends StatelessWidget {
                   top: size.height * row[i % 3] - 28,
                   child: _Peg(
                     string: pegs[i].$1,
+                    note: noteName(tuning.notes[pegs[i].$1]!),
                     selected: selected == pegs[i].$1,
                     active: active == pegs[i].$1,
                     tuned: tuned.contains(pegs[i].$1),
@@ -266,9 +326,12 @@ class _Headstock extends StatelessWidget {
 }
 
 class _Peg extends StatelessWidget {
-  const _Peg({required this.string, required this.selected, required this.active, required this.tuned, required this.onTap});
+  const _Peg({required this.string, required this.note, required this.selected, required this.active, required this.tuned, required this.onTap});
 
   final int string;
+
+  /// What the open string is tuned to.
+  final String note;
   final bool selected, active, tuned;
   final VoidCallback onTap;
 
@@ -279,7 +342,7 @@ class _Peg extends StatelessWidget {
     final ink = selected ? _Headstock.background : (tuned ? _Headstock.tick : _Headstock.line);
     return Semantics(
       button: true,
-      label: 'Tune string $string, ${stringLetters[string]}${tuned ? ', in tune' : ''}',
+      label: 'Tune string $string, $note${tuned ? ', in tune' : ''}',
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
@@ -294,7 +357,7 @@ class _Peg extends StatelessWidget {
             boxShadow: [if (active) BoxShadow(color: _Headstock.glow.withValues(alpha: 0.5), blurRadius: 14)],
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            Text(stringLetters[string]!.toUpperCase(), style: TextStyle(color: ink, fontSize: 26, fontWeight: FontWeight.w900)),
+            Text(note, style: TextStyle(color: ink, fontSize: note.length > 1 ? 21 : 26, fontWeight: FontWeight.w900)),
             if (tuned) Icon(Icons.check_rounded, size: 16, color: ink),
           ]),
         ),

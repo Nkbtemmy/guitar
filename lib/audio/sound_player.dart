@@ -71,6 +71,13 @@ class SoundPlayer {
         reference: false,
       );
 
+  /// Metronome clicks, a bar at each tempo in [barBpms] (a speed trainer steps them up), beat 1
+  /// of each bar accented. Streamed like a song, so minutes of it cost little memory. Not a
+  /// reference sound: the mic keeps listening.
+  Future<Duration> playMetronome({required List<int> barBpms, required int beatsPerBar}) => _playTrack(
+      'metronome:$beatsPerBar:${barBpms.length}:${Object.hashAll(barBpms)}', _metronomeJob(synth, barBpms, beatsPerBar),
+      reference: false);
+
   /// A strummed demo of a song or exercise: one chord per bar, following [strum].
   Future<Duration> playProgression({
     required String key,
@@ -106,6 +113,7 @@ class SoundPlayer {
   /// Plays tab events [from]..[to] at [bpm]. Each note rings until its string is picked again.
   /// [countIn] puts a bar of clicks first; [metronome] clicks on every beat. With [listening],
   /// the mic keeps listening (to check the learner playing along) instead of ignoring the tune.
+  /// The frets sound in [tuning].
   Future<Duration> playTab(
     String key,
     TabSequence tab, {
@@ -116,10 +124,11 @@ class SoundPlayer {
     bool countIn = false,
     bool metronome = false,
     bool listening = false,
+    Tuning tuning = Tuning.standard,
   }) {
     final last = to ?? tab.events.length - 1;
-    return _playTrack('tab:$key:$bpm:$from:$last:$countIn:$metronome',
-        _tabJob(synth, tab, bpm, from, last, beatsPerBar, countIn: countIn, metronome: metronome),
+    return _playTrack('tab:$key:$bpm:$from:$last:$countIn:$metronome:${tuning.name}',
+        _tabJob(synth, tab, bpm, from, last, beatsPerBar, countIn: countIn, metronome: metronome, tuning: tuning),
         reference: !listening);
   }
 
@@ -129,11 +138,28 @@ class SoundPlayer {
           {bool countIn = false, bool clicks = false}) =>
       () => renderBars(synth, bars, strum: strum, bpm: bpm, countIn: countIn, clicks: clicks);
 
+  static SynthTrack Function() _metronomeJob(GuitarSynth synth, List<int> barBpms, int beatsPerBar) => () {
+        final sr = synth.sampleRate;
+        final clicks = <(int, bool)>[];
+        var t = 0.0;
+        for (final bpm in barBpms) {
+          for (var b = 0; b < beatsPerBar; b++) {
+            clicks.add(((t * sr).round(), b == 0));
+            t += 60 / bpm;
+          }
+        }
+        final out = SynthTrack(synth, ((t + 0.2) * sr).round());
+        for (final (at, accent) in clicks) {
+          out.addClick(at, accent: accent);
+        }
+        return out;
+      };
+
   static SynthTrack Function() _tabJob(
           GuitarSynth synth, TabSequence tab, int bpm, int from, int last, int beatsPerBar,
-          {required bool countIn, required bool metronome}) =>
+          {required bool countIn, required bool metronome, required Tuning tuning}) =>
       () => renderTab(synth, tab,
-          bpm: bpm, from: from, last: last, beatsPerBar: beatsPerBar, countIn: countIn, metronome: metronome);
+          bpm: bpm, from: from, last: last, beatsPerBar: beatsPerBar, countIn: countIn, metronome: metronome, tuning: tuning);
 
   /// Strums one chord a bar. A string rings until it's struck again, or until the next chord
   /// frets it differently (the hand lifts off), so old notes don't ring on under new chords and
@@ -201,7 +227,8 @@ class SoundPlayer {
       required int last,
       required int beatsPerBar,
       required bool countIn,
-      required bool metronome}) {
+      required bool metronome,
+      Tuning tuning = Tuning.standard}) {
     final sr = synth.sampleRate;
     final beat = 60 / bpm;
     final lead = countIn ? beatsPerBar * beat : 0.0;
@@ -224,7 +251,7 @@ class SoundPlayer {
       final start = ((lead + tab.timeOf(i, bpm, from: from)) * sr).round();
       tab.events[i].frets.forEach((string, fret) {
         final next = nextOnString[string];
-        out.addNote(start, midiAt(string, fret),
+        out.addNote(start, tuning.midiAt(string, fret),
             gain: 0.6, seed: i * 7 + string, lengthSamples: next == null ? ring : math.min(ring, next - start));
         nextOnString[string] = start;
       });

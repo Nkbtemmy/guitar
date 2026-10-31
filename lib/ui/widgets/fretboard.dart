@@ -11,10 +11,13 @@ import '../theme.dart';
 /// tabs (Me › String order).
 /// [upcoming] notes are drawn faintly so the learner can see where the melody goes.
 class Fretboard extends StatelessWidget {
-  const Fretboard({super.key, required this.target, this.upcoming = const []});
+  const Fretboard({super.key, required this.target, this.upcoming = const [], this.showName = true});
 
   final FretNote target;
   final List<FretNote> upcoming;
+
+  /// Write the note's name on its dot (not when asking for it).
+  final bool showName;
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +29,20 @@ class Fretboard extends StatelessWidget {
     final last = math.max(first + 4, hi + 1);
     return AspectRatio(
       aspectRatio: 2.4,
-      child: CustomPaint(painter: _FretboardPainter(target, upcoming, first, last, leftHanded: left, order: order)),
+      child: CustomPaint(
+          painter: _FretboardPainter(target, upcoming, first, last, leftHanded: left, order: order, showName: showName)),
     );
   }
 }
 
 class _FretboardPainter extends CustomPainter {
-  _FretboardPainter(this.target, this.upcoming, this.first, this.last, {required this.leftHanded, required this.order});
+  _FretboardPainter(this.target, this.upcoming, this.first, this.last,
+      {required this.leftHanded, required this.order, required this.showName});
 
   final FretNote target;
   final List<FretNote> upcoming;
   final int first, last;
-  final bool leftHanded;
+  final bool leftHanded, showName;
   final StringOrder order;
 
   @override
@@ -92,7 +97,7 @@ class _FretboardPainter extends CustomPainter {
     final c = Offset(x(target.fret), y(target.string));
     canvas.drawCircle(c, r * 1.45, Paint()..color = kAccent.withValues(alpha: 0.22));
     canvas.drawCircle(c, r, Paint()..color = kAccent);
-    _label(canvas, noteName(target.midi), c, r * 1.0, kOnAccent);
+    if (showName) _label(canvas, noteName(target.midi), c, r * 1.0, kOnAccent);
   }
 
   void _label(Canvas canvas, String s, Offset center, double fontSize, Color color) {
@@ -110,5 +115,6 @@ class _FretboardPainter extends CustomPainter {
       old.last != last ||
       old.leftHanded != leftHanded ||
       old.upcoming != upcoming ||
-      old.order != order;
+      old.order != order ||
+      old.showName != showName;
 }
