@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:guitaro/audio/analysis.dart';
 import 'package:guitaro/audio/chord_matcher.dart';
+import 'package:guitaro/audio/sound_player.dart';
 import 'package:guitaro/audio/synth.dart';
 import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/music/notes.dart';
@@ -156,6 +157,60 @@ void main() {
     expect(OnsetDetector(sampleRate: sr).process(clickOnly), isEmpty);
     expect(AudioAnalyzer().add(clickOnly).where((f) => f.peaks.isNotEmpty && f.pitch != null && f.pitch!.clarity > 0.85),
         isEmpty);
+  });
+
+  group('strumming techniques', () {
+    final library = loadLibrary();
+
+    /// What the app hears when [strum] is played on [chord] after a count-in: the strum onsets
+    /// and every frame's level, in seconds.
+    ({List<double> onsets, List<(double, double)> levels}) hear(StrumPattern strum, String chord, int bpm,
+        {int bars = 2}) {
+      final audio = SoundPlayer.renderBars(synth, [for (var b = 0; b < bars; b++) library.byId(chord)],
+              strum: strum, bpm: bpm, countIn: true)
+          .renderAll();
+      final frames = AudioAnalyzer().add(audio);
+      return (onsets: [for (final f in frames) ...f.onsets], levels: [for (final f in frames) (f.time, f.rms)]);
+    }
+
+    TimingResult timing(StrumPattern scored, List<double> onsets, int bpm, {int bars = 2}) =>
+        TimingScorer.score(scored.expectedTimes(bpm: bpm, bars: bars), onsets, tolerance: scored.tolerance(bpm));
+
+    test('muted strums (chucks) are heard as strums, on time', () {
+      for (final pattern in ['D-X-D-X-', 'D-XU-UXU']) {
+        final strum = StrumPattern(pattern, 4);
+        final r = timing(strum, hear(strum, 'G', 75).onsets, 75);
+        expect((r.accuracy, r.extra), (1.0, 0), reason: pattern);
+      }
+    });
+
+    test('every sixteenth is heard, even at four strums a beat', () {
+      for (final (pattern, bpm) in [('DUDUDUDUDUDUDUDU', 60), ('D-DUD-DUD-DUD-DU', 65)]) {
+        final strum = StrumPattern(pattern, 4);
+        final r = timing(strum, hear(strum, 'Em', bpm).onsets, bpm);
+        expect((r.accuracy, r.extra), (1.0, 0), reason: pattern);
+      }
+    });
+
+    test('a shuffle is scored as swung, and straight playing does not pass for it', () {
+      final swing = StrumPattern('DUDUDUDU', 4, swing: true), straight = StrumPattern('DUDUDUDU', 4);
+      expect(timing(swing, hear(swing, 'A7', 70).onsets, 70).accuracy, 1.0);
+      expect(timing(swing, hear(straight, 'A7', 70).onsets, 70).accuracy, lessThanOrEqualTo(0.6));
+      expect(timing(straight, hear(swing, 'A7', 70).onsets, 70).accuracy, lessThanOrEqualTo(0.6));
+    });
+
+    test('accents are heard when played louder, and not when every strum is the same', () {
+      for (final pattern in ['D-D-D-D-', 'D-DU-UDU']) {
+        final accented = StrumPattern(pattern, 4, accents: '-->--->-');
+        AccentResult? accentsOf(StrumPattern played) {
+          final heard = hear(played, 'G', 70, bars: 4);
+          return AccentResult.of(accented, timing(accented, heard.onsets, 70, bars: 4), strumLevels(heard.onsets, heard.levels));
+        }
+
+        expect(accentsOf(accented)!.score, greaterThanOrEqualTo(0.9), reason: pattern);
+        expect(accentsOf(StrumPattern(pattern, 4))!.score, lessThanOrEqualTo(0.2), reason: pattern);
+      }
+    });
   });
 
   group('AudioAnalyzer', () {

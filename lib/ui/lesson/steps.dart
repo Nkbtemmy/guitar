@@ -15,6 +15,7 @@ import '../widgets/chord_view.dart';
 import '../widgets/fretboard.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
+import '../widgets/neck_view.dart';
 import '../widgets/tab_staff.dart';
 
 typedef StepDone = void Function(double score);
@@ -76,6 +77,8 @@ class _InfoStepViewState extends State<InfoStepView> {
       if (chord != null) ...[
         const SizedBox(height: 24),
         Center(child: ChordView(chord: chord, width: 150)),
+        const SizedBox(height: 14),
+        ClipRRect(borderRadius: BorderRadius.circular(12), child: NeckView(chord: chord)),
         const SizedBox(height: 12),
         for (final line in chord.placement)
           Padding(
@@ -247,7 +250,11 @@ class _NotesStepViewState extends State<NotesStepView> with Listening {
         current: _tracker.index,
         markDone: true,
         columnWidth: 34,
+        // Back only: skipping ahead would finish the step without playing it.
+        onTapColumn: (i) => i < _tracker.index ? setState(() => _tracker.jumpTo(i)) : null,
       ),
+      const SizedBox(height: 4),
+      const Text('Tap a note to go back to it.', style: TextStyle(color: kMuted, fontSize: 13)),
       const SizedBox(height: 14),
       if (current != null)
         Center(child: HearButton(label: 'Hear this note', onPressed: () => services.player.playNote(current.midi))),
@@ -347,7 +354,17 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
       else
         const _DoneBanner(text: 'Great strumming!'),
       const SizedBox(height: 16),
-      _SequenceChips(labels: [for (final c in _chords) c.symbol], index: _tracker.index),
+      _SequenceChips(
+        labels: [for (final c in _chords) c.symbol],
+        index: _tracker.index,
+        onTap: (i) {
+          if (i >= _tracker.index) return;
+          setState(() {
+            _tracker.jumpTo(i);
+            _hint = null;
+          });
+        },
+      ),
       const SizedBox(height: 14),
       if (current != null) ...[
         Row(children: [
@@ -375,10 +392,13 @@ class _ChordSequenceViewState extends State<ChordSequenceView> with Listening {
 }
 
 class _SequenceChips extends StatelessWidget {
-  const _SequenceChips({required this.labels, required this.index});
+  const _SequenceChips({required this.labels, required this.index, required this.onTap});
 
   final List<String> labels;
   final int index;
+
+  /// Going back to a chord.
+  final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -388,17 +408,20 @@ class _SequenceChips extends StatelessWidget {
       runSpacing: 6,
       children: [
         for (var i = 0; i < labels.length; i++)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: i < index ? kSuccess.withValues(alpha: 0.2) : (i == index ? kAccent.withValues(alpha: 0.2) : kSurfaceHigh),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: i == index ? kAccent : Colors.transparent, width: 1.5),
-            ),
-            child: Text(
-              labels[i],
-              style: TextStyle(fontWeight: FontWeight.w700, color: i < index ? kSuccess : null),
+          GestureDetector(
+            onTap: () => onTap(i),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: i < index ? kSuccess.withValues(alpha: 0.2) : (i == index ? kAccent.withValues(alpha: 0.2) : kSurfaceHigh),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: i == index ? kAccent : Colors.transparent, width: 1.5),
+              ),
+              child: Text(
+                labels[i],
+                style: TextStyle(fontWeight: FontWeight.w700, color: i < index ? kSuccess : null),
+              ),
             ),
           ),
       ],

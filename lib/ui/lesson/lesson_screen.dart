@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../analytics.dart';
 import '../../app_services.dart';
 import '../../curriculum/models.dart';
 import '../../practice/trackers.dart';
@@ -32,6 +33,12 @@ class _LessonScreenState extends State<LessonScreen> {
     ...widget.lesson.steps,
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<Analytics>().lessonStarted(widget.lesson);
+  }
+
   LessonStep get _step => _steps[_index];
   bool get _stepDone => _scores.containsKey(_index);
 
@@ -55,6 +62,7 @@ class _LessonScreenState extends State<LessonScreen> {
     final avg = scores.reduce((a, b) => a + b) / scores.length;
     final stars = starsFor(avg);
     final xp = context.read<ProgressStore>().completeLesson(widget.lesson.id, stars);
+    context.read<Analytics>().lessonCompleted(widget.lesson, stars);
     Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
       builder: (_) => LessonCompleteScreen(lesson: widget.lesson, stars: stars, xp: xp),
     ));
@@ -104,6 +112,12 @@ class _LessonScreenState extends State<LessonScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: Row(children: [
+              if (_index > 0)
+                IconButton(
+                  tooltip: 'Previous step',
+                  onPressed: () => setState(() => _index--),
+                  icon: const Icon(Icons.arrow_back_rounded),
+                ),
               if (_step.listens && !_stepDone)
                 TextButton(onPressed: _skip, child: Text(_step is TuneStep ? 'My guitar is in tune' : 'Skip')),
               const Spacer(),

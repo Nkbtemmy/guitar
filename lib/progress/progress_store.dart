@@ -8,19 +8,45 @@ import '../curriculum/models.dart';
 /// How chords are drawn: a fretboard box diagram, six-line tab, or both side by side.
 enum ChordDisplay { both, tab, diagram }
 
+/// Which way chord diagrams face: upright like a chord book (low E on the left, frets going
+/// down), or sideways like the guitar's neck (nut on the left, frets left to right).
+enum ChordOrientation { upright, sideways }
+
+/// Which string is drawn on top in tabs, sideways chord charts and fretboards: low E, with high
+/// e going down to the bottom, or high e, the way tab is usually printed.
+enum StringOrder {
+  lowOnTop,
+  highOnTop;
+
+  /// Row of [string] (1 = high e .. 6 = low E), counting from 0 at the top.
+  int row(int string) => this == lowOnTop ? 6 - string : string - 1;
+}
+
 /// Learner progress and settings, persisted as one JSON blob in shared preferences.
 class ProgressStore extends ChangeNotifier {
   ProgressStore(this._prefs) {
     final raw = _prefs.getString(_key);
-    if (raw != null) {
+    if (raw == null) return;
+    try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
-      _stars.addAll((j['stars'] as Map).map((k, v) => MapEntry(k as String, v as int)));
-      _xp = j['xp'] as int? ?? 0;
+      (j['stars'] as Map? ?? const {}).forEach((k, v) => _stars[k as String] = (v as num).toInt());
+      _xp = (j['xp'] as num?)?.toInt() ?? 0;
       _days.addAll(List<String>.from(j['days'] as List? ?? const []));
       _unlockAll = j['unlockAll'] as bool? ?? false;
       _leftHanded = j['leftHanded'] as bool? ?? false;
-      _sensitivity = (j['sensitivity'] as num?)?.toDouble() ?? 0.5;
+      _sensitivity = ((j['sensitivity'] as num?)?.toDouble() ?? 0.5).clamp(0.0, 1.0);
+      _openingSound = j['openingSound'] as bool? ?? true;
+      _shareUsage = j['shareUsage'] as bool? ?? true;
+      _keepScreenOn = j['keepScreenOn'] as bool? ?? true;
+      _keepPlaying = j['keepPlaying'] as bool? ?? false;
+      _chordOrientation = ChordOrientation.values.asNameMap()[j['chordChart']] ?? ChordOrientation.upright;
+      _stringOrder = StringOrder.values.asNameMap()[j['stringOrder']];
       _chordDisplay = ChordDisplay.values.asNameMap()[j['chordDisplay']] ?? ChordDisplay.both;
+    } catch (e) {
+      // Damaged progress mustn't stop the app from starting. Carry on with what was read, and
+      // keep the original, since the next save overwrites it.
+      debugPrint('ProgressStore: saved progress is damaged ($e)');
+      _prefs.setString('$_key.damaged', raw);
     }
   }
 
@@ -32,11 +58,33 @@ class ProgressStore extends ChangeNotifier {
   bool _unlockAll = false;
   bool _leftHanded = false;
   double _sensitivity = 0.5;
+  bool _openingSound = true;
+  bool _shareUsage = true;
+  bool _keepScreenOn = true;
+  bool _keepPlaying = false;
+  ChordOrientation _chordOrientation = ChordOrientation.upright;
+  // Null until the learner picks one, so it follows the app's default until then.
+  StringOrder? _stringOrder;
   ChordDisplay _chordDisplay = ChordDisplay.both;
 
   int get xp => _xp;
   bool get unlockAll => _unlockAll;
   bool get leftHanded => _leftHanded;
+
+  /// Strum the open strings on the splash screen.
+  bool get openingSound => _openingSound;
+
+  /// Send anonymous usage stats and crash reports (see `Analytics`).
+  bool get shareUsage => _shareUsage;
+
+  /// Keep the screen awake while the app is open: both hands are on the guitar.
+  bool get keepScreenOn => _keepScreenOn;
+
+  /// Playing along, carry on through missed notes and bars (they just turn red) instead of
+  /// going back to try them again; in Learn, move on after a wrong note instead of waiting.
+  bool get keepPlaying => _keepPlaying;
+  ChordOrientation get chordOrientation => _chordOrientation;
+  StringOrder get stringOrder => _stringOrder ?? StringOrder.lowOnTop;
   ChordDisplay get chordDisplay => _chordDisplay;
 
   /// 0 (needs loud playing) .. 1 (hears soft playing, but also more noise).
@@ -47,8 +95,10 @@ class ProgressStore extends ChangeNotifier {
   int get lessonsCompleted => _stars.length;
   int get totalStars => _stars.values.fold(0, (a, b) => a + b);
 
+  /// Open once the lesson before it is done. A lesson already done stays open, even when a new
+  /// lesson is added in front of it.
   bool isUnlocked(Curriculum c, Lesson lesson) {
-    if (_unlockAll) return true;
+    if (_unlockAll || isComplete(lesson.id)) return true;
     final i = c.lessons.indexOf(lesson);
     return i <= 0 || isComplete(c.lessons[i - 1].id);
   }
@@ -85,6 +135,12 @@ class ProgressStore extends ChangeNotifier {
 
   set unlockAll(bool v) => _update(() => _unlockAll = v);
   set leftHanded(bool v) => _update(() => _leftHanded = v);
+  set openingSound(bool v) => _update(() => _openingSound = v);
+  set shareUsage(bool v) => _update(() => _shareUsage = v);
+  set keepScreenOn(bool v) => _update(() => _keepScreenOn = v);
+  set keepPlaying(bool v) => _update(() => _keepPlaying = v);
+  set chordOrientation(ChordOrientation v) => _update(() => _chordOrientation = v);
+  set stringOrder(StringOrder v) => _update(() => _stringOrder = v);
   set chordDisplay(ChordDisplay v) => _update(() => _chordDisplay = v);
   set sensitivity(double v) => _update(() => _sensitivity = v.clamp(0.0, 1.0));
 
@@ -109,6 +165,12 @@ class ProgressStore extends ChangeNotifier {
           'unlockAll': _unlockAll,
           'leftHanded': _leftHanded,
           'sensitivity': _sensitivity,
+          'openingSound': _openingSound,
+          'shareUsage': _shareUsage,
+          'keepScreenOn': _keepScreenOn,
+          'keepPlaying': _keepPlaying,
+          'chordChart': _chordOrientation.name,
+          if (_stringOrder != null) 'stringOrder': _stringOrder!.name,
           'chordDisplay': _chordDisplay.name,
         }));
     notifyListeners();

@@ -69,6 +69,40 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
+          ListTile(
+            title: const Text('Chord charts'),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SegmentedButton<ChordOrientation>(
+                showSelectedIcon: false,
+                segments: const [
+                  ButtonSegment(value: ChordOrientation.upright, label: Text('Chord book')),
+                  ButtonSegment(value: ChordOrientation.sideways, label: Text('Sideways')),
+                ],
+                selected: {progress.chordOrientation},
+                onSelectionChanged: (v) => progress.chordOrientation = v.first,
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('String order'),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('In tabs, chord charts and fretboards'),
+                const SizedBox(height: 8),
+                SegmentedButton<StringOrder>(
+                  showSelectedIcon: false,
+                  segments: const [
+                    ButtonSegment(value: StringOrder.lowOnTop, label: Text('Low E on top')),
+                    ButtonSegment(value: StringOrder.highOnTop, label: Text('High e on top')),
+                  ],
+                  selected: {progress.stringOrder},
+                  onSelectionChanged: (v) => progress.stringOrder = v.first,
+                ),
+              ]),
+            ),
+          ),
           SwitchListTile(
             title: const Text('Left-handed diagrams'),
             subtitle: const Text('Mirror chord charts and fretboards'),
@@ -76,10 +110,34 @@ class ProfileScreen extends StatelessWidget {
             onChanged: (v) => progress.leftHanded = v,
           ),
           SwitchListTile(
+            title: const Text('Keep the screen on'),
+            subtitle: const Text("So it doesn't go dark while your hands are on the guitar"),
+            value: progress.keepScreenOn,
+            onChanged: (v) => progress.keepScreenOn = v,
+          ),
+          SwitchListTile(
+            title: const Text('Keep playing when I miss'),
+            subtitle: const Text("Playing along, carry on through missed notes instead of going back"),
+            value: progress.keepPlaying,
+            onChanged: (v) => progress.keepPlaying = v,
+          ),
+          SwitchListTile(
+            title: const Text('Opening sound'),
+            subtitle: const Text('Strum the open strings when the app starts'),
+            value: progress.openingSound,
+            onChanged: (v) => progress.openingSound = v,
+          ),
+          SwitchListTile(
             title: const Text('Unlock all lessons'),
             subtitle: const Text('Jump ahead if you already play'),
             value: progress.unlockAll,
             onChanged: (v) => progress.unlockAll = v,
+          ),
+          SwitchListTile(
+            title: const Text('Share anonymous usage stats'),
+            subtitle: const Text('Helps improve Guitaro. Never includes what you play or your songs.'),
+            value: progress.shareUsage,
+            onChanged: (v) => progress.shareUsage = v,
           ),
           ListTile(
             title: const Text('Reset progress', style: TextStyle(color: kMiss)),

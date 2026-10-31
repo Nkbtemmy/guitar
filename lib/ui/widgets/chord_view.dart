@@ -47,16 +47,25 @@ class ChordView extends StatelessWidget {
   Widget build(BuildContext context) {
     var mode = display ?? context.select<ProgressStore, ChordDisplay>((p) => p.chordDisplay);
     if (compact && mode == ChordDisplay.both) mode = ChordDisplay.diagram;
+    final sideways = context.select<ProgressStore, bool>((p) => p.chordOrientation == ChordOrientation.sideways);
     final name = Text(chord.symbol, style: TextStyle(fontSize: width * 0.16, fontWeight: FontWeight.w800));
-    final diagramHeight = width * 1.2;
-    final tab = ChordTab(chord: chord, height: diagramHeight, label: false);
     final body = switch (mode) {
       ChordDisplay.diagram => ChordDiagram(chord: chord, width: width),
-      ChordDisplay.tab => tab,
+      ChordDisplay.tab => ChordTab(chord: chord, height: width * 1.2, label: false),
+      // Sideways, the tab carries on the diagram's strings: the same line gap, tops aligned, and
+      // the tab's string letters standing between the two.
+      ChordDisplay.both when sideways => Row(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          ChordDiagram(chord: chord, width: width, stringNames: false),
+          SizedBox(width: width * 0.04),
+          ChordTab(
+              chord: chord,
+              height: ChordDiagram.heightFor(width, ChordOrientation.sideways) / SidewaysChordLayout.rows * 6.4,
+              label: false),
+        ]),
       ChordDisplay.both => Row(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
           ChordDiagram(chord: chord, width: width),
           SizedBox(width: width * 0.12),
-          tab,
+          ChordTab(chord: chord, height: width * 1.2, label: false),
         ]),
     };
     if (!showName) return body;

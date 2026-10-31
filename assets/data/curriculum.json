@@ -232,6 +232,11 @@
             },
             {
               "type": "info",
+              "title": "Holding the pick",
+              "body": "Rest the pick on the side of your index finger and press it down with the pad of your thumb, so just the tip shows past your fingers. Hold it firmly enough that it doesn't spin, but loosely enough that it can give a little as it brushes the strings. No pick? The nail of your index finger works for strumming too."
+            },
+            {
+              "type": "info",
               "title": "Your first strum",
               "body": "Your first strum is a smooth, loose motion from the wrist — start at the lowest string of the chord and brush across the others. Let your thumb or pick glide down, keeping your hand relaxed. You'll find it feels natural once you move with the motion, not against it. Take your time — every great guitarist started here. You've got this!"
             },
@@ -570,6 +575,64 @@
               "bars": 4
             }
           ]
+        },
+        {
+          "id": "L05-5",
+          "title": "Accents",
+          "summary": "Make it groove: harder on 2 and 4.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "Make it groove",
+              "body": "Not every strum is equally loud. Most pop and rock songs lean on beats 2 and 4, the backbeat, where the snare drum hits. Strum those a little harder, keep the others lighter, and the same pattern suddenly grooves. In these exercises the strums marked > are the accents: the app listens to how loud each strum is and checks that you play those ones louder."
+            },
+            {
+              "type": "strum",
+              "chords": ["G"],
+              "pattern": "D-D-D-D-",
+              "accents": "-->--->-",
+              "bpm": 70,
+              "bars": 4,
+              "body": "Down on every beat: harder on 2 and 4."
+            },
+            {
+              "type": "strum",
+              "chords": ["C", "G"],
+              "pattern": "D-DU-UDU",
+              "accents": "-->--->-",
+              "bpm": 70,
+              "bars": 4,
+              "body": "The folk pattern with a backbeat: lean into the down-strums on 2 and 4."
+            }
+          ]
+        },
+        {
+          "id": "L05-6",
+          "title": "Chucks",
+          "summary": "A percussive muted strum on the backbeat.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "The chuck",
+              "body": "A chuck is a strum that makes a percussive chk instead of a chord. As your hand strums down, let the side of your palm land on the strings so they stop as they are hit, or relax your fretting fingers just enough to mute every string. Played on beats 2 and 4 it works like a snare drum, and you hear it in pop, reggae and acoustic covers everywhere. Keep your hand moving exactly as before: only the sound changes. In the pattern, a cross marks a chuck."
+            },
+            {
+              "type": "strum",
+              "chords": ["Em"],
+              "pattern": "D-X-D-X-",
+              "bpm": 70,
+              "bars": 4,
+              "body": "Down, chuck, down, chuck: the chucks land on 2 and 4."
+            },
+            {
+              "type": "strum",
+              "chords": ["G", "D", "Em", "C"],
+              "pattern": "D-XU-UXU",
+              "bpm": 75,
+              "bars": 4,
+              "body": "The folk pattern with chucks on 2 and 4: a classic acoustic pop groove."
+            }
+          ]
         }
       ]
     },
@@ -905,6 +968,34 @@
               "body": "A simple rock progression: one bar per chord."
             }
           ]
+        },
+        {
+          "id": "L08-4",
+          "title": "Sixteenth notes",
+          "summary": "Four strums a beat for funk and pop grooves.",
+          "steps": [
+            {
+              "type": "info",
+              "title": "1 e & a",
+              "body": "Sixteenth notes split each beat into four: count 1-e-and-a, 2-e-and-a. Your hand now swings down and up twice every beat: down on the numbers and on the and, up on the e and the a. Keep the motion small, from the wrist, and light: at this speed you only brush a few strings. Start slowly with the metronome. The steady swing does the work, and the pattern only decides which swings touch the strings."
+            },
+            {
+              "type": "strum",
+              "chords": ["Em"],
+              "pattern": "DUDUDUDUDUDUDUDU",
+              "bpm": 60,
+              "bars": 2,
+              "body": "Every sixteenth: down-up-down-up, slow and even."
+            },
+            {
+              "type": "strum",
+              "chords": ["Em", "Am"],
+              "pattern": "D-DUD-DUD-DUD-DU",
+              "bpm": 65,
+              "bars": 4,
+              "body": "On each beat: down, (miss the e), down-up. A galloping groove."
+            }
+          ]
         }
       ]
     },
@@ -1171,6 +1262,15 @@
               "body": "The shuffle feel is long-short, long-short — like 'HUMP-ty DUMP-ty'. Delay each up-strum slightly to create that swing. Let the rhythm relax and move with the groove, not against it. You're already playing the blues — now let it breathe. One more thing: keep your strumming hand loose, and let the music carry you forward. You've got this."
             },
             {
+              "type": "strum",
+              "chords": ["A7", "D7"],
+              "pattern": "DUDUDUDU",
+              "swing": true,
+              "bpm": 70,
+              "bars": 4,
+              "body": "Down-up with a swing: every up-strum comes late, long-short, long-short."
+            },
+            {
               "type": "song",
               "song": "blues_in_a"
             }
@@ -1400,6 +1500,7 @@
       "bpm": 90,
       "beatsPerBar": 4,
       "pattern": "D-DUD-DU",
+      "swing": true,
       "lines": [
         {
           "lyrics": "Four bars of the I chord",

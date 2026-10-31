@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import '../music/notes.dart';
 import 'synth.dart';
 
-/// Radix-2 FFT returning the magnitude spectrum of a real signal.
+/// Radix-2 FFT: in place on complex data, or the magnitude spectrum of a real signal.
 class Fft {
   Fft(this.size)
       : assert(size > 0 && (size & (size - 1)) == 0, 'size must be a power of two'),
@@ -33,31 +33,51 @@ class Fft {
 
   /// Magnitudes for bins 0..size/2.
   Float64List magnitudes(Float64List input) {
-    for (var i = 0; i < size; i++) {
-      _re[_rev[i]] = input[i];
-      _im[_rev[i]] = 0;
-    }
-    for (var len = 2; len <= size; len <<= 1) {
-      final half = len >> 1;
-      final step = size ~/ len;
-      for (var start = 0; start < size; start += len) {
-        for (var k = 0; k < half; k++) {
-          final wr = _cos[k * step], wi = _sin[k * step];
-          final a = start + k, b = a + half;
-          final tr = _re[b] * wr - _im[b] * wi;
-          final ti = _re[b] * wi + _im[b] * wr;
-          _re[b] = _re[a] - tr;
-          _im[b] = _im[a] - ti;
-          _re[a] += tr;
-          _im[a] += ti;
-        }
-      }
-    }
+    _re.setRange(0, size, input);
+    _im.fillRange(0, size, 0);
+    transform(_re, _im);
     final out = Float64List(size ~/ 2 + 1);
     for (var i = 0; i < out.length; i++) {
       out[i] = math.sqrt(_re[i] * _re[i] + _im[i] * _im[i]);
     }
     return out;
+  }
+
+  /// Transforms [re] + i·[im] ([size] values each) in place. The [inverse] is scaled by 1/size,
+  /// so a round trip gives the input back.
+  void transform(Float64List re, Float64List im, {bool inverse = false}) {
+    for (var i = 0; i < size; i++) {
+      final j = _rev[i];
+      if (j <= i) continue;
+      final r = re[i], m = im[i];
+      re[i] = re[j];
+      im[i] = im[j];
+      re[j] = r;
+      im[j] = m;
+    }
+    final sign = inverse ? -1.0 : 1.0;
+    for (var len = 2; len <= size; len <<= 1) {
+      final half = len >> 1;
+      final step = size ~/ len;
+      for (var start = 0; start < size; start += len) {
+        for (var k = 0; k < half; k++) {
+          final wr = _cos[k * step], wi = sign * _sin[k * step];
+          final a = start + k, b = a + half;
+          final tr = re[b] * wr - im[b] * wi;
+          final ti = re[b] * wi + im[b] * wr;
+          re[b] = re[a] - tr;
+          im[b] = im[a] - ti;
+          re[a] += tr;
+          im[a] += ti;
+        }
+      }
+    }
+    if (inverse) {
+      for (var i = 0; i < size; i++) {
+        re[i] /= size;
+        im[i] /= size;
+      }
+    }
   }
 }
 
@@ -86,15 +106,7 @@ class YinPitchDetector {
     final w = end - start - tauMax;
     if (w < tauMax ~/ 2) return null;
 
-    final d = Float64List(tauMax + 2);
-    for (var tau = 1; tau <= tauMax + 1 && start + tau + w <= end; tau++) {
-      var sum = 0.0;
-      for (var j = start; j < start + w; j++) {
-        final diff = x[j] - x[j + tau];
-        sum += diff * diff;
-      }
-      d[tau] = sum;
-    }
+    final d = _difference(x, start, w, tauMax);
     // Cumulative mean normalized difference.
     final cmnd = Float64List(tauMax + 2)..[0] = 1;
     var running = 0.0;
@@ -129,6 +141,61 @@ class YinPitchDetector {
       if (denom.abs() > 1e-12) refined = tau + 0.5 * (a - c) / denom;
     }
     return PitchResult(sampleRate / refined, (1 - cmnd[tau]).clamp(0.0, 1.0));
+  }
+
+  Fft? _fft;
+  Float64List _ar = Float64List(0), _ai = Float64List(0), _br = Float64List(0), _bi = Float64List(0);
+
+  /// The difference function d(τ) = Σ (x[j] − x[j+τ])² over [w] samples, for τ = 1..[tauMax].
+  /// Summed directly that's w × tauMax multiply-adds (~900k a frame, most of the analysis time,
+  /// on the UI thread). Expanded, it's energy(0) + energy(τ) − 2·r(τ): the energies come from a
+  /// running sum, and the correlation r from three FFTs.
+  Float64List _difference(Float64List x, int start, int w, int tauMax) {
+    final n = w + tauMax;
+    var size = 1;
+    while (size < n) {
+      size <<= 1;
+    }
+    // Zero-padded to [size] >= n, the circular correlation never wraps: j + τ <= n - 1.
+    final fft = _fft?.size == size ? _fft! : (_fft = Fft(size));
+    if (_ar.length != size) {
+      _ar = Float64List(size);
+      _ai = Float64List(size);
+      _br = Float64List(size);
+      _bi = Float64List(size);
+    }
+    final ar = _ar, ai = _ai, br = _br, bi = _bi;
+    ar.fillRange(0, size, 0);
+    ai.fillRange(0, size, 0);
+    br.fillRange(0, size, 0);
+    bi.fillRange(0, size, 0);
+    ar.setRange(0, w, x, start);
+    br.setRange(0, n, x, start);
+    fft.transform(ar, ai);
+    fft.transform(br, bi);
+    // conj(A)·B, then back: br[τ] = r(τ) = Σ x[j]·x[j+τ].
+    for (var k = 0; k < size; k++) {
+      final re = ar[k] * br[k] + ai[k] * bi[k];
+      final im = ar[k] * bi[k] - ai[k] * br[k];
+      br[k] = re;
+      bi[k] = im;
+    }
+    fft.transform(br, bi, inverse: true);
+    // energy(τ) = Σ x[j]² for j in τ..τ+w-1, from a running sum.
+    final energy = ai; // free again: reuse it for the running sum
+    var sum = 0.0;
+    for (var j = 0; j < n; j++) {
+      energy[j] = sum;
+      sum += x[start + j] * x[start + j];
+    }
+    double before(int j) => j < n ? energy[j] : sum;
+    final e0 = before(w);
+    final d = Float64List(tauMax + 2);
+    for (var tau = 1; tau <= tauMax; tau++) {
+      // Rounding can leave a hair below zero where the true value is ~0 (a perfect repeat).
+      d[tau] = math.max(0.0, e0 + before(tau + w) - before(tau) - 2 * br[tau]);
+    }
+    return d;
   }
 }
 
@@ -377,5 +444,29 @@ class AudioAnalyzer {
       peaks: peaks,
       onsets: onsets,
     );
+  }
+}
+
+/// Turns little-endian 16-bit PCM bytes into -1..1 samples. A chunk may end mid-sample; the
+/// odd byte is kept for the next chunk.
+class Pcm16Decoder {
+  int _leftoverByte = -1;
+
+  void reset() => _leftoverByte = -1;
+
+  Float32List decode(Uint8List bytes) {
+    var start = 0;
+    final samples = Float32List((bytes.length + (_leftoverByte >= 0 ? 1 : 0)) ~/ 2);
+    var n = 0;
+    if (_leftoverByte >= 0 && bytes.isNotEmpty) {
+      samples[n++] = ((bytes[0] << 8 | _leftoverByte).toSigned(16)) / 32768;
+      start = 1;
+      _leftoverByte = -1;
+    }
+    for (var i = start; i + 1 < bytes.length; i += 2) {
+      samples[n++] = ((bytes[i + 1] << 8 | bytes[i]).toSigned(16)) / 32768;
+    }
+    if ((bytes.length - start).isOdd) _leftoverByte = bytes.last;
+    return Float32List.sublistView(samples, 0, n);
   }
 }

@@ -97,11 +97,16 @@ void main() {
     });
 
     testWidgets('long tabs scroll instead of overflowing', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: SizedBox(
-            width: 300,
-            child: TabStaff(columns: [for (var i = 0; i < 20; i++) TabColumn.note(FretNote(1, i % 5))], current: 15),
+      SharedPreferences.setMockInitialValues({});
+      final progress = ProgressStore(await SharedPreferences.getInstance());
+      await tester.pumpWidget(ChangeNotifierProvider.value(
+        value: progress,
+        child: MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 300,
+              child: TabStaff(columns: [for (var i = 0; i < 20; i++) TabColumn.note(FretNote(1, i % 5))], current: 15),
+            ),
           ),
         ),
       ));
@@ -109,6 +114,41 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.byType(SingleChildScrollView), findsOneWidget);
     });
+  });
+
+  test('sideways charts: nut on the left, frets left to right, strings in the same order as tab', () {
+    final at = SidewaysChordLayout(const Size(240, 200), baseFret: 1, order: StringOrder.highOnTop);
+    expect([for (var s = 1; s < 6; s++) at.y(s) < at.y(s + 1)].every((below) => below), isTrue,
+        reason: 'string 1 (high e) on top, down to string 6 (low E)');
+    final flipped = SidewaysChordLayout(const Size(240, 200), baseFret: 1);
+    expect([for (var s = 1; s <= 6; s++) flipped.y(s)], [for (var s = 6; s >= 1; s--) at.y(s)],
+        reason: 'the other order flips the rows');
+    expect(at.x(0) < at.wire(0) && at.wire(0) < at.x(1) && at.x(1) < at.x(2) && at.x(2) < at.x(4), isTrue);
+    // The strings sit where a tab with the same line gap draws its lines, so a tab beside it lines up.
+    for (var s = 1; s <= 6; s++) {
+      expect(at.y(s), closeTo(at.gap * 0.6 + (s - 1) * at.gap, 1e-9));
+    }
+    expect(TabStaff.heightFor(at.gap, labels: false), closeTo(at.gap * 6.4, 1e-9));
+    final left = SidewaysChordLayout(const Size(240, 200), baseFret: 1, leftHanded: true, order: StringOrder.highOnTop);
+    expect(left.x(1), closeTo(240 - at.x(1), 1e-9), reason: 'left-handed: mirrored, nut on the right');
+    expect(left.y(6), at.y(6));
+  });
+
+  testWidgets('chord charts face the way the learner chose', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final progress = ProgressStore(await SharedPreferences.getInstance());
+    Future<Size> drawn() async {
+      await tester.pumpWidget(ChangeNotifierProvider.value(
+        value: progress,
+        child: MaterialApp(home: Scaffold(body: Center(child: ChordView(chord: library.byId('G'), width: 150)))),
+      ));
+      return tester.getSize(find.byType(ChordDiagram));
+    }
+
+    expect(await drawn(), const Size(150, 180), reason: 'upright by default, like a chord book');
+    progress.chordOrientation = ChordOrientation.sideways;
+    expect(await drawn(), const Size(150, 125), reason: 'sideways: wider than tall');
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('chord display follows the setting', (tester) async {
