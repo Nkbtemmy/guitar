@@ -38,8 +38,8 @@ abstract class AccountService extends ChangeNotifier {
   /// The learner's cloud copy, or null when there's none yet.
   Future<CloudCopy?> fetch();
 
-  /// Replaces the cloud copy with [data].
-  Future<void> store(Map<String, String> data);
+  /// Replaces the cloud copy with [data]; returns when it was saved.
+  Future<DateTime> store(Map<String, String> data);
 }
 
 /// A build without accounts: everything stays on the phone.
@@ -69,5 +69,5 @@ class NoAccounts extends AccountService {
   Future<CloudCopy?> fetch() async => null;
 
   @override
-  Future<void> store(Map<String, String> data) async {}
+  Future<DateTime> store(Map<String, String> data) async => DateTime.now();
 }

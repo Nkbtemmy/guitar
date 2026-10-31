@@ -4,7 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'dart:async';
+
 import 'account/account_service.dart';
+import 'account/cloud_sync.dart';
 import 'account/firebase_accounts.dart';
 import 'analytics.dart';
 import 'app_services.dart';
@@ -76,15 +79,30 @@ Future<void> main() async {
   final (services, firebase) = await (AppServices.load(rootBundle, player), startFirebase()).wait;
   final analytics = Analytics.start(firebase: firebase, enabled: progress.shareUsage);
   final accounts = firebase ? FirebaseAccounts() : NoAccounts();
+  final songbook = SongbookStore(prefs);
+  // Progress, practice and songs follow the learner's account (when they've signed in).
+  final sync = CloudSync(
+    accounts: accounts,
+    prefs: prefs,
+    stores: [
+      (key: ProgressStore.storageKey, store: progress, reload: progress.reload),
+      (key: PracticeLog.storageKey, store: practice, reload: practice.reload),
+      (key: SongbookStore.storageKey, store: songbook, reload: songbook.reload),
+    ],
+    localIsEmpty: () =>
+        progress.lessonsCompleted == 0 && practice.isEmpty && songbook.userSongs.isEmpty && songbook.setlists.isEmpty,
+  )..start();
+  if (accounts.account != null) unawaited(sync.resume());
   progress.addListener(() => analytics.enabled = progress.shareUsage);
   runApp(GuitaroApp(
     services: services,
     progress: progress,
     mic: mic,
-    songbook: SongbookStore(prefs),
+    songbook: songbook,
     practice: practice,
     reminders: reminders,
     accounts: accounts,
+    sync: sync,
     analytics: analytics,
     splash: true,
     onboarding: true,
@@ -101,6 +119,7 @@ class GuitaroApp extends StatelessWidget {
     PracticeLog? practice,
     Reminders? reminders,
     AccountService? accounts,
+    this.sync,
     Analytics? analytics,
     this.splash = false,
     this.onboarding = false,
@@ -126,6 +145,9 @@ class GuitaroApp extends StatelessWidget {
   /// Signing in, and the learner's cloud copy.
   final AccountService accounts;
 
+  /// Keeps the learner's data in their account; none in a build without accounts, or a test.
+  final CloudSync? sync;
+
   /// Anonymous usage stats; sends nothing unless Firebase started.
   final Analytics analytics;
 
@@ -145,6 +167,7 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: practice),
           Provider.value(value: reminders),
           ChangeNotifierProvider.value(value: accounts),
+          Provider<CloudSync?>.value(value: sync),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(

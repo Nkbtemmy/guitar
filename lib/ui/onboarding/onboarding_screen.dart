@@ -24,6 +24,15 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _welcomed = false;
 
+  /// Signed in: someone coming back (their goal came with their account) goes straight home.
+  void _signedIn() {
+    if (context.read<ProgressStore>().goal != null) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute<void>(builder: (_) => widget.next));
+    } else {
+      setState(() => _welcomed = true);
+    }
+  }
+
   Future<void> _finish(LearningGoal goal, TimeOfDay? reminder) async {
     final progress = context.read<ProgressStore>();
     final reminders = context.read<Reminders>();
@@ -63,7 +72,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const Spacer(),
           // With accounts: sign in to back up progress, or skip and sign in later from Me.
           if (context.watch<AccountService>().available) ...[
-            SignInButtons(onSignedIn: () => setState(() => _welcomed = true)),
+            SignInButtons(onSignedIn: _signedIn),
             TextButton(onPressed: () => setState(() => _welcomed = true), child: const Text('Skip for now')),
             const Text('Signing in backs up your progress, so you can carry on from any phone.',
                 textAlign: TextAlign.center, style: TextStyle(color: kMuted, fontSize: 13)),

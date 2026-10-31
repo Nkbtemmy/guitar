@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../account/account_service.dart';
+import '../../account/cloud_sync.dart';
 import '../theme.dart';
 
-/// Signs in with Google, or Apple when [apple]. True when the learner is now signed in; a failure
-/// says so, and backing out does nothing.
+/// Signs in with Google, or Apple when [apple], then brings this phone and the account
+/// together (asking which to keep when both have progress). True when the learner is now
+/// signed in; a failure says so, and backing out does nothing.
 Future<bool> signIn(BuildContext context, {bool apple = false}) async {
   final accounts = context.read<AccountService>();
+  final sync = context.read<CloudSync?>();
   final messenger = ScaffoldMessenger.of(context);
   try {
     final account = apple ? await accounts.signInWithApple() : await accounts.signInWithGoogle();
-    return account != null;
+    if (account == null) return false;
+    if (sync != null && context.mounted) await sync.connect(useAccountCopy: () => _useAccountCopy(context));
+    return true;
   } catch (e) {
     debugPrint('Sign-in failed: $e');
     messenger.showSnackBar(const SnackBar(content: Text("Couldn't sign in. Check your connection and try again.")));
@@ -19,9 +24,38 @@ Future<bool> signIn(BuildContext context, {bool apple = false}) async {
   }
 }
 
+/// This phone and the account both have progress: which to keep? True for the account's.
+Future<bool> _useAccountCopy(BuildContext context) async {
+  if (!context.mounted) return true;
+  final account = await showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (c) => AlertDialog(
+      title: const Text('Which progress do you want?'),
+      content: const Text(
+        'This phone and your account both have progress, practice or songs. Keep one: the other is replaced.',
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(c, false), child: const Text("This phone's")),
+        FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text("My account's")),
+      ],
+    ),
+  );
+  return account ?? true;
+}
+
+String _ago(DateTime t) {
+  final d = DateTime.now().difference(t);
+  if (d.inMinutes < 1) return 'just now';
+  if (d.inHours < 1) return '${d.inMinutes} min ago';
+  if (d.inDays < 1) return '${d.inHours} h ago';
+  return d.inDays == 1 ? 'yesterday' : '${d.inDays} days ago';
+}
+
 /// Asks first, then deletes the account and its cloud copy. What's on the phone stays.
 Future<void> deleteAccount(BuildContext context) async {
   final accounts = context.read<AccountService>();
+  final sync = context.read<CloudSync?>();
   final messenger = ScaffoldMessenger.of(context);
   final ok = await showDialog<bool>(
     context: context,
@@ -40,6 +74,7 @@ Future<void> deleteAccount(BuildContext context) async {
   if (ok != true) return;
   try {
     await accounts.deleteAccount();
+    await sync?.forget();
     messenger.showSnackBar(const SnackBar(content: Text('Your account is deleted.')));
   } catch (e) {
     debugPrint('Deleting the account failed: $e');
@@ -118,6 +153,28 @@ class AccountCard extends StatelessWidget {
                     ]),
                   ),
                 ]),
+                if (context.read<CloudSync?>() case final sync?)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ListenableBuilder(
+                      listenable: sync,
+                      builder: (context, _) => Row(children: [
+                        Icon(sync.failed ? Icons.cloud_off_rounded : Icons.cloud_done_rounded, size: 18, color: sync.failed ? kMiss : kSuccess),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            switch ((sync.busy, sync.failed, sync.syncedAt)) {
+                              (true, _, _) => 'Backing up…',
+                              (_, true, _) => "Couldn't reach your account: it will try again",
+                              (_, _, null) => 'Not backed up yet',
+                              (_, _, final at?) => 'Backed up ${_ago(at)}',
+                            },
+                            style: const TextStyle(color: kMuted, fontSize: 13),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
                 const SizedBox(height: 8),
                 Wrap(alignment: WrapAlignment.spaceBetween, children: [
                   TextButton(onPressed: accounts.signOut, child: const Text('Sign out')),

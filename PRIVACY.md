@@ -1,6 +1,6 @@
 # Guitaro privacy policy
 
-*Last updated: 26 October 2026*
+*Last updated: 31 October 2026*
 
 **Listening.** Guitaro uses your microphone only while something on screen is listening: a
 lesson, the tuner, "check my chord" or the chord finder. On Android, "Find chords from a video"
@@ -15,6 +15,13 @@ shared, and you can delete it at any time. Deleting the app deletes them all.
 **Your progress and songs** (lessons completed, stars, XP, streak, settings, favourites,
 setlists, and the songs you write or find) are stored only on your device. Guitaro has no
 accounts.
+
+**Accounts (optional).** You can use Guitaro without an account. If you sign in with Google
+(or Apple), Guitaro keeps your name, email address and a copy of your progress, practice
+history, homework, goal, settings and songs in your account (Google Cloud Firestore), so they're
+backed up and you can carry on from another phone. Recordings are never uploaded. Only you can
+read your copy. Signing out leaves everything on the phone. **Me › Delete account** deletes your
+account and its copy for good.
 
 **Usage stats and crash reports.** To learn how many people use Guitaro and what to improve, the
 app sends anonymous usage stats and crash reports through Google Firebase (Google Analytics for

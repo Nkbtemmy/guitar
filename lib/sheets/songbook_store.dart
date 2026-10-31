@@ -122,6 +122,21 @@ class UserSong {
 /// persisted as one JSON blob. Without [prefs] it keeps everything in memory.
 class SongbookStore extends ChangeNotifier {
   SongbookStore([this._prefs]) {
+    _load();
+  }
+
+  /// Reads it all again from storage: after the account's copy has replaced this phone's.
+  void reload() {
+    _favorites.clear();
+    _recent.clear();
+    _setlists.clear();
+    _songs.clear();
+    _prefsBySheet.clear();
+    _load();
+    notifyListeners();
+  }
+
+  void _load() {
     final raw = _prefs?.getString(_key);
     if (raw == null) return;
     // Read entry by entry: a damaged one is skipped, not allowed to stop the app from starting
@@ -157,6 +172,9 @@ class SongbookStore extends ChangeNotifier {
   }
 
   static const _key = 'songbook.v1';
+
+  /// Where it's saved: what cloud sync carries.
+  static const storageKey = _key;
   static const maxRecent = 20;
   final SharedPreferences? _prefs;
   final List<String> _favorites = [];

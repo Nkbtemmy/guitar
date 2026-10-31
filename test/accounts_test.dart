@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:guitaro/account/account_service.dart';
+import 'package:guitaro/account/cloud_sync.dart';
+import 'package:guitaro/progress/practice_log.dart';
+import 'package:guitaro/sheets/songbook_store.dart';
 import 'package:guitaro/app_services.dart';
 import 'package:guitaro/curriculum/models.dart';
 import 'package:guitaro/main.dart';
@@ -59,9 +62,11 @@ class FakeAccounts extends AccountService {
   Future<CloudCopy?> fetch() async => _account == null ? null : cloud;
 
   @override
-  Future<void> store(Map<String, String> data) async {
+  Future<DateTime> store(Map<String, String> data) async {
     stores++;
-    cloud = (data: {...data}, savedAt: DateTime.now());
+    final at = DateTime.now();
+    cloud = (data: {...data}, savedAt: at);
+    return at;
   }
 }
 
@@ -206,6 +211,112 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Back up your progress'), findsNothing);
       expect(find.text('Continue with Google'), findsNothing);
+    });
+  });
+
+  group('cloud sync', () {
+    late FakeAccounts accounts;
+    late ProgressStore progress;
+    late PracticeLog practice;
+    late SongbookStore songbook;
+    late CloudSync sync;
+
+    void phone() {
+      progress = ProgressStore(prefs);
+      practice = PracticeLog(prefs);
+      songbook = SongbookStore(prefs);
+      sync = CloudSync(
+        accounts: accounts,
+        prefs: prefs,
+        stores: [
+          (key: ProgressStore.storageKey, store: progress, reload: progress.reload),
+          (key: PracticeLog.storageKey, store: practice, reload: practice.reload),
+          (key: SongbookStore.storageKey, store: songbook, reload: songbook.reload),
+        ],
+        localIsEmpty: () => progress.lessonsCompleted == 0 && practice.isEmpty && songbook.userSongs.isEmpty,
+        delay: Duration.zero,
+      )..start();
+    }
+
+    /// Another phone, fresh: same account, nothing on it yet.
+    Future<void> newPhone() async {
+      SharedPreferences.setMockInitialValues({});
+      prefs = await SharedPreferences.getInstance();
+      phone();
+    }
+
+    Future<void> settle() => Future<void>.delayed(const Duration(milliseconds: 20));
+
+    setUp(() {
+      accounts = FakeAccounts();
+      phone();
+    });
+
+    test('the first phone fills the account; a new phone takes it, goal and all', () async {
+      progress.completeLesson('L01-1', 3);
+      progress.goal = const LearningGoal(aims: {Aim.blues}, minutes: 30);
+      practice.recordChanges('C', 'G', 21);
+      await accounts.signInWithGoogle();
+      await sync.connect(useAccountCopy: () async => fail('nothing to choose between'));
+      expect(accounts.cloud!.data.keys, {ProgressStore.storageKey, PracticeLog.storageKey, SongbookStore.storageKey});
+      expect(sync.syncedAt, isNotNull);
+
+      await newPhone();
+      await sync.connect(useAccountCopy: () async => fail('a new phone has nothing to keep'));
+      expect(progress.starsFor('L01-1'), 3);
+      expect(progress.goal!.minutes, 30);
+      expect(practice.bestChanges('G', 'C'), 21);
+    });
+
+    test('when both have progress, the learner chooses which to keep', () async {
+      progress.completeLesson('L01-1', 1);
+      await accounts.signInWithGoogle();
+      accounts.cloud = (data: {ProgressStore.storageKey: '{"stars": {"L01-2": 3}, "xp": 50}'}, savedAt: DateTime(2026, 10, 1));
+      var asked = 0;
+      await sync.connect(useAccountCopy: () async {
+        asked++;
+        return true;
+      });
+      expect(asked, 1);
+      expect(progress.isComplete('L01-2'), isTrue, reason: "the account's copy");
+      expect(progress.isComplete('L01-1'), isFalse);
+
+      progress.completeLesson('L01-3', 2);
+      accounts.cloud = (data: {ProgressStore.storageKey: '{"stars": {"L09-1": 3}}'}, savedAt: DateTime(2026, 10, 2));
+      await sync.connect(useAccountCopy: () async => false);
+      expect(progress.isComplete('L01-3'), isTrue, reason: "this phone's");
+      expect(accounts.cloud!.data[ProgressStore.storageKey], contains('L01-3'), reason: 'and it went up to the account');
+    });
+
+    test('a change goes up a moment later; nothing goes up while signed out', () async {
+      await accounts.signInWithGoogle();
+      await sync.connect(useAccountCopy: () async => true);
+      final before = accounts.stores;
+      practice.recordBest('ear:quality', 7);
+      await settle();
+      expect(accounts.stores, before + 1);
+      expect(accounts.cloud!.data[PracticeLog.storageKey], contains('ear:quality'));
+
+      await accounts.signOut();
+      progress.leftHanded = true;
+      await settle();
+      expect(accounts.stores, before + 1, reason: 'signed out');
+      await accounts.signInWithGoogle();
+      await sync.resume();
+      expect(accounts.cloud!.data[ProgressStore.storageKey], contains('"leftHanded":true'), reason: 'it goes up at the next sign-in');
+    });
+
+    test('at start, a newer copy from another phone comes down', () async {
+      await accounts.signInWithGoogle();
+      await sync.connect(useAccountCopy: () async => true);
+      accounts.cloud = (
+        data: {...accounts.cloud!.data, ProgressStore.storageKey: '{"stars": {"L02-1": 2}, "xp": 40}'},
+        savedAt: DateTime.now().add(const Duration(minutes: 5)),
+      );
+      phone();
+      await sync.resume();
+      expect(progress.isComplete('L02-1'), isTrue);
+      expect(progress.xp, 40);
     });
   });
 }

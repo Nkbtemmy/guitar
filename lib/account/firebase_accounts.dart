@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'account_service.dart';
 
-/// Accounts through Firebase: Google (and Apple) sign-in with Firebase Auth, and the learner's
+/// Accounts through Firebase: Google (and Apple) sign-in with Firebase Auth, which shows the
+/// provider's own sign-in page in a secure browser sheet, and the learner's
 /// copy in Cloud Firestore at `users/{uid}`, which only they can read or write (see
 /// firestore.rules). Both are on Firebase's free plan.
 class FirebaseAccounts extends AccountService {
@@ -20,7 +20,6 @@ class FirebaseAccounts extends AccountService {
   static const _appleSwitchedOn = bool.fromEnvironment('APPLE_SIGN_IN');
 
   late final StreamSubscription<User?> _changes;
-  Future<void>? _google;
 
   FirebaseAuth get _auth => FirebaseAuth.instance;
   DocumentReference<Map<String, dynamic>> _doc(String uid) => FirebaseFirestore.instance.collection('users').doc(uid);
@@ -44,52 +43,31 @@ class FirebaseAccounts extends AccountService {
           ),
       };
 
-  /// The Google sign-in plugin needs setting up once before use.
-  Future<void> _googleReady() => _google ??= GoogleSignIn.instance.initialize();
+  GoogleAuthProvider get _google => GoogleAuthProvider()..setCustomParameters({'prompt': 'select_account'});
 
-  Future<AuthCredential?> _googleCredential() async {
-    await _googleReady();
+  /// Signs in through [provider]; null when the learner backs out.
+  Future<Account?> _signIn(AuthProvider provider) async {
     try {
-      final user = await GoogleSignIn.instance.authenticate();
-      return GoogleAuthProvider.credential(idToken: user.authentication.idToken);
-    } on GoogleSignInException catch (e) {
-      if (e.code == GoogleSignInExceptionCode.canceled) return null;
+      await _auth.signInWithProvider(provider);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'canceled' || e.code == 'web-context-canceled' || e.code == 'user-cancelled') return null;
       rethrow;
     }
+    return account;
   }
 
   @override
-  Future<Account?> signInWithGoogle() async {
-    final credential = await _googleCredential();
-    if (credential == null) return null;
-    await _auth.signInWithCredential(credential);
-    return account;
-  }
+  Future<Account?> signInWithGoogle() => _signIn(_google);
 
   AppleAuthProvider get _apple => AppleAuthProvider()
     ..addScope('email')
     ..addScope('name');
 
   @override
-  Future<Account?> signInWithApple() async {
-    try {
-      await _auth.signInWithProvider(_apple);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'canceled' || e.code == 'web-context-canceled') return null;
-      rethrow;
-    }
-    return account;
-  }
+  Future<Account?> signInWithApple() => _signIn(_apple);
 
   @override
-  Future<void> signOut() async {
-    try {
-      await GoogleSignIn.instance.signOut();
-    } catch (_) {
-      // Signed in with Apple, or Google never set up: nothing to sign out of there.
-    }
-    await _auth.signOut();
-  }
+  Future<void> signOut() => _auth.signOut();
 
   @override
   Future<void> deleteAccount() async {
@@ -101,13 +79,7 @@ class FirebaseAccounts extends AccountService {
     } on FirebaseAuthException catch (e) {
       // Deleting needs a recent sign-in: sign in again, then delete.
       if (e.code != 'requires-recent-login') rethrow;
-      if (user.providerData.any((p) => p.providerId == 'apple.com')) {
-        await user.reauthenticateWithProvider(_apple);
-      } else {
-        final credential = await _googleCredential();
-        if (credential == null) return;
-        await user.reauthenticateWithCredential(credential);
-      }
+      await user.reauthenticateWithProvider(user.providerData.any((p) => p.providerId == 'apple.com') ? _apple : _google);
       await user.delete();
     }
     await signOut();
@@ -126,11 +98,14 @@ class FirebaseAccounts extends AccountService {
     );
   }
 
+  /// Saved with the phone's time, which the next sync compares with its own: the two clocks
+  /// agree closely enough to tell which copy is newer.
   @override
-  Future<void> store(Map<String, String> data) async {
+  Future<DateTime> store(Map<String, String> data) async {
+    final savedAt = DateTime.now();
     final user = _auth.currentUser;
-    if (user == null) return;
-    await _doc(user.uid).set({'stores': data, 'savedAt': FieldValue.serverTimestamp()});
+    if (user != null) await _doc(user.uid).set({'stores': data, 'savedAt': Timestamp.fromDate(savedAt)});
+    return savedAt;
   }
 
   @override

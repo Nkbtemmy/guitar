@@ -27,6 +27,21 @@ enum StringOrder {
 /// Learner progress and settings, persisted as one JSON blob in shared preferences.
 class ProgressStore extends ChangeNotifier {
   ProgressStore(this._prefs) {
+    _load();
+  }
+
+  /// Reads it all again from storage: after the account's copy has replaced this phone's.
+  void reload() {
+    _stars.clear();
+    _days.clear();
+    _reminder = null;
+    _goal = null;
+    _stringOrder = null;
+    _load();
+    notifyListeners();
+  }
+
+  void _load() {
     final raw = _prefs.getString(_key);
     if (raw == null) return;
     try {
@@ -57,6 +72,9 @@ class ProgressStore extends ChangeNotifier {
   }
 
   static const _key = 'progress.v1';
+
+  /// Where it's saved: what cloud sync carries.
+  static const storageKey = _key;
   final SharedPreferences _prefs;
   final Map<String, int> _stars = {};
   final Set<String> _days = {};
