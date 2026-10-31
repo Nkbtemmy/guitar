@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../account/account_service.dart';
 import '../../practice/reminders.dart';
 import '../../progress/learning_goal.dart';
 import '../../progress/progress_store.dart';
+import '../account/account_card.dart';
 import '../theme.dart';
 import '../widgets/brand_mark.dart';
 import 'goal_form.dart';
@@ -59,7 +61,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: TextStyle(fontSize: 16, color: kMuted, height: 1.4),
           ),
           const Spacer(),
-          FilledButton(onPressed: () => setState(() => _welcomed = true), child: const Text('Get started')),
+          // With accounts: sign in to back up progress, or skip and sign in later from Me.
+          if (context.watch<AccountService>().available) ...[
+            SignInButtons(onSignedIn: () => setState(() => _welcomed = true)),
+            TextButton(onPressed: () => setState(() => _welcomed = true), child: const Text('Skip for now')),
+            const Text('Signing in backs up your progress, so you can carry on from any phone.',
+                textAlign: TextAlign.center, style: TextStyle(color: kMuted, fontSize: 13)),
+          ] else
+            FilledButton(onPressed: () => setState(() => _welcomed = true), child: const Text('Get started')),
         ]),
       );
 }

@@ -4,8 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'account/account_service.dart';
+import 'account/firebase_accounts.dart';
 import 'analytics.dart';
 import 'app_services.dart';
+import 'firebase_setup.dart';
 import 'audio/mic_listener.dart';
 import 'audio/sound_player.dart';
 import 'practice/reminders.dart';
@@ -70,8 +73,9 @@ Future<void> main() async {
     debugPrint('Audio session setup failed: $e');
   }
   final player = SoundPlayer(onReferenceSound: (d) => mic.suppress(d + const Duration(milliseconds: 300)));
-  final (services, analytics) =
-      await (AppServices.load(rootBundle, player), Analytics.start(enabled: progress.shareUsage)).wait;
+  final (services, firebase) = await (AppServices.load(rootBundle, player), startFirebase()).wait;
+  final analytics = Analytics.start(firebase: firebase, enabled: progress.shareUsage);
+  final accounts = firebase ? FirebaseAccounts() : NoAccounts();
   progress.addListener(() => analytics.enabled = progress.shareUsage);
   runApp(GuitaroApp(
     services: services,
@@ -80,6 +84,7 @@ Future<void> main() async {
     songbook: SongbookStore(prefs),
     practice: practice,
     reminders: reminders,
+    accounts: accounts,
     analytics: analytics,
     splash: true,
     onboarding: true,
@@ -95,12 +100,14 @@ class GuitaroApp extends StatelessWidget {
     SongbookStore? songbook,
     PracticeLog? practice,
     Reminders? reminders,
+    AccountService? accounts,
     Analytics? analytics,
     this.splash = false,
     this.onboarding = false,
   })  : songbook = songbook ?? SongbookStore(),
         practice = practice ?? PracticeLog(),
         reminders = reminders ?? Reminders(),
+        accounts = accounts ?? NoAccounts(),
         analytics = analytics ?? const Analytics();
 
   final AppServices services;
@@ -115,6 +122,9 @@ class GuitaroApp extends StatelessWidget {
 
   /// The daily practice reminder.
   final Reminders reminders;
+
+  /// Signing in, and the learner's cloud copy.
+  final AccountService accounts;
 
   /// Anonymous usage stats; sends nothing unless Firebase started.
   final Analytics analytics;
@@ -134,6 +144,7 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: songbook),
           ChangeNotifierProvider.value(value: practice),
           Provider.value(value: reminders),
+          ChangeNotifierProvider.value(value: accounts),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(

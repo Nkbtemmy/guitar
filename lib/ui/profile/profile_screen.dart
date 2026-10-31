@@ -5,6 +5,7 @@ import '../../app_services.dart';
 import '../../practice/reminders.dart';
 import '../../progress/learning_goal.dart';
 import '../../progress/progress_store.dart';
+import '../account/account_card.dart';
 import '../onboarding/goal_form.dart';
 import '../theme.dart';
 import '../widgets/brand_mark.dart';
@@ -94,6 +95,8 @@ class ProfileScreen extends StatelessWidget {
           )),
         ),
       ),
+      const SizedBox(height: 12),
+      const AccountCard(),
       const SizedBox(height: 24),
       const Text('Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       const SizedBox(height: 8),
