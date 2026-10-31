@@ -170,6 +170,23 @@ class Homework {
 /// next), their chord-change minutes, homework, and more as the practice tools record it.
 class PracticeLog extends ChangeNotifier {
   PracticeLog([this._prefs]) {
+    _load();
+  }
+
+  /// Reads it all again from storage: after the account's copy has replaced this phone's.
+  void reload() {
+    _spots.clear();
+    _changes.clear();
+    _bests.clear();
+    _takes.clear();
+    _homework.clear();
+    _seconds.clear();
+    _done.clear();
+    _load();
+    notifyListeners();
+  }
+
+  void _load() {
     final raw = _prefs?.getString(_key);
     if (raw == null) return;
     try {
@@ -216,6 +233,9 @@ class PracticeLog extends ChangeNotifier {
   }
 
   static const _key = 'practice.v1';
+
+  /// Where it's saved: what cloud sync carries.
+  static const storageKey = _key;
   final SharedPreferences? _prefs;
   final _spots = <String, WeakSpot>{};
   final _changes = <String, List<ChangeRun>>{};
@@ -256,6 +276,9 @@ class PracticeLog extends ChangeNotifier {
   }
 
   bool isDone(String item, {DateTime? now}) => _done[_day(now ?? DateTime.now())]?.contains(item) ?? false;
+
+  /// Nothing practised yet.
+  bool get isEmpty => _spots.isEmpty && _changes.isEmpty && _bests.isEmpty && _homework.isEmpty && _seconds.isEmpty && _takes.isEmpty;
 
   /// How long a spot stays on the list without being played.
   static const forgetAfter = Duration(days: 30);

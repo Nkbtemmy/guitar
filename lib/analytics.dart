@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,15 +14,10 @@ import 'curriculum/models.dart';
 class Analytics {
   const Analytics();
 
-  /// Starts Firebase stats and crash reports, or returns an [Analytics] that sends nothing when
-  /// Firebase can't start (e.g. a build that isn't connected to a Firebase project).
-  static Future<Analytics> start({required bool enabled, FirebaseOptions? options}) async {
-    try {
-      await Firebase.initializeApp(options: options);
-    } catch (e) {
-      debugPrint('Analytics: Firebase did not start ($e)');
-      return const Analytics();
-    }
+  /// Stats and crash reports through Firebase once it has started ([firebase]); otherwise an
+  /// [Analytics] that sends nothing.
+  static Analytics start({required bool firebase, required bool enabled}) {
+    if (!firebase) return const Analytics();
     if (!kDebugMode) {
       // Dart errors don't end the app, so they're reported as non-fatal: Crashlytics' crash-free
       // users then counts real crashes, which it catches natively.

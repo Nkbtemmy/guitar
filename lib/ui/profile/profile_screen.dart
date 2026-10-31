@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../app_services.dart';
 import '../../practice/reminders.dart';
+import '../../progress/learning_goal.dart';
 import '../../progress/progress_store.dart';
+import '../account/account_card.dart';
+import '../onboarding/goal_form.dart';
 import '../theme.dart';
 import '../widgets/brand_mark.dart';
 
@@ -63,6 +66,37 @@ class ProfileScreen extends StatelessWidget {
           ]),
         ),
       ),
+      const SizedBox(height: 12),
+      Card(
+        child: ListTile(
+          leading: const Icon(Icons.flag_rounded, color: kAccent),
+          title: const Text('My goal', style: TextStyle(fontWeight: FontWeight.w700)),
+          subtitle: Text(switch (progress.goal) {
+            null => 'Not set: tap to choose',
+            final g => '${g.aims.map((a) => a.label).join(', ')} · ${g.minutes} min a day',
+          }),
+          trailing: const Icon(Icons.chevron_right_rounded),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (c) => Scaffold(
+              appBar: AppBar(title: const Text('My goal')),
+              body: SafeArea(
+                child: ListView(padding: const EdgeInsets.all(20), children: [
+                  GoalForm(
+                    initial: progress.goal ?? const LearningGoal(),
+                    doneLabel: 'Save',
+                    onDone: (goal, _) {
+                      progress.goal = goal;
+                      Navigator.of(c).pop();
+                    },
+                  ),
+                ]),
+              ),
+            ),
+          )),
+        ),
+      ),
+      const SizedBox(height: 12),
+      const AccountCard(),
       const SizedBox(height: 24),
       const Text('Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       const SizedBox(height: 8),

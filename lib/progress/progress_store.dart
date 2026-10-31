@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../curriculum/models.dart';
 import '../music/notes.dart';
+import 'learning_goal.dart';
 
 /// How chords are drawn: a fretboard box diagram, six-line tab, or both side by side.
 enum ChordDisplay { both, tab, diagram }
@@ -26,6 +27,21 @@ enum StringOrder {
 /// Learner progress and settings, persisted as one JSON blob in shared preferences.
 class ProgressStore extends ChangeNotifier {
   ProgressStore(this._prefs) {
+    _load();
+  }
+
+  /// Reads it all again from storage: after the account's copy has replaced this phone's.
+  void reload() {
+    _stars.clear();
+    _days.clear();
+    _reminder = null;
+    _goal = null;
+    _stringOrder = null;
+    _load();
+    notifyListeners();
+  }
+
+  void _load() {
     final raw = _prefs.getString(_key);
     if (raw == null) return;
     try {
@@ -43,6 +59,7 @@ class ProgressStore extends ChangeNotifier {
       _tuning = Tuning.named(j['tuning'] as String? ?? '') ?? Tuning.standard;
       _reminder = (j['reminder'] as num?)?.toInt();
       _studentName = j['studentName'] as String? ?? '';
+      if (j['goal'] case final Map<String, dynamic> goal) _goal = LearningGoal.fromJson(goal);
       _chordOrientation = ChordOrientation.values.asNameMap()[j['chordChart']] ?? ChordOrientation.upright;
       _stringOrder = StringOrder.values.asNameMap()[j['stringOrder']];
       _chordDisplay = ChordDisplay.values.asNameMap()[j['chordDisplay']] ?? ChordDisplay.both;
@@ -55,6 +72,9 @@ class ProgressStore extends ChangeNotifier {
   }
 
   static const _key = 'progress.v1';
+
+  /// Where it's saved: what cloud sync carries.
+  static const storageKey = _key;
   final SharedPreferences _prefs;
   final Map<String, int> _stars = {};
   final Set<String> _days = {};
@@ -69,6 +89,7 @@ class ProgressStore extends ChangeNotifier {
   Tuning _tuning = Tuning.standard;
   int? _reminder;
   String _studentName = '';
+  LearningGoal? _goal;
   ChordOrientation _chordOrientation = ChordOrientation.upright;
   // Null until the learner picks one, so it follows the app's default until then.
   StringOrder? _stringOrder;
@@ -99,6 +120,9 @@ class ProgressStore extends ChangeNotifier {
 
   /// The student's name, for their progress report.
   String get studentName => _studentName;
+
+  /// What the learner set out to do; null until they've said (the app asks on first open).
+  LearningGoal? get goal => _goal;
   ChordOrientation get chordOrientation => _chordOrientation;
   StringOrder get stringOrder => _stringOrder ?? StringOrder.lowOnTop;
   ChordDisplay get chordDisplay => _chordDisplay;
@@ -158,6 +182,12 @@ class ProgressStore extends ChangeNotifier {
   set tuning(Tuning v) => _update(() => _tuning = v);
   set reminder(int? v) => _update(() => _reminder = v);
   set studentName(String v) => _update(() => _studentName = v);
+
+  /// Sets the goal, and opens the course to a learner who already plays.
+  set goal(LearningGoal? v) => _update(() {
+        _goal = v;
+        if (v != null && v.experience != Experience.newcomer) _unlockAll = true;
+      });
   set chordOrientation(ChordOrientation v) => _update(() => _chordOrientation = v);
   set stringOrder(StringOrder v) => _update(() => _stringOrder = v);
   set chordDisplay(ChordDisplay v) => _update(() => _chordDisplay = v);
@@ -191,6 +221,7 @@ class ProgressStore extends ChangeNotifier {
           'tuning': _tuning.name,
           'reminder': _reminder,
           'studentName': _studentName,
+          if (_goal != null) 'goal': _goal!.toJson(),
           'chordChart': _chordOrientation.name,
           if (_stringOrder != null) 'stringOrder': _stringOrder!.name,
           'chordDisplay': _chordDisplay.name,

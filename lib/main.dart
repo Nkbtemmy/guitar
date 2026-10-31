@@ -4,8 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'dart:async';
+
+import 'account/account_service.dart';
+import 'account/cloud_sync.dart';
+import 'account/firebase_accounts.dart';
 import 'analytics.dart';
 import 'app_services.dart';
+import 'firebase_setup.dart';
 import 'audio/mic_listener.dart';
 import 'audio/sound_player.dart';
 import 'practice/reminders.dart';
@@ -14,6 +20,7 @@ import 'progress/progress_store.dart';
 import 'sheets/songbook_store.dart';
 import 'ui/chords/chords_screen.dart';
 import 'ui/learn/learn_screen.dart';
+import 'ui/onboarding/onboarding_screen.dart';
 import 'ui/profile/profile_screen.dart';
 import 'ui/songs/songs_screen.dart';
 import 'ui/splash_screen.dart';
@@ -69,18 +76,36 @@ Future<void> main() async {
     debugPrint('Audio session setup failed: $e');
   }
   final player = SoundPlayer(onReferenceSound: (d) => mic.suppress(d + const Duration(milliseconds: 300)));
-  final (services, analytics) =
-      await (AppServices.load(rootBundle, player), Analytics.start(enabled: progress.shareUsage)).wait;
+  final (services, firebase) = await (AppServices.load(rootBundle, player), startFirebase()).wait;
+  final analytics = Analytics.start(firebase: firebase, enabled: progress.shareUsage);
+  final accounts = firebase ? FirebaseAccounts() : NoAccounts();
+  final songbook = SongbookStore(prefs);
+  // Progress, practice and songs follow the learner's account (when they've signed in).
+  final sync = CloudSync(
+    accounts: accounts,
+    prefs: prefs,
+    stores: [
+      (key: ProgressStore.storageKey, store: progress, reload: progress.reload),
+      (key: PracticeLog.storageKey, store: practice, reload: practice.reload),
+      (key: SongbookStore.storageKey, store: songbook, reload: songbook.reload),
+    ],
+    localIsEmpty: () =>
+        progress.lessonsCompleted == 0 && practice.isEmpty && songbook.userSongs.isEmpty && songbook.setlists.isEmpty,
+  )..start();
+  if (accounts.account != null) unawaited(sync.resume());
   progress.addListener(() => analytics.enabled = progress.shareUsage);
   runApp(GuitaroApp(
     services: services,
     progress: progress,
     mic: mic,
-    songbook: SongbookStore(prefs),
+    songbook: songbook,
     practice: practice,
     reminders: reminders,
+    accounts: accounts,
+    sync: sync,
     analytics: analytics,
     splash: true,
+    onboarding: true,
   ));
 }
 
@@ -93,11 +118,15 @@ class GuitaroApp extends StatelessWidget {
     SongbookStore? songbook,
     PracticeLog? practice,
     Reminders? reminders,
+    AccountService? accounts,
+    this.sync,
     Analytics? analytics,
     this.splash = false,
+    this.onboarding = false,
   })  : songbook = songbook ?? SongbookStore(),
         practice = practice ?? PracticeLog(),
         reminders = reminders ?? Reminders(),
+        accounts = accounts ?? NoAccounts(),
         analytics = analytics ?? const Analytics();
 
   final AppServices services;
@@ -113,11 +142,20 @@ class GuitaroApp extends StatelessWidget {
   /// The daily practice reminder.
   final Reminders reminders;
 
+  /// Signing in, and the learner's cloud copy.
+  final AccountService accounts;
+
+  /// Keeps the learner's data in their account; none in a build without accounts, or a test.
+  final CloudSync? sync;
+
   /// Anonymous usage stats; sends nothing unless Firebase started.
   final Analytics analytics;
 
   /// Open on the splash screen (with its opening strum) before the home screen.
   final bool splash;
+
+  /// Ask a learner who hasn't set a goal yet for one, before the home screen.
+  final bool onboarding;
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -128,13 +166,18 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: songbook),
           ChangeNotifierProvider.value(value: practice),
           Provider.value(value: reminders),
+          ChangeNotifierProvider.value(value: accounts),
+          Provider<CloudSync?>.value(value: sync),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(
           title: 'Guitaro',
           debugShowCheckedModeBanner: false,
           theme: buildTheme(),
-          home: splash ? const SplashScreen(next: HomeShell()) : const HomeShell(),
+          home: Builder(builder: (context) {
+            final first = onboarding && progress.goal == null ? const OnboardingScreen(next: HomeShell()) : const HomeShell();
+            return splash ? SplashScreen(next: first) : first;
+          }),
         ),
       );
 }

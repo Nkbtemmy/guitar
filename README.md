@@ -174,6 +174,10 @@ before building, and keep `index.json` and the `.jpg` posters.
 - **Branding:** the app icons, splash and logo mark (`assets/brand/`) come from the brand assets. Replace those files to rebrand.
 - **Privacy policy:** both stores require one for microphone apps. Host [PRIVACY.md](PRIVACY.md)
   (a GitHub link works) and paste the URL into the store listing.
+- **Accounts and backup (Firebase, free plan):** optional Google sign-in (and Apple, once
+  switched on), with the learner's progress, practice and songs backed up and synced. The steps
+  are in [docs/FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md); without them the app runs without
+  accounts.
 - **Usage stats (Firebase):** the app counts its users with Google Analytics for Firebase and
   reports crashes with Crashlytics (`lib/analytics.dart`). Nothing personal is sent, and there's
   no sign-in. Learners can turn it off in *Me › Share anonymous usage stats*. A build that isn't
