@@ -12,6 +12,7 @@ import '../theme.dart';
 import '../widgets/chord_view.dart';
 import '../widgets/listening.dart';
 import '../widgets/listening_badge.dart';
+import '../widgets/neck_view.dart';
 
 class ChordsScreen extends StatelessWidget {
   const ChordsScreen({super.key});
@@ -19,6 +20,9 @@ class ChordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final library = context.read<AppServices>().library;
+    // Sideways diagrams are wider than tall: two to a row, so the dots stay big enough to read.
+    final sideways = context.select<ProgressStore, bool>((p) => p.chordOrientation == ChordOrientation.sideways);
+    // Each card is the chart with the chord on a drawn neck under it.
     return CustomScrollView(slivers: [
       const SliverToBoxAdapter(
         child: Padding(
@@ -36,11 +40,11 @@ class ChordsScreen extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           sliver: SliverGrid.builder(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 120,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: sideways ? 190 : 130,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
-              childAspectRatio: 0.72,
+              childAspectRatio: sideways ? 0.78 : 0.55,
             ),
             itemCount: library.inCategory(category).length,
             itemBuilder: (context, i) => _ChordCard(chord: library.inCategory(category)[i]),
@@ -58,18 +62,29 @@ class _ChordCard extends StatelessWidget {
   final Chord chord;
 
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context) {
+    return Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ChordDetailScreen(chord: chord))),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: LayoutBuilder(
-              builder: (context, c) => ChordView(chord: chord, width: c.maxWidth * 0.8, compact: true),
+          child: Column(children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+                // Shrinks to fit rather than overflow, whatever the text size.
+                child: LayoutBuilder(
+                  builder: (context, c) => FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: ChordView(chord: chord, width: c.maxWidth * 0.85, compact: true),
+                  ),
+                ),
+              ),
             ),
-          ),
+            NeckView(chord: chord, frets: 4, aspectRatio: 1.5),
+          ]),
         ),
       );
+  }
 }
 
 class ChordDetailScreen extends StatefulWidget {
@@ -93,6 +108,10 @@ class _ChordDetailScreenState extends State<ChordDetailScreen> {
       body: ListView(padding: const EdgeInsets.all(20), children: [
         Center(child: ChordView(chord: chord, width: 170, showName: false, display: ChordDisplay.both)),
         const SizedBox(height: 16),
+        ClipRRect(borderRadius: BorderRadius.circular(12), child: NeckView(chord: chord)),
+        const SizedBox(height: 4),
+        const Text('On the guitar, as you see it facing someone playing', textAlign: TextAlign.center, style: TextStyle(color: kMuted, fontSize: 12)),
+        const SizedBox(height: 14),
         for (final line in chord.placement)
           Padding(
             padding: const EdgeInsets.only(bottom: 4),

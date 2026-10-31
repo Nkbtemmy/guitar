@@ -27,7 +27,7 @@ class ListeningBadge extends StatelessWidget {
         Icon(icon, color: color, size: 20),
         const SizedBox(width: 10),
         Expanded(child: Text(text, style: TextStyle(color: color == kSuccess ? null : color, fontWeight: FontWeight.w600))),
-        if (mic.status == MicStatus.listening) _Meter(level: mic.level),
+        if (mic.status == MicStatus.listening) LevelMeter(level: mic.level),
         if (mic.status == MicStatus.denied || mic.status == MicStatus.error)
           TextButton(onPressed: mic.retry, child: const Text('Retry')),
       ]),
@@ -35,8 +35,9 @@ class ListeningBadge extends StatelessWidget {
   }
 }
 
-class _Meter extends StatelessWidget {
-  const _Meter({required this.level});
+/// Five bars that light up with [level] (0..1).
+class LevelMeter extends StatelessWidget {
+  const LevelMeter({super.key, required this.level});
 
   final double level;
 

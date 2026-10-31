@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../progress/practice_log.dart';
+import '../theme.dart';
+import 'chord_challenge_screen.dart';
+import 'ear_training_screen.dart';
+import 'fretboard_game_screen.dart';
+import 'homework_screen.dart';
+import 'metronome_screen.dart';
+import 'recordings_screen.dart';
+import 'report_screen.dart';
+import 'weak_spots_screen.dart';
+
+/// The practice tools, as a row of tiles on the Learn tab.
+class PracticeTools extends StatelessWidget {
+  const PracticeTools({super.key});
+
+  void _open(BuildContext context, Widget screen) =>
+      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => screen));
+
+  @override
+  Widget build(BuildContext context) {
+    final spots = context.select<PracticeLog, int>((p) => p.weakSpots().length);
+    final takes = context.select<PracticeLog, int>((p) => p.takes.length);
+    final homework = context.select<PracticeLog, int>((p) => p.homework.where((h) => !h.done).length);
+    final changes = context.select<PracticeLog, String>((p) {
+      final pair = p.lastChangePair;
+      return pair == null ? 'One-minute drill' : '${pair.$1} – ${pair.$2}: best ${p.bestChanges(pair.$1, pair.$2)}';
+    });
+    final tools = [
+      _Tool(
+        icon: Icons.healing_rounded,
+        title: 'Practise these',
+        subtitle: spots == 0 ? 'Your weak spots' : '$spots to fix',
+        badge: spots > 0,
+        onTap: () => _open(context, const WeakSpotsScreen()),
+      ),
+      _Tool(
+        icon: Icons.assignment_outlined,
+        title: 'Homework',
+        subtitle: homework == 0 ? 'From your teacher' : '$homework to do',
+        badge: homework > 0,
+        onTap: () => _open(context, const HomeworkScreen()),
+      ),
+      _Tool(
+        icon: Icons.swap_horiz_rounded,
+        title: 'Chord changes',
+        subtitle: changes,
+        onTap: () => _open(context, const ChordChallengeScreen()),
+      ),
+      _Tool(
+        icon: Icons.grid_on_rounded,
+        title: 'Fretboard notes',
+        subtitle: 'Learn the neck',
+        onTap: () => _open(context, const FretboardGameScreen()),
+      ),
+      _Tool(
+        icon: Icons.hearing_rounded,
+        title: 'Ear training',
+        subtitle: 'Hear it, play it',
+        onTap: () => _open(context, const EarTrainingScreen()),
+      ),
+      _Tool(
+        icon: Icons.timer_outlined,
+        title: 'Metronome',
+        subtitle: 'And speed trainer',
+        onTap: () => _open(context, const MetronomeScreen()),
+      ),
+      _Tool(
+        icon: Icons.mic_none_rounded,
+        title: 'Recordings',
+        subtitle: takes == 0 ? 'Hear yourself' : '$takes kept',
+        onTap: () => _open(context, const RecordingsScreen()),
+      ),
+      _Tool(
+        icon: Icons.insights_rounded,
+        title: 'Progress report',
+        subtitle: 'For your teacher',
+        onTap: () => _open(context, const ReportScreen()),
+      ),
+    ];
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const Padding(
+        padding: EdgeInsets.fromLTRB(20, 12, 20, 8),
+        child: Text('Practice', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+      ),
+      SizedBox(
+        height: 112,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          itemCount: tools.length,
+          separatorBuilder: (_, _) => const SizedBox(width: 10),
+          itemBuilder: (context, i) => tools[i],
+        ),
+      ),
+    ]);
+  }
+}
+
+class _Tool extends StatelessWidget {
+  const _Tool({required this.icon, required this.title, required this.subtitle, required this.onTap, this.badge = false});
+
+  final IconData icon;
+  final String title, subtitle;
+  final VoidCallback onTap;
+  final bool badge;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        width: 124,
+        child: Card(
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Badge(isLabelVisible: badge, smallSize: 10, child: Icon(icon, color: kAccent, size: 28)),
+                const Spacer(),
+                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w800)),
+                Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: kMuted, fontSize: 12)),
+              ]),
+            ),
+          ),
+        ),
+      );
+}

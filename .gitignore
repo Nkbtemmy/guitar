@@ -58,3 +58,6 @@ app.*.map.json
 /tools/.kokoro/
 *.tmp
 .playwright-mcp/
+
+# Songs for playing at home: not part of the app or the repo.
+/personal/

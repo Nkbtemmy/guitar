@@ -37,6 +37,8 @@ sealed class LessonStep {
           bpm: j['bpm'] as int,
           bars: j['bars'] as int,
           beatsPerBar: (j['beatsPerBar'] ?? 4) as int,
+          accents: (j['accents'] ?? '') as String,
+          swing: (j['swing'] ?? false) as bool,
           body: body),
       'song' => SongStep(songId: j['song'] as String),
       'video' => VideoStep(videoId: j['video'] as String, title: title),
@@ -107,6 +109,8 @@ class StrumStep extends LessonStep {
     required this.bpm,
     required this.bars,
     required this.beatsPerBar,
+    this.accents = '',
+    this.swing = false,
     super.body,
   });
 
@@ -114,7 +118,11 @@ class StrumStep extends LessonStep {
   final String pattern;
   final int bpm, bars, beatsPerBar;
 
-  StrumPattern get strumPattern => StrumPattern(pattern, beatsPerBar);
+  /// '>' under each strum to play louder (see [StrumPattern.accents]).
+  final String accents;
+  final bool swing;
+
+  StrumPattern get strumPattern => StrumPattern(pattern, beatsPerBar, accents: accents, swing: swing);
 
   String chordForBar(int bar) => chordIds[bar % chordIds.length];
 
@@ -154,11 +162,15 @@ class Song {
     required this.beatsPerBar,
     required this.pattern,
     required this.lines,
+    this.swing = false,
   });
 
   final String id, title, credit, pattern;
   final int bpm, beatsPerBar;
   final List<SongLine> lines;
+
+  /// Played with a shuffle feel (see [StrumPattern.swing]).
+  final bool swing;
 
   factory Song.fromJson(Map<String, dynamic> j) => Song(
         id: j['id'] as String,
@@ -167,6 +179,7 @@ class Song {
         bpm: j['bpm'] as int,
         beatsPerBar: j['beatsPerBar'] as int,
         pattern: j['pattern'] as String,
+        swing: (j['swing'] ?? false) as bool,
         lines: [
           for (final l in j['lines'] as List)
             SongLine(lyrics: (l as Map)['lyrics'] as String, bars: List<String>.from(l['bars'] as List)),
@@ -177,7 +190,7 @@ class Song {
 
   Set<String> get chordIds => bars.toSet();
 
-  StrumPattern get strumPattern => StrumPattern(pattern, beatsPerBar);
+  StrumPattern get strumPattern => StrumPattern(pattern, beatsPerBar, swing: swing);
 }
 
 class Lesson {

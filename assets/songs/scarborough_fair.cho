@@ -1,0 +1,25 @@
+{title: Scarborough Fair}
+{artist: Traditional English ballad}
+{key: Am}
+{tempo: 90}
+{time: 3/4}
+{difficulty: beginner}
+{tags: folk, ballad}
+
+{start_of_verse: Verse 1}
+[Am]Are you going to [G]Scarborough [Am]Fair?
+[C]Parsley, [Am]sage, rose[D]mary and [Am]thyme
+[Am]Remember [C]me to one who lives [G]there
+[Am]For once she [G]was a true love of [Am]mine
+
+{start_of_verse: Verse 2}
+[Am]Tell her to make me a [G]cambric [Am]shirt
+[C]Parsley, [Am]sage, rose[D]mary and [Am]thyme
+[Am]Without no [C]seams nor needle[G]work
+[Am]Then she'll be [G]a true love of [Am]mine
+
+{start_of_verse: Verse 3}
+[Am]Tell her to find me an [G]acre of [Am]land
+[C]Parsley, [Am]sage, rose[D]mary and [Am]thyme
+[Am]Between the [C]salt water and the sea [G]strands
+[Am]Then she'll be [G]a true love of [Am]mine

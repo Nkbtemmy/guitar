@@ -66,6 +66,8 @@ ThemeData buildTheme() {
         side: WidgetStateProperty.all(const BorderSide(color: kSurfaceHigh)),
       ),
     ),
+    // Same reason: selected chips would otherwise be salmon.
+    chipTheme: base.chipTheme.copyWith(selectedColor: kAccent.withValues(alpha: 0.14), checkmarkColor: kAccent),
     textTheme: base.textTheme.apply(bodyColor: kText, displayColor: kText),
   );
 }

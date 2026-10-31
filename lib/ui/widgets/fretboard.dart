@@ -7,17 +7,21 @@ import '../../music/notes.dart';
 import '../../progress/progress_store.dart';
 import '../theme.dart';
 
-/// A horizontal fretboard section (string 1 on top, like tab) highlighting [target].
+/// A horizontal fretboard section highlighting [target], its strings in the same order as the
+/// tabs (Me › String order).
 /// [upcoming] notes are drawn faintly so the learner can see where the melody goes.
 class Fretboard extends StatelessWidget {
-  const Fretboard({super.key, required this.target, this.upcoming = const []});
+  const Fretboard({super.key, required this.target, this.upcoming = const [], this.showName = true});
 
   final FretNote target;
   final List<FretNote> upcoming;
 
+  /// Write the note's name on its dot (not when asking for it).
+  final bool showName;
+
   @override
   Widget build(BuildContext context) {
-    final left = context.select<ProgressStore, bool>((p) => p.leftHanded);
+    final (left, order) = context.select<ProgressStore, (bool, StringOrder)>((p) => (p.leftHanded, p.stringOrder));
     final frets = [target, ...upcoming].map((n) => n.fret);
     final lo = frets.reduce(math.min), hi = frets.reduce(math.max);
     // Fretted columns shown: first..last. Fret 0 has its own column left of the nut.
@@ -25,18 +29,21 @@ class Fretboard extends StatelessWidget {
     final last = math.max(first + 4, hi + 1);
     return AspectRatio(
       aspectRatio: 2.4,
-      child: CustomPaint(painter: _FretboardPainter(target, upcoming, first, last, leftHanded: left)),
+      child: CustomPaint(
+          painter: _FretboardPainter(target, upcoming, first, last, leftHanded: left, order: order, showName: showName)),
     );
   }
 }
 
 class _FretboardPainter extends CustomPainter {
-  _FretboardPainter(this.target, this.upcoming, this.first, this.last, {required this.leftHanded});
+  _FretboardPainter(this.target, this.upcoming, this.first, this.last,
+      {required this.leftHanded, required this.order, required this.showName});
 
   final FretNote target;
   final List<FretNote> upcoming;
   final int first, last;
-  final bool leftHanded;
+  final bool leftHanded, showName;
+  final StringOrder order;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -46,7 +53,7 @@ class _FretboardPainter extends CustomPainter {
     final fretW = boardW / (last - first + 1);
     final top = size.height * 0.1, h = size.height * 0.72;
     final dy = h / 5;
-    double y(int string) => top + (string - 1) * dy;
+    double y(int string) => top + order.row(string) * dy;
     double mirror(double x) => leftHanded ? size.width - x : x;
     double x(int fret) => mirror(fret == 0 ? openW * 0.66 : boardL + (fret - first + 0.5) * fretW);
 
@@ -90,7 +97,7 @@ class _FretboardPainter extends CustomPainter {
     final c = Offset(x(target.fret), y(target.string));
     canvas.drawCircle(c, r * 1.45, Paint()..color = kAccent.withValues(alpha: 0.22));
     canvas.drawCircle(c, r, Paint()..color = kAccent);
-    _label(canvas, noteName(target.midi), c, r * 1.0, kOnAccent);
+    if (showName) _label(canvas, noteName(target.midi), c, r * 1.0, kOnAccent);
   }
 
   void _label(Canvas canvas, String s, Offset center, double fontSize, Color color) {
@@ -103,5 +110,11 @@ class _FretboardPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_FretboardPainter old) =>
-      old.target != target || old.first != first || old.last != last || old.leftHanded != leftHanded || old.upcoming != upcoming;
+      old.target != target ||
+      old.first != first ||
+      old.last != last ||
+      old.leftHanded != leftHanded ||
+      old.upcoming != upcoming ||
+      old.order != order ||
+      old.showName != showName;
 }
