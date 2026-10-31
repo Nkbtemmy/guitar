@@ -12,7 +12,9 @@ import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/practice/metronome.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
+import 'package:guitaro/practice/ear.dart';
 import 'package:guitaro/ui/practice/chord_challenge_screen.dart';
+import 'package:guitaro/ui/practice/ear_training_screen.dart';
 import 'package:guitaro/ui/practice/fretboard_game_screen.dart';
 import 'package:guitaro/ui/widgets/fretboard.dart';
 import 'package:guitaro/ui/practice/metronome_screen.dart';
@@ -148,6 +150,58 @@ void main() {
       await tester.pump(const Duration(seconds: 11));
       await tester.pumpAndSettle();
       expect(mic.users, 0);
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('ear training', () {
+    test('phrases step through the open-position scale, and play as quarter notes', () {
+      final phrase = echoPhrase(5, math.Random(1));
+      expect(phrase, hasLength(5));
+      final steps = [for (var i = 1; i < 5; i++) (echoNotes.indexOf(phrase[i]) - echoNotes.indexOf(phrase[i - 1])).abs()];
+      expect(steps.every((s) => s == 1 || s == 2), isTrue, reason: '$steps');
+      final tab = phraseTab(phrase);
+      expect([for (final e in tab.events) e.column], [0, 4, 8, 12, 16]);
+    });
+
+    testWidgets('major or minor: hear it, answer, ten chords, and the best is kept', (tester) async {
+      final (_, practice, _, player) = await pumpTool(tester, EarTrainingScreen(random: math.Random(2)));
+      await tester.tap(find.text('Start'));
+      await tester.pumpAndSettle();
+      for (var i = 0; i < 10; i++) {
+        final major = majorChords.contains(player.chords.last.id);
+        // Right on all but the last.
+        await tester.tap(find.text(major == (i < 9) ? 'Major' : 'Minor'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(i < 9 ? 'Next chord' : 'See my score'));
+        await tester.pumpAndSettle();
+      }
+      expect(find.text('9 of 10 right'), findsOneWidget);
+      expect(practice.best('ear:quality'), 9);
+    });
+
+    testWidgets('play it back: each note heard turns from ? to its name', (tester) async {
+      final (_, _, mic, player) = await pumpTool(tester, EarTrainingScreen(random: math.Random(4)));
+      await tester.tap(find.text('Play it back'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Start'));
+      await tester.pumpAndSettle();
+      expect(mic.users, 1);
+      var t = 0.0;
+      for (final e in player.lastTab!.events) {
+        final f = midiToFreq(e.midiNotes.single);
+        for (var k = 0; k < 2; k++) {
+          t += 0.05;
+          mic.hear(AnalysisFrame(time: t, rms: 0.1, pitch: PitchResult(f, 1), peaks: [SpectralPeak(f, 1)], onsets: k == 0 ? [t - 0.01] : const []));
+          await tester.pump();
+        }
+      }
+      await tester.pumpAndSettle();
+      expect(find.text('Yes! Played back.'), findsOneWidget);
+      expect(find.text('?'), findsNothing);
+      await tester.tap(find.text('Finish'));
+      await tester.pumpAndSettle();
+      expect(find.text('1 phrase played back'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

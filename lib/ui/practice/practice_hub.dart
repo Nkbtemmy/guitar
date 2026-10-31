@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../progress/practice_log.dart';
 import '../theme.dart';
 import 'chord_challenge_screen.dart';
+import 'ear_training_screen.dart';
 import 'fretboard_game_screen.dart';
 import 'metronome_screen.dart';
 import 'weak_spots_screen.dart';
@@ -41,6 +42,12 @@ class PracticeTools extends StatelessWidget {
         title: 'Fretboard notes',
         subtitle: 'Learn the neck',
         onTap: () => _open(context, const FretboardGameScreen()),
+      ),
+      _Tool(
+        icon: Icons.hearing_rounded,
+        title: 'Ear training',
+        subtitle: 'Hear it, play it',
+        onTap: () => _open(context, const EarTrainingScreen()),
       ),
       _Tool(
         icon: Icons.timer_outlined,

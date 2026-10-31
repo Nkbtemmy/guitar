@@ -74,6 +74,18 @@ class QuietPlayer extends SoundPlayer {
       bool metronome = false,
       bool listening = false}) async {
     tabs.add((from, to, listening));
+    lastTab = tab;
+    return Duration.zero;
+  }
+
+  TabSequence? lastTab;
+
+  /// Chords strummed, in order.
+  final chords = <Chord>[];
+
+  @override
+  Future<Duration> playChord(Chord chord, {bool slow = false}) async {
+    chords.add(chord);
     return Duration.zero;
   }
 
