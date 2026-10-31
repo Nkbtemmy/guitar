@@ -14,6 +14,7 @@ import 'progress/progress_store.dart';
 import 'sheets/songbook_store.dart';
 import 'ui/chords/chords_screen.dart';
 import 'ui/learn/learn_screen.dart';
+import 'ui/onboarding/onboarding_screen.dart';
 import 'ui/profile/profile_screen.dart';
 import 'ui/songs/songs_screen.dart';
 import 'ui/splash_screen.dart';
@@ -81,6 +82,7 @@ Future<void> main() async {
     reminders: reminders,
     analytics: analytics,
     splash: true,
+    onboarding: true,
   ));
 }
 
@@ -95,6 +97,7 @@ class GuitaroApp extends StatelessWidget {
     Reminders? reminders,
     Analytics? analytics,
     this.splash = false,
+    this.onboarding = false,
   })  : songbook = songbook ?? SongbookStore(),
         practice = practice ?? PracticeLog(),
         reminders = reminders ?? Reminders(),
@@ -119,6 +122,9 @@ class GuitaroApp extends StatelessWidget {
   /// Open on the splash screen (with its opening strum) before the home screen.
   final bool splash;
 
+  /// Ask a learner who hasn't set a goal yet for one, before the home screen.
+  final bool onboarding;
+
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
@@ -134,7 +140,10 @@ class GuitaroApp extends StatelessWidget {
           title: 'Guitaro',
           debugShowCheckedModeBanner: false,
           theme: buildTheme(),
-          home: splash ? const SplashScreen(next: HomeShell()) : const HomeShell(),
+          home: Builder(builder: (context) {
+            final first = onboarding && progress.goal == null ? const OnboardingScreen(next: HomeShell()) : const HomeShell();
+            return splash ? SplashScreen(next: first) : first;
+          }),
         ),
       );
 }

@@ -69,6 +69,7 @@ class _TodayCardState extends State<TodayCard> {
     final now = DateTime.now();
     final plan = dailyPlan(
       day: now,
+      minutes: progress.goal?.minutes ?? 15,
       nextLesson: progress.nextLesson(curriculum),
       pair: log.lastChangePair,
       spot: log.weakSpots().firstOrNull,
