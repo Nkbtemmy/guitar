@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
 
 import 'analysis.dart';
+import 'synth.dart';
 
 enum MicStatus { idle, starting, listening, denied, error }
 
@@ -30,6 +32,14 @@ class MicListener extends ChangeNotifier {
 
   /// Smoothed input level 0..1 for meters.
   double level = 0;
+
+  // A take being recorded: the mic's raw samples, as they come.
+  IOSink? _take;
+  String? _takePath;
+  int _takeBytes = 0;
+
+  /// Whether a take is being recorded.
+  bool get recording => _take != null;
 
   Stream<AnalysisFrame> get frames => _frames.stream;
 
@@ -115,8 +125,40 @@ class MicListener extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Records what the mic hears (while something listens) into a WAV file at [path], until
+  /// [stopTake]. Everything is kept, the app's own sounds included: it's the learner's take.
+  Future<void> startTake(String path) async {
+    await stopTake();
+    await File(path).parent.create(recursive: true);
+    _takePath = path;
+    _takeBytes = 0;
+    _take = File('$path.pcm').openWrite();
+    notifyListeners();
+  }
+
+  /// Stops recording and finishes the WAV file; returns its length, or null when nothing was
+  /// being recorded.
+  Future<Duration?> stopTake() async {
+    final sink = _take, path = _takePath;
+    if (sink == null || path == null) return null;
+    _take = null;
+    _takePath = null;
+    final bytes = _takeBytes;
+    await sink.close();
+    // The header needs the length, known only now: write it, then the samples after it.
+    final raw = File('$path.pcm');
+    final wav = File(path).openWrite()..add(pcm16WavHeader(bytes ~/ 2, sampleRate));
+    await wav.addStream(raw.openRead());
+    await wav.close();
+    await raw.delete();
+    notifyListeners();
+    return Duration(microseconds: (bytes ~/ 2) * 1000000 ~/ sampleRate);
+  }
+
   Future<void> _stop() async {
     if (_users > 0) return;
+    // Nothing more to record: finish a take left running.
+    await stopTake();
     await _sub?.cancel();
     _sub = null;
     try {
@@ -127,7 +169,15 @@ class MicListener extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// What the mic would pass on as it hears [bytes] (16-bit samples), for tests.
+  @visibleForTesting
+  void hearBytes(Uint8List bytes) => _onBytes(bytes);
+
   void _onBytes(Uint8List bytes) {
+    if (_take case final take?) {
+      take.add(bytes);
+      _takeBytes += bytes.length;
+    }
     final samples = _pcm.decode(bytes);
     final suppressed = DateTime.now().isBefore(_suppressUntil);
     for (final frame in _analyzer.add(samples)) {

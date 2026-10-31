@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import '../../app_services.dart';
 import '../../audio/analysis.dart';
 import '../../audio/chord_matcher.dart';
+import '../../audio/mic_listener.dart';
 import '../../music/notes.dart';
+import '../../practice/takes.dart';
 import '../../practice/trackers.dart';
 import '../../progress/practice_log.dart';
 import '../../progress/progress_store.dart';
@@ -122,6 +124,17 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   bool _speedUp = false;
   double? _trained;
 
+  /// Record the run as a take ([_take] while it records, and where it's kept).
+  bool _record = false;
+  ({String id, MicListener mic, PracticeLog log})? _take;
+
+  void _finishTake([String note = '']) {
+    final take = _take;
+    if (take == null) return;
+    _take = null;
+    Takes.finish(take.mic, take.log, take.id, title: widget.title, note: note);
+  }
+
   /// Learn: the notes to play, one at a time.
   late final _learn = SequenceTracker<TabEvent>(
     targets: widget.tab.events,
@@ -171,6 +184,12 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       _notice = null;
       _runFrom = start;
     }
+    if (_record && _take == null) {
+      final mic = context.read<MicListener>(), log = context.read<PracticeLog>();
+      final id = await Takes.start(mic);
+      if (!mounted) return;
+      _take = (id: id, mic: mic, log: log);
+    }
     setState(() => _rendering = true);
     try {
       await _startPass(start, countIn: _countIn);
@@ -209,11 +228,13 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       ..start();
   }
 
-  /// Stops where it is: Play carries on from here.
-  void _pause() {
+  /// Stops where it is: Play carries on from here. A take being recorded ends, unless the run
+  /// is only going back ([keepTake]).
+  void _pause({bool keepTake = false}) {
     _clock.stop();
     _ticker.stop();
     _services.player.stop();
+    if (!keepTake) _finishTake();
     setState(() => _passes = 0);
   }
 
@@ -258,6 +279,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
         _judge.judgeUpTo(double.infinity, last: _to);
         final right = _judge.results.sublist(_runFrom, _to + 1).where((r) => r == true).length;
         _notice = 'You played $right of ${_to - _runFrom + 1} notes right.';
+        _finishTake('$right of ${_to - _runFrom + 1} notes right');
         _pause();
       }
     }
@@ -270,7 +292,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
     final bar = starts.lastIndexWhere((b) => b <= now - Rewinder.seconds * _bpm / 60 + 1e-6);
     final event = _eventAt(starts[bar < 0 ? 0 : bar]);
     if (!_rewinder.back(event)) return false;
-    _pause();
+    _pause(keepTake: true);
     _notice = 'Missed a few notes: back to bar ${(bar < 0 ? 0 : bar) + 1}. Keep going!';
     _position.value = _beatOf(event);
     _play(from: event, fresh: false);
@@ -383,6 +405,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   void dispose() {
     _clock.stop();
     _services.player.stop();
+    _finishTake();
     _ticker.dispose();
     _position.dispose();
     super.dispose();
@@ -528,6 +551,13 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
                   label: const Text('Loop'),
                   selected: _looping,
                   onSelected: (v) => setState(() => _looping = v),
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.fiber_manual_record_rounded, size: 18, color: kMiss),
+                  label: const Text('Record me'),
+                  tooltip: 'Keep a recording of the run, to listen back to in Recordings.',
+                  selected: _record,
+                  onSelected: (v) => setState(() => _record = v),
                 ),
                 FilterChip(
                   avatar: const Icon(Icons.trending_up_rounded, size: 18),

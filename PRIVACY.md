@@ -5,7 +5,12 @@
 **Listening.** Guitaro uses your microphone only while something on screen is listening: a
 lesson, the tuner, "check my chord" or the chord finder. On Android, "Find chords from a video"
 can listen to the sound of the video playing inside Guitaro instead, after the system asks you.
-Audio is analysed on your device as it arrives and is never recorded, stored, or sent anywhere.
+Audio is analysed on your device as it arrives and is never stored or sent anywhere, unless
+you choose to record yourself.
+
+**Recordings.** When you record yourself (Practice › Recordings, or "Record me" in play-along),
+the recording is saved only on this phone, in Guitaro's own storage. It is never uploaded or
+shared, and you can delete it at any time. Deleting the app deletes them all.
 
 **Your progress and songs** (lessons completed, stars, XP, streak, settings, favourites,
 setlists, and the songs you write or find) are stored only on your device. Guitaro has no

@@ -12,7 +12,11 @@ import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/practice/metronome.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
+import 'dart:typed_data';
+
 import 'package:guitaro/practice/ear.dart';
+import 'package:guitaro/practice/takes.dart';
+import 'package:guitaro/ui/practice/recordings_screen.dart';
 import 'package:guitaro/ui/practice/chord_challenge_screen.dart';
 import 'package:guitaro/ui/practice/ear_training_screen.dart';
 import 'package:guitaro/ui/practice/fretboard_game_screen.dart';
@@ -202,6 +206,95 @@ void main() {
       await tester.tap(find.text('Finish'));
       await tester.pumpAndSettle();
       expect(find.text('1 phrase played back'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('recordings', () {
+    late Directory dir;
+    setUp(() {
+      dir = Directory.systemTemp.createTempSync('takes');
+      Takes.directoryForTests = dir;
+    });
+    tearDown(() {
+      Takes.directoryForTests = null;
+      dir.deleteSync(recursive: true);
+    });
+
+    /// [seconds] of quiet, as the mic's 16-bit samples.
+    Uint8List quiet(double seconds) => Uint8List((seconds * MicListener.sampleRate).round() * 2);
+
+    test('a take is the mic\'s samples in a WAV file; a slip shorter than two seconds is not kept', () async {
+      SharedPreferences.setMockInitialValues({});
+      final log = PracticeLog(await SharedPreferences.getInstance());
+      final mic = FakeMic();
+      final id = await Takes.start(mic, now: DateTime(2026, 10, 31, 9));
+      mic.hearBytes(quiet(1.5));
+      mic.hearBytes(quiet(1.5));
+      final take = await Takes.finish(mic, log, id, title: 'Amazing Grace', note: '7 of 8 bars right');
+      final file = await Takes.fileOf(id);
+      final bytes = file.readAsBytesSync();
+      expect(String.fromCharCodes(bytes.sublist(0, 4)), 'RIFF');
+      expect(bytes.length, 44 + 3 * MicListener.sampleRate * 2);
+      expect(ByteData.sublistView(bytes).getUint32(40, Endian.little), 3 * MicListener.sampleRate * 2);
+      expect(take!.seconds, 3);
+      expect(log.takes.single.note, '7 of 8 bars right');
+      expect(File('${file.path}.pcm').existsSync(), isFalse);
+
+      final slip = await Takes.start(mic, now: DateTime(2026, 10, 31, 10));
+      mic.hearBytes(quiet(0.5));
+      expect(await Takes.finish(mic, log, slip, title: 'oops'), isNull);
+      expect((await Takes.fileOf(slip)).existsSync(), isFalse);
+      expect(log.takes, hasLength(1));
+    });
+
+    testWidgets('record yourself, then star, rename and delete the take', (tester) async {
+      final (_, practice, mic, _) = await pumpTool(tester, const RecordingsScreen());
+      // Files are real: let their work run, a step at a time, between frames.
+      Future<void> settleFiles() async {
+        for (var i = 0; i < 60; i++) {
+          await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 10)));
+          await tester.pump();
+        }
+      }
+
+      await tester.tap(find.text('Record me playing'));
+      await settleFiles();
+      expect(mic.users, 1, reason: 'recording holds the mic');
+      mic.hearBytes(quiet(3));
+      await tester.tap(find.text('Stop and keep'));
+      await settleFiles();
+      await tester.pumpAndSettle();
+      expect(find.text('Too short to keep.'), findsNothing);
+      expect(mic.recording, isFalse);
+      expect(mic.users, 0);
+      expect(practice.takes, hasLength(1));
+
+      await tester.tap(find.byType(PopupMenuButton<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Star as a keeper'));
+      await tester.pumpAndSettle();
+      expect(practice.takes.single.favourite, isTrue);
+
+      await tester.tap(find.byType(PopupMenuButton<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Rename'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'My best Amazing Grace');
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      expect(find.text('My best Amazing Grace'), findsOneWidget);
+
+      final file = await tester.runAsync(() => Takes.fileOf(practice.takes.single.id));
+      await tester.tap(find.byType(PopupMenuButton<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete').last);
+      await settleFiles();
+      await tester.pumpAndSettle();
+      expect(practice.takes, isEmpty);
+      expect(file!.existsSync(), isFalse);
       expect(tester.takeException(), isNull);
     });
   });

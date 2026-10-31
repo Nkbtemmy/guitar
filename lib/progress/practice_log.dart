@@ -87,6 +87,39 @@ class WeakSpot {
 /// A minute of chord changes: how many clean changes, and when.
 typedef ChangeRun = ({DateTime at, int count});
 
+/// A recording of the learner playing. The audio is a file named after [id] (see `Takes`); this
+/// is what's known about it.
+class Take {
+  Take({required this.id, required this.title, required this.created, required this.seconds, this.note = '', this.favourite = false});
+
+  final String id;
+  String title;
+  final DateTime created;
+  final double seconds;
+
+  /// How the run went, when it was a play-along.
+  String note;
+  bool favourite;
+
+  Map<String, Object> toJson() => {
+        'id': id,
+        'title': title,
+        'created': created.millisecondsSinceEpoch,
+        'seconds': seconds,
+        'note': note,
+        'favourite': favourite,
+      };
+
+  static Take fromJson(Map<String, dynamic> j) => Take(
+        id: j['id'] as String,
+        title: j['title'] as String,
+        created: DateTime.fromMillisecondsSinceEpoch((j['created'] as num).toInt()),
+        seconds: (j['seconds'] as num).toDouble(),
+        note: j['note'] as String? ?? '',
+        favourite: j['favourite'] as bool? ?? false,
+      );
+}
+
 /// What the learner has practised, kept on the device: the parts they keep missing (to practise
 /// next), their chord-change minutes, and more as the practice tools record it.
 class PracticeLog extends ChangeNotifier {
@@ -95,6 +128,11 @@ class PracticeLog extends ChangeNotifier {
     if (raw == null) return;
     try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
+      for (final t in j['takes'] as List? ?? const []) {
+        try {
+          _takes.add(Take.fromJson(Map<String, dynamic>.from(t as Map)));
+        } catch (_) {}
+      }
       for (final MapEntry(:key, :value) in (j['bests'] as Map? ?? const {}).entries) {
         _bests[key as String] = (value as num).toInt();
       }
@@ -125,6 +163,7 @@ class PracticeLog extends ChangeNotifier {
   final _spots = <String, WeakSpot>{};
   final _changes = <String, List<ChangeRun>>{};
   final _bests = <String, int>{};
+  final _takes = <Take>[];
 
   /// How long a spot stays on the list without being played.
   static const forgetAfter = Duration(days: 30);
@@ -192,6 +231,22 @@ class PracticeLog extends ChangeNotifier {
     return best == null ? count > 0 : count > best;
   }
 
+  /// The learner's recordings, newest first.
+  List<Take> get takes => List.unmodifiable(_takes.reversed);
+
+  void addTake(Take take) {
+    _takes.add(take);
+    _save();
+  }
+
+  void removeTake(Take take) {
+    _takes.removeWhere((t) => t.id == take.id);
+    _save();
+  }
+
+  /// Saves a change to [take] (renamed, starred).
+  void updateTake(Take take) => _save();
+
   /// The best score in game [game] (the fretboard game, ear training…), if played.
   int? best(String game) => _bests[game];
 
@@ -210,6 +265,7 @@ class PracticeLog extends ChangeNotifier {
         jsonEncode({
           'spots': [for (final s in _spots.values) s.toJson()],
           'bests': _bests,
+          'takes': [for (final t in _takes) t.toJson()],
           'changes': {
             for (final MapEntry(:key, :value) in _changes.entries) key: [for (final r in value) [r.at.millisecondsSinceEpoch, r.count]],
           },

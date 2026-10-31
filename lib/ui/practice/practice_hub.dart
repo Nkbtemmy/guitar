@@ -7,6 +7,7 @@ import 'chord_challenge_screen.dart';
 import 'ear_training_screen.dart';
 import 'fretboard_game_screen.dart';
 import 'metronome_screen.dart';
+import 'recordings_screen.dart';
 import 'weak_spots_screen.dart';
 
 /// The practice tools, as a row of tiles on the Learn tab.
@@ -19,6 +20,7 @@ class PracticeTools extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spots = context.select<PracticeLog, int>((p) => p.weakSpots().length);
+    final takes = context.select<PracticeLog, int>((p) => p.takes.length);
     final changes = context.select<PracticeLog, String>((p) {
       final pair = p.lastChangePair;
       return pair == null ? 'One-minute drill' : '${pair.$1} – ${pair.$2}: best ${p.bestChanges(pair.$1, pair.$2)}';
@@ -54,6 +56,12 @@ class PracticeTools extends StatelessWidget {
         title: 'Metronome',
         subtitle: 'And speed trainer',
         onTap: () => _open(context, const MetronomeScreen()),
+      ),
+      _Tool(
+        icon: Icons.mic_none_rounded,
+        title: 'Recordings',
+        subtitle: takes == 0 ? 'Hear yourself' : '$takes kept',
+        onTap: () => _open(context, const RecordingsScreen()),
       ),
     ];
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

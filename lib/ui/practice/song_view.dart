@@ -9,6 +9,7 @@ import '../../audio/analysis.dart';
 import '../../audio/chord_matcher.dart';
 import '../../curriculum/models.dart';
 import '../../music/chord.dart';
+import '../../practice/takes.dart';
 import '../../practice/trackers.dart';
 import '../../progress/practice_log.dart';
 import '../../progress/progress_store.dart';
@@ -103,6 +104,18 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
 
   /// With Repeat: after a clean time through, play the next one a little faster.
   bool _speedUp = false;
+
+  /// Record the run, song and all, as a take ([_take] while it records, and where it's kept).
+  bool _record = false;
+  ({String id, PracticeLog log})? _take;
+
+  /// Ends the take being recorded and keeps it, with how the run went.
+  void _finishTake([String note = '']) {
+    final take = _take;
+    if (take == null) return;
+    _take = null;
+    Takes.finish(mic, take.log, take.id, title: widget.song.title, note: note);
+  }
 
   /// Bars of the running session judged so far; where this run began (going back doesn't start a
   /// new run), and how many times it went back.
@@ -224,6 +237,13 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       barChords: _heard.sublist(from, to),
       backing: _backing ? (key: '${widget.song.id}@${widget.capo}:$from-$to', strum: widget.song.strumPattern) : null,
     );
+    // A take runs from the first start to the end of the run, going back and repeats included.
+    if (_record && _take == null) {
+      final log = context.read<PracticeLog>();
+      final id = await Takes.start(mic);
+      if (!mounted) return;
+      _take = (id: id, log: log);
+    }
     setState(() {
       _session = session;
       _from = from;
@@ -259,6 +279,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
     _keepMarks(s, upTo: s.currentBar < 0 ? 0 : s.currentBar);
     s.stop();
     _ticker.stop();
+    _finishTake();
     setState(() {
       _session = null;
       _passes = 0;
@@ -366,6 +387,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
       }
       setState(() => _session = null);
       final right = _marks.sublist(_runStart, _to).where((m) => m == true).length;
+      _finishTake('$right of ${_to - _runStart} bars right');
       final wentBack = _rewinds == 0 ? '' : ', going back $_rewinds time${_rewinds == 1 ? '' : 's'}';
       if (_runStart == 0 && _to == _bars.length) {
         // Each bar as it went the last time it was played. Full marks need full tempo; slower
@@ -406,6 +428,7 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
   @override
   void dispose() {
     _session?.stop();
+    _finishTake();
     _ticker.dispose();
     _beat.dispose();
     super.dispose();
@@ -563,6 +586,13 @@ class _SongViewState extends State<SongView> with Listening, SingleTickerProvide
                   label: const Text('Repeat this line'),
                   selected: _repeat,
                   onSelected: _setRepeat,
+                ),
+                FilterChip(
+                  avatar: const Icon(Icons.fiber_manual_record_rounded, size: 18, color: kMiss),
+                  label: const Text('Record me'),
+                  tooltip: 'Keep a recording of the run, to listen back to in Recordings.',
+                  selected: _record,
+                  onSelected: (v) => setState(() => _record = v),
                 ),
                 FilterChip(
                   avatar: const Icon(Icons.trending_up_rounded, size: 18),
