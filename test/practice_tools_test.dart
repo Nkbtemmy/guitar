@@ -1,15 +1,20 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:guitaro/app_services.dart';
 import 'package:guitaro/audio/mic_listener.dart';
 import 'package:guitaro/curriculum/models.dart';
+import 'package:guitaro/audio/analysis.dart';
+import 'package:guitaro/music/notes.dart';
 import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/practice/metronome.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
 import 'package:guitaro/ui/practice/chord_challenge_screen.dart';
+import 'package:guitaro/ui/practice/fretboard_game_screen.dart';
+import 'package:guitaro/ui/widgets/fretboard.dart';
 import 'package:guitaro/ui/practice/metronome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,5 +108,47 @@ void main() {
     expect(mic.users, 0);
     expect(practice.changeRuns('D', 'A').single.count, 0);
     expect(tester.takeException(), isNull);
+  });
+
+  group('fretboard notes', () {
+    testWidgets('name it: tap the note at the dot; the score and best are kept', (tester) async {
+      final (_, practice, _, _) = await pumpTool(tester, FretboardGameScreen(length: const Duration(seconds: 10), random: math.Random(3)));
+      await tester.tap(find.text('Start: 10 seconds'));
+      await tester.pump();
+      String answer() => noteName(tester.widget<Fretboard>(find.byType(Fretboard)).target.midi);
+      await tester.tap(find.text(answer()));
+      await tester.pump();
+      expect(find.text('Yes!'), findsOneWidget);
+      expect(find.text('Score 1'), findsOneWidget);
+      final right = answer();
+      await tester.tap(find.text(right == 'C' ? 'D' : 'C'));
+      await tester.pump();
+      expect(find.text('That was $right.'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 11));
+      await tester.pumpAndSettle();
+      expect(find.text('1 right of 2'), findsOneWidget);
+      expect(practice.best('fretboard:name'), 1);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('play it: find the note on the string named, and the mic hears it', (tester) async {
+      final (_, _, mic, _) = await pumpTool(tester, FretboardGameScreen(length: const Duration(seconds: 10), random: math.Random(5)));
+      await tester.tap(find.text('Play it'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Start: 10 seconds'));
+      await tester.pump();
+      expect(mic.users, 1);
+      final prompt = tester.widget<Text>(find.textContaining(RegExp(r'^Play [A-G]#?$'))).data!.substring(5);
+      final string = int.parse(RegExp(r'string (\d)').firstMatch(tester.widget<Text>(find.textContaining('(string ')).data!)!.group(1)!);
+      final midi = [for (var f = 0; f <= 12; f++) midiAt(string, f)].firstWhere((m) => noteName(m) == prompt);
+      final freq = midiToFreq(midi);
+      mic.hear(AnalysisFrame(time: 1, rms: 0.1, pitch: PitchResult(freq, 1), peaks: [SpectralPeak(freq, 1)]));
+      await tester.pump();
+      expect(find.text('Score 1'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 11));
+      await tester.pumpAndSettle();
+      expect(mic.users, 0);
+      expect(tester.takeException(), isNull);
+    });
   });
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../progress/practice_log.dart';
 import '../theme.dart';
 import 'chord_challenge_screen.dart';
+import 'fretboard_game_screen.dart';
 import 'metronome_screen.dart';
 import 'weak_spots_screen.dart';
 
@@ -34,6 +35,12 @@ class PracticeTools extends StatelessWidget {
         title: 'Chord changes',
         subtitle: changes,
         onTap: () => _open(context, const ChordChallengeScreen()),
+      ),
+      _Tool(
+        icon: Icons.grid_on_rounded,
+        title: 'Fretboard notes',
+        subtitle: 'Learn the neck',
+        onTap: () => _open(context, const FretboardGameScreen()),
       ),
       _Tool(
         icon: Icons.timer_outlined,

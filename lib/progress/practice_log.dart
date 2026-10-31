@@ -95,6 +95,9 @@ class PracticeLog extends ChangeNotifier {
     if (raw == null) return;
     try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
+      for (final MapEntry(:key, :value) in (j['bests'] as Map? ?? const {}).entries) {
+        _bests[key as String] = (value as num).toInt();
+      }
       for (final MapEntry(:key, :value) in (j['changes'] as Map? ?? const {}).entries) {
         _changes[key as String] = [
           for (final r in value as List)
@@ -121,6 +124,7 @@ class PracticeLog extends ChangeNotifier {
   final SharedPreferences? _prefs;
   final _spots = <String, WeakSpot>{};
   final _changes = <String, List<ChangeRun>>{};
+  final _bests = <String, int>{};
 
   /// How long a spot stays on the list without being played.
   static const forgetAfter = Duration(days: 30);
@@ -188,11 +192,24 @@ class PracticeLog extends ChangeNotifier {
     return best == null ? count > 0 : count > best;
   }
 
+  /// The best score in game [game] (the fretboard game, ear training…), if played.
+  int? best(String game) => _bests[game];
+
+  /// Records a score in [game]; true when it's a new best.
+  bool recordBest(String game, int score) {
+    final old = _bests[game];
+    if (old != null && score <= old) return false;
+    _bests[game] = score;
+    _save();
+    return score > 0;
+  }
+
   void _save() {
     _prefs?.setString(
         _key,
         jsonEncode({
           'spots': [for (final s in _spots.values) s.toJson()],
+          'bests': _bests,
           'changes': {
             for (final MapEntry(:key, :value) in _changes.entries) key: [for (final r in value) [r.at.millisecondsSinceEpoch, r.count]],
           },
