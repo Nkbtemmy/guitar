@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../analytics.dart';
 import '../../app_services.dart';
+import '../../progress/practice_log.dart';
 import '../../sheets/chord_sheet.dart';
 import '../../sheets/chord_symbol.dart';
 import '../../sheets/sheet_song.dart';
@@ -19,6 +20,42 @@ import 'sheet_editor.dart';
 /// Finds a sheet by id among the bundled songs and the learner's own.
 ChordSheet? findSheet(BuildContext context, String id) =>
     context.read<AppServices>().sheet(id) ?? context.read<SongbookStore>().userSong(id)?.toSheet();
+
+/// How the learner has chosen to see [sheet]: its transpose, capo and simplify settings.
+SheetDisplay sheetDisplay(ChordSheet sheet, SheetPrefs prefs) {
+  final capo = prefs.capo ?? sheet.capo;
+  return SheetDisplay(
+    shift: prefs.transpose - (capo - sheet.capo),
+    capo: capo,
+    simplify: prefs.simplify,
+    fontScale: prefs.fontScale,
+  );
+}
+
+/// Wait mode and play-along on sheet [sheetId], in the shapes the learner sees it in. [startBar]
+/// and [repeat] open it on a line to practise.
+void openPlayAlong(BuildContext context, String sheetId, {int startBar = 0, bool repeat = false}) {
+  final sheet = findSheet(context, sheetId);
+  if (sheet == null) return;
+  final resolver = context.read<AppServices>().resolver;
+  final display = sheetDisplay(sheet, context.read<SongbookStore>().prefsFor(sheet.id));
+  final song = sheetSong(sheet, shape: (n) => display.label(n, resolver), resolver: resolver);
+  Navigator.of(context).push(MaterialPageRoute<void>(
+    builder: (_) => Scaffold(
+      appBar: AppBar(title: const Text('Play along')),
+      body: SafeArea(
+        child: SongView(
+          song: song,
+          chordFor: (name) => sheetChord(name, resolver),
+          capo: display.capo,
+          place: SpotPlace.sheet(sheet.id),
+          startBar: startBar,
+          repeat: repeat,
+        ),
+      ),
+    ),
+  ));
+}
 
 /// A song sheet with the tools tab sites have: autoscroll, transpose, capo (with a
 /// suggestion), simplified chords, text size, chord diagrams on tap, favorites and setlists.
@@ -94,13 +131,8 @@ class _SheetScreenState extends State<SheetScreen> with SingleTickerProviderStat
     }
     final resolver = context.read<AppServices>().resolver;
     final prefs = store.prefsFor(sheet.id);
-    final capo = prefs.capo ?? sheet.capo;
-    final display = SheetDisplay(
-      shift: prefs.transpose - (capo - sheet.capo),
-      capo: capo,
-      simplify: prefs.simplify,
-      fontScale: prefs.fontScale,
-    );
+    final display = sheetDisplay(sheet, prefs);
+    final capo = display.capo;
     final sounding = [for (final n in sheet.chordNames) transposeName(n, prefs.transpose + sheet.capo)];
     final suggested = resolver.suggestCapo(sounding, simplify: prefs.simplify);
     final shapes = <String>{for (final n in sheet.chordNames) display.label(n, resolver)}.toList();
@@ -176,7 +208,7 @@ class _SheetScreenState extends State<SheetScreen> with SingleTickerProviderStat
                       child: Wrap(spacing: 8, runSpacing: 8, children: [
                         if (shapes.isNotEmpty)
                           FilledButton.icon(
-                            onPressed: () => _playAlong(sheet, display, capo),
+                            onPressed: () => _playAlong(sheet),
                             icon: const Icon(Icons.queue_music_rounded),
                             label: const Text('Play along'),
                             style: FilledButton.styleFrom(minimumSize: const Size(0, 44)),
@@ -245,21 +277,11 @@ class _SheetScreenState extends State<SheetScreen> with SingleTickerProviderStat
     );
   }
 
-  /// Wait mode and play-along on this sheet, in the shapes currently shown (transpose, capo
-  /// and simplify applied).
-  void _playAlong(ChordSheet sheet, SheetDisplay display, int capo) {
+  /// Wait mode and play-along on this sheet, in the shapes currently shown.
+  void _playAlong(ChordSheet sheet) {
     _ticker.stop();
     setState(() => _scrolling = false);
-    final resolver = context.read<AppServices>().resolver;
-    final song = sheetSong(sheet, shape: (n) => display.label(n, resolver), resolver: resolver);
-    Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(title: const Text('Play along')),
-        body: SafeArea(
-          child: SongView(song: song, chordFor: (name) => sheetChord(name, resolver), capo: capo),
-        ),
-      ),
-    ));
+    openPlayAlong(context, sheet.id);
   }
 
   Future<void> _openVideo(String link) async {

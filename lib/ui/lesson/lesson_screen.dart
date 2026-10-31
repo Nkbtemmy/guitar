@@ -5,6 +5,7 @@ import '../../analytics.dart';
 import '../../app_services.dart';
 import '../../curriculum/models.dart';
 import '../../practice/trackers.dart';
+import '../../progress/practice_log.dart';
 import '../../progress/progress_store.dart';
 import '../practice/song_view.dart';
 import '../practice/strum_view.dart';
@@ -79,7 +80,7 @@ class _LessonScreenState extends State<LessonScreen> {
       NotesStep() => NotesStepView(step: step, onDone: done),
       ChordStep() || ChangeStep() => ChordSequenceView.forStep(step, done, services.library),
       StrumStep() => StrumView(step: step, onDone: done),
-      SongStep(:final songId) => SongView(song: services.curriculum.song(songId), onDone: done),
+      SongStep(:final songId) => SongView(song: services.curriculum.song(songId), onDone: done, place: SpotPlace.song(songId)),
       VideoStep() => VideoStepView(step: step, onDone: done),
     };
   }

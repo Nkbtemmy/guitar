@@ -7,6 +7,7 @@ import '../../audio/analysis.dart';
 import '../../audio/chord_matcher.dart';
 import '../../music/notes.dart';
 import '../../practice/trackers.dart';
+import '../../progress/practice_log.dart';
 import '../../progress/progress_store.dart';
 import '../../sheets/tab_sequence.dart';
 import '../theme.dart';
@@ -43,6 +44,9 @@ class TabPlayerScreen extends StatefulWidget {
     this.bpm = 90,
     this.beatsPerBar = 4,
     this.id = 'tab',
+    this.place,
+    this.from,
+    this.to,
   });
 
   final TabSequence tab;
@@ -55,6 +59,12 @@ class TabPlayerScreen extends StatefulWidget {
   /// Cache key for the rendered audio.
   final String id;
 
+  /// Where this tab lives, so the bars the learner keeps missing are kept as weak spots.
+  final SpotPlace? place;
+
+  /// Open on notes [from]..[to], looping them (practising a weak spot).
+  final int? from, to;
+
   @override
   State<TabPlayerScreen> createState() => _TabPlayerScreenState();
 }
@@ -63,9 +73,15 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   late final AppServices _services;
   late final Ticker _ticker = createTicker(_tick);
   final _clock = Stopwatch();
-  late RangeValues _loop = RangeValues(0, (widget.tab.events.length - 1).toDouble());
+  // A weak spot from a song edited since may point past its end: keep the section inside it.
+  late RangeValues _loop = () {
+    final last = widget.tab.events.length - 1;
+    final from = (widget.from ?? 0).clamp(0, last);
+    return RangeValues(from.toDouble(), (widget.to ?? last).clamp(from, last).toDouble());
+  }();
   TabSpeed _speed = TabSpeed.slower;
-  bool _looping = false, _countIn = true, _metronome = false, _rendering = false;
+  late bool _looping = widget.from != null;
+  bool _countIn = true, _metronome = false, _rendering = false;
 
   /// Where the music is, in beats: the highway follows it.
   final _position = ValueNotifier<double>(0);
@@ -117,7 +133,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
   void initState() {
     super.initState();
     _services = context.read<AppServices>();
-    _position.value = _beatOf(0);
+    _position.value = _beatOf(_from);
   }
 
   double _beatOf(int event) => widget.tab.events[event].column / TabSequence.columnsPerBeat;
@@ -213,6 +229,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
     _position.value = now;
     // Judge each note a moment after it stops ringing: the mic runs a little behind.
     for (final i in _judge.judgeUpTo(now - 0.25 * _bpm / 60, last: _to)) {
+      _remember(i, _judge.results[i]!);
       if (!_keepPlaying && !_looping && _rewinder.record(_judge.results[i]!) && _goBack(now)) return;
     }
     if (beats * 60 / _bpm >= widget.tab.durationOf(_bpm, from: _passFrom, to: _to)) {
@@ -305,11 +322,13 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       advanced = _learn.process(f);
       if (advanced) {
         _judge.results[note] = true;
+        _remember(note, true);
       } else if (_keepPlaying &&
           !_learn.done &&
           _wrong.hear(f, (f) => _learn.current!.midiNotes.any((m) => NoteMatcher.matches(f, m)))) {
         // Keeping going: a wrong note moves on too, marked red.
         _judge.results[note] = false;
+        _remember(note, false);
         _learn.jumpTo(note + 1);
         advanced = true;
       }
@@ -323,6 +342,17 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       _judge.hear(_beatOf(_passFrom) + _stream.toLocal(f.time) * _bpm / 60 - _lead, f);
     }
     if (advanced || heard != _heard) setState(() => _heard = heard);
+  }
+
+  /// Counts note [i] towards its bar's weak spot.
+  void _remember(int i, bool right) {
+    final place = widget.place;
+    if (place == null) return;
+    final starts = [0, ...widget.tab.barStarts];
+    final bar = starts.lastIndexWhere((s) => s <= i);
+    final to = bar + 1 < starts.length ? starts[bar + 1] - 1 : widget.tab.events.length - 1;
+    context.read<PracticeLog>()
+        .recordSpot(place, from: starts[bar], to: to, title: widget.title, detail: 'Bar ${bar + 1}', right: right);
   }
 
   /// Learn: move the highway to the note to play.

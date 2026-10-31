@@ -8,6 +8,7 @@ import 'analytics.dart';
 import 'app_services.dart';
 import 'audio/mic_listener.dart';
 import 'audio/sound_player.dart';
+import 'progress/practice_log.dart';
 import 'progress/progress_store.dart';
 import 'sheets/songbook_store.dart';
 import 'ui/chords/chords_screen.dart';
@@ -47,7 +48,14 @@ Future<void> main() async {
       await (AppServices.load(rootBundle, player), Analytics.start(enabled: progress.shareUsage)).wait;
   progress.addListener(() => analytics.enabled = progress.shareUsage);
   runApp(GuitaroApp(
-      services: services, progress: progress, mic: mic, songbook: SongbookStore(prefs), analytics: analytics, splash: true));
+    services: services,
+    progress: progress,
+    mic: mic,
+    songbook: SongbookStore(prefs),
+    practice: PracticeLog(prefs),
+    analytics: analytics,
+    splash: true,
+  ));
 }
 
 class GuitaroApp extends StatelessWidget {
@@ -57,9 +65,11 @@ class GuitaroApp extends StatelessWidget {
     required this.progress,
     required this.mic,
     SongbookStore? songbook,
+    PracticeLog? practice,
     Analytics? analytics,
     this.splash = false,
   })  : songbook = songbook ?? SongbookStore(),
+        practice = practice ?? PracticeLog(),
         analytics = analytics ?? const Analytics();
 
   final AppServices services;
@@ -68,6 +78,9 @@ class GuitaroApp extends StatelessWidget {
 
   /// Favorites, setlists and the learner's own songs.
   final SongbookStore songbook;
+
+  /// What the learner has practised: weak spots and more.
+  final PracticeLog practice;
 
   /// Anonymous usage stats; sends nothing unless Firebase started.
   final Analytics analytics;
@@ -82,6 +95,7 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: progress),
           ChangeNotifierProvider.value(value: mic),
           ChangeNotifierProvider.value(value: songbook),
+          ChangeNotifierProvider.value(value: practice),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(
