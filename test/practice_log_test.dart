@@ -61,6 +61,19 @@ void main() {
     });
   });
 
+  test('chord-change minutes: either way round is one pair, with its best and its history', () {
+    final log = PracticeLog(prefs);
+    expect(log.recordChanges('C', 'G', 14, now: DateTime(2026, 10, 1)), isTrue, reason: 'the first minute is a best');
+    expect(log.recordChanges('G', 'C', 12, now: DateTime(2026, 10, 2)), isFalse);
+    expect(log.recordChanges('C', 'G', 21, now: DateTime(2026, 10, 3)), isTrue);
+    log.recordChanges('A', 'D', 9, now: DateTime(2026, 9, 1));
+    final again = PracticeLog(prefs);
+    expect(again.bestChanges('G', 'C'), 21);
+    expect([for (final r in again.changeRuns('C', 'G')) r.count], [14, 12, 21]);
+    expect(again.lastChangePair, ('C', 'G'));
+    expect(again.bestChanges('Em', 'Am'), isNull);
+  });
+
   testWidgets('a weak spot opens its song in play-along, looping its line', (tester) async {
     final log = PracticeLog(prefs);
     miss(log, 4);

@@ -491,7 +491,7 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
             // Listening while it plays (to judge the notes) and in Learn; not while stopped.
             if (_learning || _playing || _rendering) ...[
               const SizedBox(height: 8),
-              _Listener(onFrame: _hear),
+              FrameListener(onFrame: _hear),
               ListeningBadge(message: _heard),
             ],
             SwitchListTile(
@@ -562,22 +562,4 @@ class _TabPlayerScreenState extends State<TabPlayerScreen> with SingleTickerProv
       ),
     );
   }
-}
-
-/// Holds the mic only while it's needed, passing what it hears up.
-class _Listener extends StatefulWidget {
-  const _Listener({required this.onFrame});
-
-  final ValueChanged<AnalysisFrame> onFrame;
-
-  @override
-  State<_Listener> createState() => _ListenerState();
-}
-
-class _ListenerState extends State<_Listener> with Listening {
-  @override
-  void onFrame(AnalysisFrame frame) => widget.onFrame(frame);
-
-  @override
-  Widget build(BuildContext context) => const SizedBox.shrink();
 }

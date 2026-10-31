@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../progress/practice_log.dart';
 import '../theme.dart';
+import 'chord_challenge_screen.dart';
 import 'metronome_screen.dart';
 import 'weak_spots_screen.dart';
 
@@ -16,6 +17,10 @@ class PracticeTools extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spots = context.select<PracticeLog, int>((p) => p.weakSpots().length);
+    final changes = context.select<PracticeLog, String>((p) {
+      final pair = p.lastChangePair;
+      return pair == null ? 'One-minute drill' : '${pair.$1} – ${pair.$2}: best ${p.bestChanges(pair.$1, pair.$2)}';
+    });
     final tools = [
       _Tool(
         icon: Icons.healing_rounded,
@@ -23,6 +28,12 @@ class PracticeTools extends StatelessWidget {
         subtitle: spots == 0 ? 'Your weak spots' : '$spots to fix',
         badge: spots > 0,
         onTap: () => _open(context, const WeakSpotsScreen()),
+      ),
+      _Tool(
+        icon: Icons.swap_horiz_rounded,
+        title: 'Chord changes',
+        subtitle: changes,
+        onTap: () => _open(context, const ChordChallengeScreen()),
       ),
       _Tool(
         icon: Icons.timer_outlined,

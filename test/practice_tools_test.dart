@@ -9,6 +9,7 @@ import 'package:guitaro/music/chord_library.dart';
 import 'package:guitaro/practice/metronome.dart';
 import 'package:guitaro/progress/practice_log.dart';
 import 'package:guitaro/progress/progress_store.dart';
+import 'package:guitaro/ui/practice/chord_challenge_screen.dart';
 import 'package:guitaro/ui/practice/metronome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,5 +85,23 @@ void main() {
       expect(find.text('Start'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
+  });
+
+  testWidgets('chord changes: pick a pair, count in, a minute listening, and the result is kept', (tester) async {
+    final (_, practice, mic, _) = await pumpTool(tester, const ChordChallengeScreen(length: Duration(seconds: 5)));
+    await tester.tap(find.text('A – D'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Start: 5 seconds'));
+    await tester.pump();
+    expect(find.text('Get ready'), findsOneWidget);
+    expect(mic.users, 1, reason: 'the mic warms up during the count-in');
+    await tester.pump(const Duration(seconds: 4));
+    expect(find.text('changes'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+    expect(find.text('0 changes'), findsOneWidget);
+    expect(mic.users, 0);
+    expect(practice.changeRuns('D', 'A').single.count, 0);
+    expect(tester.takeException(), isNull);
   });
 }

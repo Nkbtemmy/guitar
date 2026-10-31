@@ -84,14 +84,23 @@ class WeakSpot {
       );
 }
 
+/// A minute of chord changes: how many clean changes, and when.
+typedef ChangeRun = ({DateTime at, int count});
+
 /// What the learner has practised, kept on the device: the parts they keep missing (to practise
-/// next), and more as the practice tools record it.
+/// next), their chord-change minutes, and more as the practice tools record it.
 class PracticeLog extends ChangeNotifier {
   PracticeLog([this._prefs]) {
     final raw = _prefs?.getString(_key);
     if (raw == null) return;
     try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
+      for (final MapEntry(:key, :value) in (j['changes'] as Map? ?? const {}).entries) {
+        _changes[key as String] = [
+          for (final r in value as List)
+            (at: DateTime.fromMillisecondsSinceEpoch(((r as List)[0] as num).toInt()), count: (r[1] as num).toInt()),
+        ];
+      }
       for (final s in j['spots'] as List? ?? const []) {
         try {
           final spot = WeakSpot.fromJson(Map<String, dynamic>.from(s as Map));
@@ -111,6 +120,7 @@ class PracticeLog extends ChangeNotifier {
   static const _key = 'practice.v1';
   final SharedPreferences? _prefs;
   final _spots = <String, WeakSpot>{};
+  final _changes = <String, List<ChangeRun>>{};
 
   /// How long a spot stays on the list without being played.
   static const forgetAfter = Duration(days: 30);
@@ -145,8 +155,48 @@ class PracticeLog extends ChangeNotifier {
     _save();
   }
 
+  /// Chord changes are the same exercise either way round: C to G is G to C.
+  static String pairKey(String a, String b) => ([a, b]..sort()).join('|');
+
+  /// The minutes of changes between [a] and [b], oldest first.
+  List<ChangeRun> changeRuns(String a, String b) => List.unmodifiable(_changes[pairKey(a, b)] ?? const <ChangeRun>[]);
+
+  int? bestChanges(String a, String b) {
+    final runs = _changes[pairKey(a, b)];
+    return runs == null || runs.isEmpty ? null : runs.map((r) => r.count).reduce((x, y) => x > y ? x : y);
+  }
+
+  /// The pair practised most recently, as (a, b).
+  (String, String)? get lastChangePair {
+    MapEntry<String, List<ChangeRun>>? latest;
+    for (final e in _changes.entries) {
+      if (e.value.isNotEmpty && (latest == null || e.value.last.at.isAfter(latest.value.last.at))) latest = e;
+    }
+    if (latest == null) return null;
+    final [a, b] = latest.key.split('|');
+    return (a, b);
+  }
+
+  /// Records a minute of [count] changes between [a] and [b]; true when it beats the best.
+  bool recordChanges(String a, String b, int count, {DateTime? now}) {
+    final best = bestChanges(a, b);
+    final runs = _changes[pairKey(a, b)] ??= [];
+    runs.add((at: now ?? DateTime.now(), count: count));
+    // Enough history for a chart; older minutes only add bulk.
+    if (runs.length > 60) runs.removeAt(0);
+    _save();
+    return best == null ? count > 0 : count > best;
+  }
+
   void _save() {
-    _prefs?.setString(_key, jsonEncode({'spots': [for (final s in _spots.values) s.toJson()]}));
+    _prefs?.setString(
+        _key,
+        jsonEncode({
+          'spots': [for (final s in _spots.values) s.toJson()],
+          'changes': {
+            for (final MapEntry(:key, :value) in _changes.entries) key: [for (final r in value) [r.at.millisecondsSinceEpoch, r.count]],
+          },
+        }));
     notifyListeners();
   }
 }
