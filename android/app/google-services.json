@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "845328075155",
+    "project_id": "guitaro-3c045",
+    "storage_bucket": "guitaro-3c045.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845328075155:android:41f236602eda89c3e98066",
+        "android_client_info": {
+          "package_name": "com.thunderzeye.guitaro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845328075155-k94e9uvh12hmb6rtjc6niufnsraum7et.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thunderzeye.guitaro",
+            "certificate_hash": "c3b63f926d091585e5d9244855746c1d9bb745d8"
+          }
+        },
+        {
+          "client_id": "845328075155-vulfrjmhdmof62mlod9su4rheioecmnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE4FT3h6c7xNSt4ECW3Xg-KKTA8Nbj1n8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845328075155-vulfrjmhdmof62mlod9su4rheioecmnv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "845328075155-q7v0soefshi3pf9ll43s56q3namudeoc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thunderzeye.guitaro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
