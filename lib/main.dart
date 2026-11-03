@@ -167,7 +167,7 @@ class GuitaroApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: practice),
           Provider.value(value: reminders),
           ChangeNotifierProvider.value(value: accounts),
-          Provider<CloudSync?>.value(value: sync),
+          ListenableProvider<CloudSync?>.value(value: sync),
           Provider.value(value: analytics),
         ],
         child: MaterialApp(
