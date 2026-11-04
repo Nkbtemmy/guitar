@@ -181,16 +181,9 @@ before building, and keep `index.json` and the `.jpg` posters.
 - **Usage stats (Firebase):** the app counts its users with Google Analytics for Firebase and
   reports crashes with Crashlytics (`lib/analytics.dart`). Nothing personal is sent, and there's
   no sign-in. Learners can turn it off in *Me › Share anonymous usage stats*. A build that isn't
-  connected to Firebase just sends nothing. To connect it, once:
-  ```sh
-  npm install -g firebase-tools && firebase login
-  dart pub global activate flutterfire_cli
-  flutterfire configure --platforms=android,ios \
-      --android-package-name=com.thunderzeye.guitaro --ios-bundle-id=com.thunderzeye.guitaro
-  ```
-  This writes `lib/firebase_options.dart`, `android/app/google-services.json` and
-  `ios/Runner/GoogleService-Info.plist`. They aren't secrets, so commit them. In the Firebase
-  console, turn off Google signals and ads personalization.
+  connected to Firebase just sends nothing. The app is connected to the project `guitaro-3c045`
+  through `android/app/google-services.json` and `ios/Runner/GoogleService-Info.plist` (see
+  [docs/FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md)). They aren't secrets, so they're committed.
   - **Where to see the numbers:** in the Firebase console, *Analytics › Dashboard* shows daily,
     weekly and monthly active users, new users, retention, countries and app versions. The
     last 30 minutes appear live; the rest takes up to a day.

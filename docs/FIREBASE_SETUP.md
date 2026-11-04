@@ -7,24 +7,21 @@ Guitaro uses Firebase for:
 
 Everything here fits Firebase's free **Spark** plan. No card is needed.
 
-Until these steps are done the app works as before. Sign-in simply isn't offered, and everything
-stays on the phone.
+The app is connected to the Firebase project **guitaro-3c045**. Steps 1 to 5 are done; step 3
+needs Play's signing key added once the app is in Play Console, and steps 6 and 7 come later.
 
 ## 1. Create the project and connect the app
 
-```sh
-npm install -g firebase-tools
-firebase login
-dart pub global activate flutterfire_cli
-flutterfire configure --platforms=android,ios \
-    --android-package-name=com.thunderzeye.guitaro --ios-bundle-id=com.thunderzeye.guitaro
-```
+1. In the Firebase console, create the project with Google Analytics on. In Google Analytics,
+   turn off Google signals and ads personalization.
+2. Add an Android app (package `com.thunderzeye.guitaro`) and an iOS app (bundle ID
+   `com.thunderzeye.guitaro`).
+3. Download their config files into the app: `google-services.json` into `android/app/`, and
+   `GoogleService-Info.plist` into `ios/Runner/`. The plist is already in the Runner target in
+   Xcode, so replacing the file is enough. Neither is a secret, so they're committed.
 
-1. Pick "create a new project".
-2. The command writes `lib/firebase_options.dart`, `android/app/google-services.json` and
-   `ios/Runner/GoogleService-Info.plist`.
-3. Then tell Claude (or change `startFirebase()` in `lib/main.dart` to
-   `startFirebase(options: DefaultFirebaseOptions.currentPlatform)`).
+Firebase reads these files when the app starts, so there is no `firebase_options.dart`. Without
+them the app runs without accounts, stats or crash reports.
 
 ## 2. Turn on Google sign-in
 
@@ -43,14 +40,13 @@ Your apps › Android app › Add fingerprint**, add the SHA-1 *and* SHA-256 of:
 - **Google Play's app signing key**, once the app is in Play Console. It's under **Test and
   release › App integrity › App signing**.
 
-Then download `google-services.json` again into `android/app/` (or run `flutterfire configure`
-again).
+Then download `google-services.json` again into `android/app/`.
 
 ## 4. iPhone: let Google sign-in come back to the app
 
-Google's sign-in page opens in a browser sheet, and comes back to the app through a URL scheme.
-Open `ios/Runner/GoogleService-Info.plist`, copy its `REVERSED_CLIENT_ID`, and add it as a URL
-scheme: in Xcode, **Runner target › Info › URL Types › +**, paste it into **URL Schemes**.
+Google's sign-in page opens in a browser sheet, and comes back to the app through a URL scheme:
+the `REVERSED_CLIENT_ID` from `GoogleService-Info.plist`, under `CFBundleURLTypes` in
+`ios/Runner/Info.plist`. If the iOS app is ever registered again, update it there.
 
 ## 5. Create the database
 

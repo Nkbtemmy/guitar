@@ -252,6 +252,21 @@ void main() {
       phone();
     });
 
+    testWidgets('the app runs with sync on: signing in from Me backs up', (tester) async {
+      tester.view.physicalSize = const Size(1170, 2532);
+      tester.view.devicePixelRatio = 3;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(GuitaroApp(
+          services: services(), progress: progress, practice: practice, songbook: songbook, mic: FakeMic(), accounts: accounts, sync: sync));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      await tester.tap(find.text('Me'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Continue with Google'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Backed up'), findsOneWidget);
+    });
+
     test('the first phone fills the account; a new phone takes it, goal and all', () async {
       progress.completeLesson('L01-1', 3);
       progress.goal = const LearningGoal(aims: {Aim.blues}, minutes: 30);
